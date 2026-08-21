@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,
+             initial-scale=1.0,
+             viewport-fit=cover"
+>
+
+<meta name="theme-color" content="#000000">
+
+<title>Rocket</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: #000;
+
+    color: #fff;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        Arial,
+        sans-serif;
+
+    overflow: hidden;
+}
+
+
+/* =================================
+   APP
+================================= */
+
+.app {
+
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    background: #000;
+}
+
+
+/* =================================
+   SCALA VERTICALE
+================================= */
+
+.vertical-line {
+
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 2px;
+    height: 100%;
+
+    background: #777;
+
+    transform: translateX(-50%);
+}
+
+
+/* =================================
+   TACCHETTE
+================================= */
+
+#scale {
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+}
+
+
+.tick {
+
+    position: absolute;
+
+    left: 50%;
+
+    height: 1px;
+
+    background: #666;
+
+    transform:
+        translateX(-50%);
+}
+
+
+/*
+Tacche normali:
+molto piccole e discrete.
+*/
+
+.tick.small {
+
+    width: 7px;
+
+    opacity: 0.45;
+}
+
+
+/*
+Tacche con numero:
+leggermente più lunghe.
+*/
+
+.tick.major {
+
+    width: 11px;
+
+    opacity: 0.65;
+}
+
+
+/*
+Zero:
+un pochino più evidente.
+*/
+
+.tick.zero {
+
+    width: 16px;
+
+    opacity: 0.8;
+}
+
+
+/* =================================
+   NUMERI DELLA SCALA
+================================= */
+
+.scale-label {
+
+    position: absolute;
+
+    left:
+        calc(50% + 20px);
+
+    transform:
+        translateY(-50%);
+
+    color: #555;
+
+    font-size: 11px;
+
+    font-weight: 400;
+
+    white-space: nowrap;
+}
+
+
+.scale-label.zero {
+
+    color: #888;
+
+}
+
+
+/* =================================
+   INDICATORE
+================================= */
+
+.indicator {
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    transform:
+        translate(-100%, -50%);
+
+    z-index: 20;
+
+    pointer-events: none;
+}
+
+
+/*
+Razzo orizzontale.
+*/
+
+.rocket {
+
+    width: 62px;
+
+    height: 32px;
+
+    display: block;
+
+}
+
+
+/*
+Numero esatto.
+*/
+
+.current-value {
+
+    margin-left: 10px;
+
+    min-width: 70px;
+
+    color: white;
+
+    font-size: 20px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+}
+
+
+/* =================================
+   INPUT
+================================= */
+
+.input-area {
+
+    position: absolute;
+
+    left: 50%;
+
+    bottom:
+        calc(
+            32px +
+            env(safe-area-inset-bottom)
+        );
+
+    transform:
+        translateX(-50%);
+
+    z-index: 30;
+
+}
+
+
+.value-input {
+
+    width: 190px;
+
+    height: 54px;
+
+    padding: 0 15px;
+
+    background: #111;
+
+    border: 1px solid #444;
+
+    border-radius: 14px;
+
+    outline: none;
+
+    color: white;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    font-weight: 600;
+
+}
+
+
+.value-input:focus {
+
+    border-color: #888;
+
+}
+
+
+.value-input::placeholder {
+
+    color: #555;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- LINEA CENTRALE -->
+
+    <div class="vertical-line"></div>
+
+
+    <!-- SCALA -->
+
+    <div id="scale"></div>
+
+
+    <!-- INDICATORE -->
+
+    <div
+        id="indicator"
+        class="indicator"
+    >
+
+        <!-- RAZZO SVG -->
+
+        <svg
+            class="rocket"
+            viewBox="0 0 100 50"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <!-- Corpo -->
+
+            <path
+                d="
+                    M 10 25
+                    C 28 10,
+                      52 8,
+                      78 25
+                    C 52 42,
+                      28 40,
+                      10 25
+                    Z
+                "
+                fill="white"
+            />
+
+            <!-- Punta -->
+
+            <path
+                d="
+                    M 65 13
+                    C 82 15,
+                      94 21,
+                      99 25
+                    C 94 29,
+                      82 35,
+                      65 37
+                    Z
+                "
+                fill="white"
+            />
+
+            <!-- Finestrino -->
+
+            <circle
+                cx="67"
+                cy="25"
+                r="5"
+                fill="black"
+            />
+
+            <!-- Ala -->
+
+            <path
+                d="
+                    M 38 16
+                    L 25 5
+                    L 28 20
+                    Z
+                "
+                fill="white"
+            />
+
+            <path
+                d="
+                    M 38 34
+                    L 25 45
+                    L 28 30
+                    Z
+                "
+                fill="white"
+            />
+
+            <!-- Fiamma -->
+
+            <path
+                d="
+                    M 12 18
+                    C 2 20,
+                      2 30,
+                      12 32
+                    L 22 25
+                    Z
+                "
+                fill="white"
+            />
+
+        </svg>
+
+
+        <!-- VALORE -->
+
+        <div
+            id="currentValue"
+            class="current-value"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <!-- INPUT -->
+
+    <div class="input-area">
+
+        <input
+            id="valueInput"
+            class="value-input"
+
+            type="text"
+
+            inputmode="text"
+
+            autocomplete="off"
+
+            autocorrect="off"
+
+            autocapitalize="off"
+
+            spellcheck="false"
+
+            placeholder="Inserisci valore"
+        >
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* =================================
+   IMPOSTAZIONI
+================================= */
+
+const MIN_VALUE = -10000;
+
+const MAX_VALUE = 20000;
+
+
+/*
+Spazio visivo ogni 25 €.
+*/
+
+const PIXELS_PER_25 = 7;
+
+
+/*
+Chiave utilizzata per salvare
+il valore nell'iPhone.
+*/
+
+const STORAGE_KEY =
+    "rocket-current-value";
+
+
+/* =================================
+   RECUPERO VALORE
+================================= */
+
+let value =
+    Number(
+        localStorage.getItem(
+            STORAGE_KEY
+        )
+    );
+
+
+/*
+Prima apertura:
+partiamo da zero.
+*/
+
+if (
+    !Number.isFinite(value)
+) {
+
+    value = 0;
+
+}
+
+
+/* =================================
+   ELEMENTI
+================================= */
+
+const scale =
+    document.getElementById(
+        "scale"
+    );
+
+
+const input =
+    document.getElementById(
+        "valueInput"
+    );
+
+
+const currentValue =
+    document.getElementById(
+        "currentValue"
+    );
+
+
+/* =================================
+   FORMATTAZIONE
+================================= */
+
+function formatValue(number) {
+
+    if (number > 0) {
+
+        return (
+            "+" +
+            number.toLocaleString(
+                "it-IT"
+            )
+        );
+
+    }
+
+
+    if (number < 0) {
+
+        return (
+            "-" +
+            Math.abs(number)
+                .toLocaleString(
+                    "it-IT"
+                )
+        );
+
+    }
+
+
+    return "0";
+
+}
+
+
+/* =================================
+   DISEGNA SCALA
+================================= */
+
+function drawScale() {
+
+    scale.innerHTML = "";
+
+
+    const center =
+        window.innerHeight / 2;
+
+
+    /*
+    Posizione dello zero
+    rispetto all'indicatore.
+    */
+
+    const zeroPosition =
+        center +
+        value *
+        PIXELS_PER_25;
+
+
+    /*
+    Quanta scala è visibile.
+    */
+
+    const visibleRange =
+        Math.ceil(
+            window.innerHeight /
+            PIXELS_PER_25
+        );
+
+
+    let start =
+        value -
+        visibleRange;
+
+
+    let end =
+        value +
+        visibleRange;
+
+
+    start =
+        Math.max(
+            MIN_VALUE,
+            start
+        );
+
+
+    end =
+        Math.min(
+            MAX_VALUE,
+            end
+        );
+
+
+    /*
+    Partiamo da un multiplo
+    di 25.
+    */
+
+    let current =
+        Math.floor(
+            start / 25
+        ) * 25;
+
+
+    while (
+        current <= end
+    ) {
+
+
+        /*
+        Posizione verticale.
+        */
+
+        const y =
+            zeroPosition -
+            current *
+            PIXELS_PER_25;
+
+
+        /*
+        Creiamo la tacca.
+        */
+
+        const tick =
+            document.createElement(
+                "div"
+            );
+
+
+        /*
+        Sopra zero:
+        numeri ogni 50.
+
+        Sotto zero:
+        numeri ogni 25.
+        */
+
+        const isMajor =
+            current === 0 ||
+            current < 0 ||
+            (
+                current > 0 &&
+                current % 50 === 0
+            );
+
+
+        if (
+            current === 0
+        ) {
+
+            tick.className =
+                "tick zero";
+
+        }
+
+        else if (
+            isMajor
+        ) {
+
+            tick.className =
+                "tick major";
+
+        }
+
+        else {
+
+            tick.className =
+                "tick small";
+
+        }
+
+
+        tick.style.top =
+            y + "px";
+
+
+        scale.appendChild(
+            tick
+        );
+
+
+        /*
+        Numero.
+        */
+
+        if (
+            isMajor
+        ) {
+
+            const label =
+                document.createElement(
+                    "div"
+                );
+
+
+            label.className =
+                "scale-label";
+
+
+            if (
+                current === 0
+            ) {
+
+                label.classList.add(
+                    "zero"
+                );
+
+            }
+
+
+            label.style.top =
+                y + "px";
+
+
+            label.textContent =
+                formatValue(
+                    current
+                );
+
+
+            scale.appendChild(
+                label
+            );
+
+        }
+
+
+        current += 25;
+
+    }
+
+}
+
+
+/* =================================
+   AGGIORNA
+================================= */
+
+function update() {
+
+    /*
+    Rispettiamo i limiti.
+    */
+
+    value =
+        Math.max(
+            MIN_VALUE,
+            Math.min(
+                MAX_VALUE,
+                value
+            )
+        );
+
+
+    /*
+    Salviamo il valore.
+    */
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        value
+    );
+
+
+    /*
+    Mostriamo il valore
+    esatto accanto al razzo.
+    */
+
+    currentValue.textContent =
+        formatValue(
+            value
+        );
+
+
+    /*
+    Mostriamo lo stesso valore
+    nel campo.
+    */
+
+    input.value =
+        formatValue(
+            value
+        );
+
+
+    /*
+    Ridisegniamo la scala.
+    */
+
+    drawScale();
+
+}
+
+
+/* =================================
+   INSERIMENTO VALORE
+================================= */
+
+function readValue() {
+
+    let text =
+        input.value.trim();
+
+
+    /*
+    Campo vuoto:
+    manteniamo il valore precedente.
+    */
+
+    if (
+        text === ""
+    ) {
+
+        update();
+
+        return;
+
+    }
+
+
+    /*
+    Accettiamo:
+
+    300
+    +300
+    -150
+    -4375
+    */
+
+    text =
+        text.replace(
+            ",",
+            "."
+        );
+
+
+    const newValue =
+        Number(text);
+
+
+    /*
+    Input non valido.
+    */
+
+    if (
+        !Number.isFinite(
+            newValue
+        )
+    ) {
+
+        update();
+
+        return;
+
+    }
+
+
+    /*
+    Nuovo valore.
+    */
+
+    value =
+        newValue;
+
+
+    update();
+
+}
+
+
+/* =================================
+   INVIO DA TASTIERA
+================================= */
+
+input.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            readValue();
+
+            input.blur();
+
+        }
+
+    }
+);
+
+
+/* =================================
+   USCITA DAL CAMPO
+================================= */
+
+input.addEventListener(
+    "blur",
+    function() {
+
+        readValue();
+
+    }
+);
+
+
+/* =================================
+   RIDIMENSIONAMENTO
+================================= */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        drawScale();
+
+    }
+);
+
+
+/* =================================
+   AVVIO
+================================= */
+
+update();
+
+
+</script>
+
+
+</body>
+</html>
