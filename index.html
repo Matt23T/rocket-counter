@@ -2,7 +2,6 @@
 <html lang="it">
 
 <head>
-
 <meta charset="UTF-8">
 
 <meta
@@ -23,10 +22,8 @@
 
 html,
 body {
-
     margin: 0;
     padding: 0;
-
     width: 100%;
     height: 100%;
 
@@ -48,33 +45,26 @@ body {
 }
 
 .app {
-
     position: relative;
-
     width: 100%;
     height: 100dvh;
-
     background: #000;
-
     overflow: hidden;
 }
 
 
 /* =====================================================
-   SCALA SCORRIBILE
+   SCALA
 ===================================================== */
 
 .timeline {
-
     position: absolute;
-
     inset: 0;
 
     overflow-y: auto;
     overflow-x: hidden;
 
     -webkit-overflow-scrolling: touch;
-
     scrollbar-width: none;
 
     overscroll-behavior-y: contain;
@@ -86,13 +76,9 @@ body {
     display: none;
 }
 
-
 .timeline-content {
-
     position: relative;
-
     width: 100%;
-
     height: 2400px;
 }
 
@@ -102,22 +88,17 @@ body {
 ===================================================== */
 
 .center-line {
-
     position: absolute;
 
     top: 0;
-
     left: 50%;
 
     width: 1px;
-
     height: 100%;
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 
-    background:
-        rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.18);
 
     pointer-events: none;
 }
@@ -128,7 +109,6 @@ body {
 ===================================================== */
 
 .tick {
-
     position: absolute;
 
     left: 50%;
@@ -136,29 +116,21 @@ body {
     width: 6px;
     height: 1px;
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 
-    background:
-        rgba(255,255,255,0.20);
+    background: rgba(255,255,255,0.20);
 
     pointer-events: none;
 }
 
 .tick.major {
-
     width: 11px;
-
-    background:
-        rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.35);
 }
 
 .tick.zero {
-
     width: 17px;
-
-    background:
-        rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.75);
 }
 
 
@@ -167,18 +139,15 @@ body {
 ===================================================== */
 
 .scale-label {
-
     position: absolute;
 
     left: calc(50% - 25px);
 
-    transform:
-        translate(-100%, -50%);
+    transform: translate(-100%, -50%);
 
     white-space: nowrap;
 
     font-size: 10px;
-
     font-weight: 500;
 
     opacity: 0.65;
@@ -188,20 +157,17 @@ body {
 
 
 /* =====================================================
-   CONTENITORE NOTE
+   NOTE
 ===================================================== */
 
 /*
-   IMPORTANTISSIMO:
+   QUESTO CONTENITORE È FISSO.
 
-   Le note NON sono più dentro la scala
-   che scorre.
-
-   Rimangono invece in un layer fisso.
+   NON appartiene alla scala.
+   NON viene fatto scorrere.
 */
 
 .notes-layer {
-
     position: absolute;
 
     inset: 0;
@@ -209,56 +175,53 @@ body {
     pointer-events: none;
 
     z-index: 50;
+
+    overflow: hidden;
 }
 
 
 /* =====================================================
-   NOTE A DESTRA
+   NOTA SINGOLA
 ===================================================== */
 
 .note {
-
     position: absolute;
 
     left: calc(50% + 31px);
 
-    max-width:
-        calc(50% - 42px);
+    max-width: calc(50% - 42px);
 
     white-space: nowrap;
 
     overflow: hidden;
-
     text-overflow: ellipsis;
 
     font-size: 13px;
-
     font-weight: 500;
 
     pointer-events: none;
+
+    user-select: none;
+    -webkit-user-select: none;
 
     z-index: 55;
 }
 
 .note-value {
-
     margin-right: 7px;
-
     font-weight: 700;
 }
 
 .note-text {
-
     opacity: 0.90;
 }
 
 
 /* =====================================================
-   RAZZO FISSO
+   RAZZO CENTRALE
 ===================================================== */
 
 .fixed-indicator {
-
     position: absolute;
 
     left: 50%;
@@ -272,9 +235,7 @@ body {
     pointer-events: none;
 }
 
-
 .rocket {
-
     position: absolute;
 
     left: 8px;
@@ -283,25 +244,20 @@ body {
     width: 58px;
     height: 29px;
 
-    transform:
-        translateY(-50%);
+    transform: translateY(-50%);
 
     overflow: visible;
 
-    transition:
-        filter 0.2s ease;
+    transition: filter 0.2s ease;
 }
 
 .rocket-part {
-
     fill: #fff;
 
-    transition:
-        fill 0.2s ease;
+    transition: fill 0.2s ease;
 }
 
 .rocket-window {
-
     fill: #000;
 }
 
@@ -311,48 +267,38 @@ body {
 ===================================================== */
 
 .current-info {
-
     position: absolute;
 
     left: 76px;
     top: 0;
 
-    transform:
-        translateY(-50%);
+    transform: translateY(-50%);
 
     display: flex;
-
     flex-direction: column;
 
     pointer-events: auto;
 }
 
 .current-value {
-
     font-size: 20px;
-
     line-height: 25px;
 
     font-weight: 700;
 
     white-space: nowrap;
 
-    transition:
-        color 0.2s ease;
+    transition: color 0.2s ease;
 }
 
 .current-note {
-
     width: 180px;
-
     height: 27px;
 
     margin: 0;
-
     padding: 0;
 
     border: none;
-
     outline: none;
 
     background: transparent;
@@ -374,7 +320,6 @@ body {
 ===================================================== */
 
 .controls {
-
     position: absolute;
 
     left: 50%;
@@ -385,11 +330,9 @@ body {
             env(safe-area-inset-bottom)
         );
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 
     display: flex;
-
     align-items: center;
 
     gap: 8px;
@@ -398,17 +341,12 @@ body {
 }
 
 .change-input {
-
     width: 175px;
-
     height: 49px;
 
-    padding:
-        0 12px;
+    padding: 0 12px;
 
-    border:
-        1px solid #333;
-
+    border: 1px solid #333;
     border-radius: 13px;
 
     outline: none;
@@ -420,7 +358,6 @@ body {
     text-align: center;
 
     font-size: 17px;
-
     font-weight: 600;
 }
 
@@ -429,28 +366,21 @@ body {
 }
 
 .change-button {
-
     width: 55px;
-
     height: 49px;
 
     border: none;
-
     border-radius: 13px;
 
     background: #fff;
-
     color: #000;
 
     font-size: 15px;
-
     font-weight: 700;
 }
 
 .change-button:active {
-
-    transform:
-        scale(0.96);
+    transform: scale(0.96);
 }
 
 
@@ -459,7 +389,6 @@ body {
 ===================================================== */
 
 .reset-button {
-
     position: absolute;
 
     top:
@@ -472,15 +401,12 @@ body {
 
     height: 37px;
 
-    padding:
-        0 13px;
+    padding: 0 13px;
 
     border: none;
-
     border-radius: 11px;
 
     background: #181818;
-
     color: #999;
 
     font-size: 13px;
@@ -494,7 +420,6 @@ body {
 ===================================================== */
 
 .start-screen {
-
     position: absolute;
 
     inset: 0;
@@ -506,7 +431,6 @@ body {
     flex-direction: column;
 
     justify-content: center;
-
     align-items: center;
 
     padding: 30px;
@@ -515,16 +439,13 @@ body {
 }
 
 .start-title {
-
     margin-bottom: 8px;
 
     font-size: 30px;
-
     font-weight: 700;
 }
 
 .start-subtitle {
-
     margin-bottom: 23px;
 
     color: #777;
@@ -535,29 +456,22 @@ body {
 }
 
 .start-input {
-
     width: 220px;
-
     height: 54px;
 
-    padding:
-        0 10px;
+    padding: 0 10px;
 
-    border:
-        1px solid #444;
-
+    border: 1px solid #444;
     border-radius: 14px;
 
     outline: none;
 
     background: #111;
-
     color: #fff;
 
     text-align: center;
 
     font-size: 21px;
-
     font-weight: 600;
 }
 
@@ -566,23 +480,18 @@ body {
 }
 
 .start-button {
-
     width: 220px;
-
     height: 49px;
 
     margin-top: 15px;
 
     border: none;
-
     border-radius: 14px;
 
     background: #fff;
-
     color: #000;
 
     font-size: 16px;
-
     font-weight: 700;
 }
 
@@ -594,7 +503,6 @@ body {
 @media (max-width: 480px) {
 
     .rocket {
-
         width: 56px;
         height: 28px;
     }
@@ -617,7 +525,6 @@ body {
 }
 
 </style>
-
 </head>
 
 
@@ -627,22 +534,14 @@ body {
 
 
     <!-- =================================================
-         SCALA
+         SCALA SCORRIBILE
     ================================================== -->
 
-    <div
-        id="timeline"
-        class="timeline"
-    >
+    <div id="timeline" class="timeline">
 
-        <div
-            id="timelineContent"
-            class="timeline-content"
-        >
+        <div id="timelineContent" class="timeline-content">
 
-            <div
-                class="center-line"
-            ></div>
+            <div class="center-line"></div>
 
             <div id="ticks"></div>
 
@@ -657,20 +556,14 @@ body {
          NOTE FISSE
     ================================================== -->
 
-    <div
-        id="notesLayer"
-        class="notes-layer"
-    ></div>
+    <div id="notesLayer" class="notes-layer"></div>
 
 
     <!-- =================================================
-         RAZZO FISSO AL CENTRO
+         RAZZO
     ================================================== -->
 
-    <div
-        id="fixedIndicator"
-        class="fixed-indicator"
-    >
+    <div id="fixedIndicator" class="fixed-indicator">
 
         <svg
             id="rocket"
@@ -741,10 +634,7 @@ body {
 
         <div class="current-info">
 
-            <div
-                id="currentValue"
-                class="current-value"
-            >
+            <div id="currentValue" class="current-value">
                 0 €
             </div>
 
@@ -766,7 +656,7 @@ body {
 
 
     <!-- =================================================
-         CONTROLLI
+         VARIAZIONE
     ================================================== -->
 
     <div class="controls">
@@ -796,10 +686,7 @@ body {
          RESET
     ================================================== -->
 
-    <button
-        id="resetButton"
-        class="reset-button"
-    >
+    <button id="resetButton" class="reset-button">
         Reset
     </button>
 
@@ -808,10 +695,7 @@ body {
          VALORE INIZIALE
     ================================================== -->
 
-    <div
-        id="startScreen"
-        class="start-screen"
-    >
+    <div id="startScreen" class="start-screen">
 
         <div class="start-title">
             Rocket
@@ -832,10 +716,7 @@ body {
             placeholder="Valore iniziale"
         >
 
-        <button
-            id="startButton"
-            class="start-button"
-        >
+        <button id="startButton" class="start-button">
             OK
         </button>
 
@@ -850,14 +731,9 @@ body {
    STORAGE
 ===================================================== */
 
-const START_KEY =
-    "rocket_start_value_v4";
-
-const CURRENT_KEY =
-    "rocket_current_value_v4";
-
-const NOTES_KEY =
-    "rocket_notes_v4";
+const START_KEY = "rocket_start_value_v5";
+const CURRENT_KEY = "rocket_current_value_v5";
+const NOTES_KEY = "rocket_notes_v5";
 
 
 /* =====================================================
@@ -865,101 +741,67 @@ const NOTES_KEY =
 ===================================================== */
 
 const timeline =
-    document.getElementById(
-        "timeline"
-    );
+    document.getElementById("timeline");
 
 const timelineContent =
-    document.getElementById(
-        "timelineContent"
-    );
+    document.getElementById("timelineContent");
 
 const ticks =
-    document.getElementById(
-        "ticks"
-    );
+    document.getElementById("ticks");
 
 const labels =
-    document.getElementById(
-        "labels"
-    );
+    document.getElementById("labels");
 
 const notesLayer =
-    document.getElementById(
-        "notesLayer"
-    );
+    document.getElementById("notesLayer");
 
 const currentValueElement =
-    document.getElementById(
-        "currentValue"
-    );
+    document.getElementById("currentValue");
 
 const currentNote =
-    document.getElementById(
-        "currentNote"
-    );
+    document.getElementById("currentNote");
 
 const changeInput =
-    document.getElementById(
-        "changeInput"
-    );
+    document.getElementById("changeInput");
 
 const changeButton =
-    document.getElementById(
-        "changeButton"
-    );
+    document.getElementById("changeButton");
 
 const resetButton =
-    document.getElementById(
-        "resetButton"
-    );
+    document.getElementById("resetButton");
 
 const startScreen =
-    document.getElementById(
-        "startScreen"
-    );
+    document.getElementById("startScreen");
 
 const startInput =
-    document.getElementById(
-        "startInput"
-    );
+    document.getElementById("startInput");
 
 const startButton =
-    document.getElementById(
-        "startButton"
-    );
+    document.getElementById("startButton");
 
 const rocketParts =
-    document.querySelectorAll(
-        ".rocket-part"
-    );
+    document.querySelectorAll(".rocket-part");
 
 const rocket =
-    document.getElementById(
-        "rocket"
-    );
+    document.getElementById("rocket");
 
 
 /* =====================================================
    SCALA
 ===================================================== */
 
-const DISPLAY_RANGE =
-    1100;
+const DISPLAY_RANGE = 1100;
 
-const STEP =
-    25;
+const STEP = 25;
 
-const PIXELS_PER_STEP =
-    27;
+const PIXELS_PER_STEP = 27;
 
 const PIXELS_PER_EURO =
-    PIXELS_PER_STEP /
-    STEP;
+    PIXELS_PER_STEP / STEP;
 
 
 /* =====================================================
-   NUMERI
+   CONVERSIONE NUMERO
 ===================================================== */
 
 function parseNumber(value) {
@@ -974,39 +816,28 @@ function parseNumber(value) {
     let text =
         String(value).trim();
 
-    if (
-        text === ""
-    ) {
+    if (text === "") {
         return NaN;
     }
 
     text =
-        text.replace(
-            /\s/g,
-            ""
-        );
+        text.replace(/\s/g, "");
 
     /*
        Accetta:
 
-       -700
-       +700
        700
+       +700
+       -700
+       1.500
        -1.500
-       +1.500
     */
 
     text =
-        text.replace(
-            /\./g,
-            ""
-        );
+        text.replace(/\./g, "");
 
     text =
-        text.replace(
-            ",",
-            "."
-        );
+        text.replace(",", ".");
 
     const number =
         Number(text);
@@ -1024,40 +855,24 @@ function parseNumber(value) {
 function formatValue(value) {
 
     const rounded =
-        Math.round(
-            value * 100
-        ) / 100;
+        Math.round(value * 100) / 100;
 
     const absolute =
-        Math.abs(
-            rounded
-        ).toLocaleString(
-            "it-IT",
-            {
-                minimumFractionDigits:
-                    0,
+        Math.abs(rounded)
+            .toLocaleString(
+                "it-IT",
+                {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                }
+            );
 
-                maximumFractionDigits:
-                    2
-            }
-        );
-
-    if (
-        rounded > 0
-    ) {
-
-        return "+" +
-            absolute +
-            " €";
+    if (rounded > 0) {
+        return "+" + absolute + " €";
     }
 
-    if (
-        rounded < 0
-    ) {
-
-        return "-" +
-            absolute +
-            " €";
+    if (rounded < 0) {
+        return "-" + absolute + " €";
     }
 
     return "0 €";
@@ -1070,43 +885,28 @@ function formatValue(value) {
 
 function getValueColor(value) {
 
-    if (
-        value === 0
-    ) {
-
+    if (value === 0) {
         return "#FFFFFF";
     }
 
 
-    if (
-        value > 0
-    ) {
+    /* VERDE */
 
-        if (
-            value <= 1000
-        ) {
+    if (value > 0) {
 
+        if (value <= 1000) {
             return "#B8FFD0";
         }
 
-        if (
-            value <= 2000
-        ) {
-
+        if (value <= 2000) {
             return "#62F28A";
         }
 
-        if (
-            value <= 3000
-        ) {
-
+        if (value <= 3000) {
             return "#20DD65";
         }
 
-        if (
-            value <= 4000
-        ) {
-
+        if (value <= 4000) {
             return "#08C951";
         }
 
@@ -1114,37 +914,25 @@ function getValueColor(value) {
     }
 
 
+    /* ROSSO */
+
     const amount =
-        Math.abs(
-            value
-        );
+        Math.abs(value);
 
 
-    if (
-        amount <= 1000
-    ) {
-
+    if (amount <= 1000) {
         return "#FFB9C0";
     }
 
-    if (
-        amount <= 2000
-    ) {
-
+    if (amount <= 2000) {
         return "#FF6877";
     }
 
-    if (
-        amount <= 3000
-    ) {
-
+    if (amount <= 3000) {
         return "#F8374C";
     }
 
-    if (
-        amount <= 4000
-    ) {
-
+    if (amount <= 4000) {
         return "#E91E35";
     }
 
@@ -1153,24 +941,20 @@ function getValueColor(value) {
 
 
 /* =====================================================
-   COLORE RAZZO
+   COLORE RAZZO + VALORE
 ===================================================== */
 
 function updateColor() {
 
     const color =
-        getValueColor(
-            currentValue
-        );
+        getValueColor(currentValue);
 
 
-    rocketParts.forEach(
-        part => {
+    rocketParts.forEach(part => {
 
-            part.style.fill =
-                color;
-        }
-    );
+        part.style.fill = color;
+
+    });
 
 
     currentValueElement.style.color =
@@ -1185,16 +969,13 @@ function updateColor() {
 
 
 /* =====================================================
-   COSTRUISCI SCALA
+   CREA SCALA
 ===================================================== */
 
 function buildScale() {
 
-    ticks.innerHTML =
-        "";
-
-    labels.innerHTML =
-        "";
+    ticks.innerHTML = "";
+    labels.innerHTML = "";
 
 
     const totalHeight =
@@ -1205,8 +986,7 @@ function buildScale() {
 
 
     timelineContent.style.height =
-        totalHeight +
-        "px";
+        totalHeight + "px";
 
 
     const centerY =
@@ -1214,18 +994,16 @@ function buildScale() {
 
 
     for (
-        let relativeValue =
-            -DISPLAY_RANGE;
+        let relativeValue = -DISPLAY_RANGE;
 
-        relativeValue <=
-            DISPLAY_RANGE;
+        relativeValue <= DISPLAY_RANGE;
 
         relativeValue += STEP
     ) {
 
         /*
-           VALORI POSITIVI SOPRA.
-           VALORI NEGATIVI SOTTO.
+           Valori positivi sopra.
+           Valori negativi sotto.
         */
 
         const y =
@@ -1237,32 +1015,22 @@ function buildScale() {
 
 
         const tick =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
 
-        tick.className =
-            "tick";
+        tick.className = "tick";
 
 
         if (
-            relativeValue %
-            250 === 0
+            relativeValue % 250 === 0
         ) {
-
-            tick.classList.add(
-                "major"
-            );
+            tick.classList.add("major");
         }
 
 
         if (
             relativeValue === 0
         ) {
-
-            tick.classList.add(
-                "zero"
-            );
+            tick.classList.add("zero");
         }
 
 
@@ -1270,20 +1038,19 @@ function buildScale() {
             `${y}px`;
 
 
-        ticks.appendChild(
-            tick
-        );
+        ticks.appendChild(tick);
 
+
+        /*
+           Numeri ogni 250 €
+        */
 
         if (
-            relativeValue %
-            250 === 0
+            relativeValue % 250 === 0
         ) {
 
             const label =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             label.className =
                 "scale-label";
@@ -1298,74 +1065,60 @@ function buildScale() {
 
 
             label.textContent =
-                formatValue(
-                    scaleValue
-                );
+                formatValue(scaleValue);
 
 
             label.style.color =
-                getValueColor(
-                    scaleValue
-                );
+                getValueColor(scaleValue);
 
 
-            labels.appendChild(
-                label
-            );
+            labels.appendChild(label);
         }
     }
 }
 
 
 /* =====================================================
-   CREA NOTA
+   CREA UNA NOTA
 ===================================================== */
 
-function createNote(
-    value,
-    text
-) {
+function createNote(value, text) {
 
     const note =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
     note.className =
         "note";
 
 
     const color =
-        getValueColor(
-            value
-        );
+        getValueColor(value);
 
+
+    /*
+       Il colore viene salvato visivamente
+       sulla nota e NON cambia durante lo scroll.
+    */
 
     note.style.color =
         color;
 
 
     const valueElement =
-        document.createElement(
-            "span"
-        );
+        document.createElement("span");
 
     valueElement.className =
         "note-value";
 
     valueElement.textContent =
-        formatValue(
-            value
-        );
+        formatValue(value);
 
     valueElement.style.color =
         color;
 
 
     const textElement =
-        document.createElement(
-            "span"
-        );
+        document.createElement("span");
 
     textElement.className =
         "note-text";
@@ -1377,13 +1130,9 @@ function createNote(
         color;
 
 
-    note.appendChild(
-        valueElement
-    );
+    note.appendChild(valueElement);
 
-    note.appendChild(
-        textElement
-    );
+    note.appendChild(textElement);
 
 
     return note;
@@ -1391,164 +1140,105 @@ function createNote(
 
 
 /* =====================================================
-   NOTE BLOCCATE A DESTRA
+   DISEGNA LE NOTE
 ===================================================== */
 
 /*
-   QUI CAMBIA IL COMPORTAMENTO.
+   QUESTA È LA PARTE IMPORTANTE.
 
-   Le note NON sono più dentro .timeline.
+   Le note NON usano la scala.
 
-   Sono dentro .notes-layer,
-   che è fisso sullo schermo.
-
-   Quindi lo scroll della scala
-   non le muove.
+   Sono completamente indipendenti
+   dalla timeline e dallo scrolling.
 */
 
 function drawNotes() {
 
-    notesLayer.innerHTML =
-        "";
+    notesLayer.innerHTML = "";
 
 
     const entries =
-        Object.entries(
-            notes
-        )
-        .map(
-            ([value, text]) => {
+        Object.entries(notes)
+            .map(([value, text]) => {
 
                 return {
-
-                    value:
-                        Number(value),
-
-                    text:
-                        String(text)
+                    value: Number(value),
+                    text: String(text)
                 };
-            }
-        )
-        .filter(
-            item =>
-                Number.isFinite(
-                    item.value
-                )
-        );
+
+            })
+            .filter(item =>
+                Number.isFinite(item.value)
+            );
 
 
     /*
-       ORDINE NUMERICO.
+       ORDINAMENTO NUMERICO REALE.
 
-       Esempio:
-
-       -2000
-       -700
-       -300
-       0
-       +500
+       NON usiamo Math.abs().
 
        Quindi:
 
-       -300 è maggiore di -700.
+       -300 > -700
+
+       e JavaScript lo tratta
+       correttamente.
     */
 
     entries.sort(
         (a, b) =>
-            a.value -
-            b.value
+            a.value - b.value
     );
 
 
     /*
-       Dividiamo le note:
+       SOPRA IL RAZZO:
 
-       MAGGIORI del valore attuale
-       = SOPRA
-
-       MINORI del valore attuale
-       = SOTTO
+       Tutti i valori MAGGIORI
+       del valore attuale.
     */
 
     const above =
-        entries.filter(
-            item =>
-                item.value >
-                currentValue
-        );
+        entries
+            .filter(item =>
+                item.value > currentValue
+            )
+            .sort(
+                (a, b) =>
+                    a.value - b.value
+            );
+
+
+    /*
+       SOTTO IL RAZZO:
+
+       Tutti i valori MINORI
+       del valore attuale.
+    */
 
     const below =
-        entries.filter(
-            item =>
-                item.value <
-                currentValue
-        );
+        entries
+            .filter(item =>
+                item.value < currentValue
+            )
+            .sort(
+                (a, b) =>
+                    b.value - a.value
+            );
 
 
     /*
-       NOTA IMPORTANTE:
+       Spaziatura delle note.
 
-       Il gruppo sopra viene ordinato
-       dal valore più vicino al razzo
-       verso l'alto.
-
-       Esempio attuale -400:
-
-       -300
-       +100
-       +500
-
-       viene mostrato:
-
-       -300
-       +100
-       +500
+       Le note sono bloccate.
     */
 
-    above.sort(
-        (a, b) =>
-            a.value -
-            b.value
-    );
+    const NOTE_GAP = 34;
 
 
-    /*
-       Sotto:
-
-       -700
-       -1200
-       -2000
-
-       Il valore più vicino
-       al razzo viene subito sotto.
-    */
-
-    below.sort(
-        (a, b) =>
-            b.value -
-            a.value
-    );
-
-
-    /*
-       Posizione verticale.
-
-       NON usiamo più la coordinata
-       della scala.
-
-       Usiamo semplicemente
-       una distanza fissa dal razzo.
-
-       Questo blocca le note.
-    */
-
-    const NOTE_GAP =
-        34;
-
-
-    /*
-       SOPRA
-    */
+    /* =================================================
+       NOTE SOPRA
+    ================================================= */
 
     above.forEach(
         (item, index) => {
@@ -1574,16 +1264,14 @@ function drawNotes() {
                 "translateY(-50%)";
 
 
-            notesLayer.appendChild(
-                note
-            );
+            notesLayer.appendChild(note);
         }
     );
 
 
-    /*
-       SOTTO
-    */
+    /* =================================================
+       NOTE SOTTO
+    ================================================= */
 
     below.forEach(
         (item, index) => {
@@ -1609,9 +1297,7 @@ function drawNotes() {
                 "translateY(-50%)";
 
 
-            notesLayer.appendChild(
-                note
-            );
+            notesLayer.appendChild(note);
         }
     );
 }
@@ -1624,11 +1310,8 @@ function drawNotes() {
 function saveCurrentNote() {
 
     if (
-        !Number.isFinite(
-            currentValue
-        )
+        !Number.isFinite(currentValue)
     ) {
-
         return;
     }
 
@@ -1638,29 +1321,22 @@ function saveCurrentNote() {
 
 
     const key =
-        String(
-            currentValue
-        );
+        String(currentValue);
 
 
-    if (
-        text === ""
-    ) {
+    if (text === "") {
 
         delete notes[key];
 
     } else {
 
-        notes[key] =
-            text;
+        notes[key] = text;
     }
 
 
     localStorage.setItem(
         NOTES_KEY,
-        JSON.stringify(
-            notes
-        )
+        JSON.stringify(notes)
     );
 
 
@@ -1669,51 +1345,49 @@ function saveCurrentNote() {
 
 
 /* =====================================================
-   CARICA NOTA ATTUALE
+   CARICA NOTA DEL VALORE ATTUALE
 ===================================================== */
 
 function loadCurrentNote() {
 
     if (
-        !Number.isFinite(
-            currentValue
-        )
+        !Number.isFinite(currentValue)
     ) {
 
-        currentNote.value =
-            "";
+        currentNote.value = "";
 
         return;
     }
 
 
+    /*
+       La casella "Nota..."
+       serve solo quando siamo
+       sul valore attuale.
+
+       Le note già salvate
+       vengono visualizzate a destra.
+    */
+
     currentNote.value =
-        notes[
-            String(
-                currentValue
-            )
-        ] || "";
+        notes[String(currentValue)] || "";
 }
 
 
 /* =====================================================
-   CENTRA SCALA
+   CENTRA LA SCALA
 ===================================================== */
 
 function centerTimeline() {
 
     const maxScroll =
-        timelineContent
-        .scrollHeight -
+        timelineContent.scrollHeight -
         timeline.clientHeight;
 
 
-    if (
-        maxScroll <= 0
-    ) {
+    if (maxScroll <= 0) {
 
-        timeline.scrollTop =
-            0;
+        timeline.scrollTop = 0;
 
         return;
     }
@@ -1725,33 +1399,37 @@ function centerTimeline() {
 
 
 /* =====================================================
-   AGGIORNA SCHERMATA
+   AGGIORNA TUTTO
 ===================================================== */
 
 function updateDisplay() {
 
     currentValueElement.textContent =
-        formatValue(
-            currentValue
-        );
+        formatValue(currentValue);
 
 
     updateColor();
 
     buildScale();
 
+    /*
+       Le note vengono ridisegnate
+       in base al nuovo valore.
+
+       La scala NON influenza
+       la loro posizione.
+    */
+
     drawNotes();
 
     loadCurrentNote();
 
 
-    requestAnimationFrame(
-        () => {
+    requestAnimationFrame(() => {
 
-            centerTimeline();
+        centerTimeline();
 
-        }
-    );
+    });
 }
 
 
@@ -1768,9 +1446,7 @@ function setInitialValue() {
 
 
     if (
-        !Number.isFinite(
-            value
-        )
+        !Number.isFinite(value)
     ) {
 
         startInput.focus();
@@ -1779,38 +1455,35 @@ function setInitialValue() {
     }
 
 
-    startValue =
-        value;
+    startValue = value;
 
-    currentValue =
-        value;
+    currentValue = value;
 
 
-    notes =
-        {};
+    /*
+       Quando viene creato un nuovo
+       valore iniziale partiamo
+       senza note.
+    */
+
+    notes = {};
 
 
     localStorage.setItem(
         START_KEY,
-        String(
-            startValue
-        )
+        String(startValue)
     );
 
 
     localStorage.setItem(
         CURRENT_KEY,
-        String(
-            currentValue
-        )
+        String(currentValue)
     );
 
 
     localStorage.setItem(
         NOTES_KEY,
-        JSON.stringify(
-            notes
-        )
+        JSON.stringify(notes)
     );
 
 
@@ -1824,7 +1497,7 @@ function setInitialValue() {
 
 
 /* =====================================================
-   VARIAZIONE
+   APPLICA VARIAZIONE
 ===================================================== */
 
 function applyChange() {
@@ -1836,9 +1509,7 @@ function applyChange() {
 
 
     if (
-        !Number.isFinite(
-            change
-        )
+        !Number.isFinite(change)
     ) {
 
         changeInput.focus();
@@ -1849,7 +1520,7 @@ function applyChange() {
 
     /*
        Prima salviamo la nota
-       del valore attuale.
+       del valore dal quale partiamo.
     */
 
     saveCurrentNote();
@@ -1866,20 +1537,16 @@ function applyChange() {
     */
 
     currentValue =
-        currentValue +
-        change;
+        currentValue + change;
 
 
     localStorage.setItem(
         CURRENT_KEY,
-        String(
-            currentValue
-        )
+        String(currentValue)
     );
 
 
-    changeInput.value =
-        "";
+    changeInput.value = "";
 
 
     updateDisplay();
@@ -1898,10 +1565,7 @@ function resetApp() {
         );
 
 
-    if (
-        !confirmed
-    ) {
-
+    if (!confirmed) {
         return;
     }
 
@@ -1919,24 +1583,18 @@ function resetApp() {
     );
 
 
-    startValue =
-        NaN;
+    startValue = NaN;
 
-    currentValue =
-        NaN;
+    currentValue = NaN;
 
-    notes =
-        {};
+    notes = {};
 
 
-    startInput.value =
-        "";
+    startInput.value = "";
 
-    changeInput.value =
-        "";
+    changeInput.value = "";
 
-    currentNote.value =
-        "";
+    currentNote.value = "";
 
 
     startScreen.classList.remove(
@@ -1944,14 +1602,11 @@ function resetApp() {
     );
 
 
-    setTimeout(
-        () => {
+    setTimeout(() => {
 
-            startInput.focus();
+        startInput.focus();
 
-        },
-        100
-    );
+    }, 100);
 }
 
 
@@ -1969,10 +1624,7 @@ startInput.addEventListener(
     "keydown",
     event => {
 
-        if (
-            event.key ===
-            "Enter"
-        ) {
+        if (event.key === "Enter") {
 
             setInitialValue();
         }
@@ -1990,16 +1642,21 @@ changeInput.addEventListener(
     "keydown",
     event => {
 
-        if (
-            event.key ===
-            "Enter"
-        ) {
+        if (event.key === "Enter") {
 
             applyChange();
         }
     }
 );
 
+
+/*
+   La nota attuale è modificabile
+   SOLO prima del salvataggio.
+
+   Una volta salvata diventa
+   una nota fissa nella lista.
+*/
 
 currentNote.addEventListener(
     "blur",
@@ -2011,10 +1668,7 @@ currentNote.addEventListener(
     "keydown",
     event => {
 
-        if (
-            event.key ===
-            "Enter"
-        ) {
+        if (event.key === "Enter") {
 
             saveCurrentNote();
 
@@ -2031,7 +1685,7 @@ resetButton.addEventListener(
 
 
 /* =====================================================
-   AVVIO
+   CARICAMENTO DATI
 ===================================================== */
 
 let startValue =
@@ -2041,6 +1695,7 @@ let startValue =
         )
     );
 
+
 let currentValue =
     parseNumber(
         localStorage.getItem(
@@ -2049,7 +1704,8 @@ let currentValue =
     );
 
 
-let notes;
+let notes = {};
+
 
 try {
 
@@ -2062,21 +1718,20 @@ try {
 
 } catch {
 
-    notes =
-        {};
+    notes = {};
 }
 
 
+/* =====================================================
+   AVVIO
+===================================================== */
+
 if (
-    Number.isFinite(
-        startValue
-    )
+    Number.isFinite(startValue)
 ) {
 
     if (
-        !Number.isFinite(
-            currentValue
-        )
+        !Number.isFinite(currentValue)
     ) {
 
         currentValue =
@@ -2101,5 +1756,4 @@ if (
 </script>
 
 </body>
-
 </html>
