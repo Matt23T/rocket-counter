@@ -2,7 +2,6 @@
 <html lang="it">
 
 <head>
-
 <meta charset="UTF-8">
 
 <meta
@@ -10,19 +9,11 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 >
 
-<meta
-    name="theme-color"
-    content="#000000"
->
+<meta name="theme-color" content="#000000">
 
 <title>Rocket</title>
 
-
 <style>
-
-/* =========================================================
-   BASE
-========================================================= */
 
 * {
     box-sizing: border-box;
@@ -31,16 +22,12 @@
 
 html,
 body {
-
     margin: 0;
     padding: 0;
-
     width: 100%;
     height: 100%;
-
     background: #000;
     color: #fff;
-
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -50,40 +37,31 @@ body {
 }
 
 body {
-
     overflow: hidden;
-
     overscroll-behavior: none;
 }
 
 .app {
-
     position: relative;
-
     width: 100%;
     height: 100dvh;
-
     background: #000;
-
     overflow: hidden;
 }
 
 
-/* =========================================================
-   TIMELINE
-========================================================= */
+/* =====================================================
+   SCROLL
+===================================================== */
 
 .timeline {
-
     position: absolute;
-
     inset: 0;
 
     overflow-y: auto;
     overflow-x: hidden;
 
     -webkit-overflow-scrolling: touch;
-
     overscroll-behavior-y: contain;
 
     scrollbar-width: none;
@@ -95,27 +73,18 @@ body {
     display: none;
 }
 
-
-/* =========================================================
-   CONTENUTO TIMELINE
-========================================================= */
-
 .timeline-content {
-
     position: relative;
-
     width: 100%;
-
-    height: 2000px;
+    height: 2200px;
 }
 
 
-/* =========================================================
-   LINEA CENTRALE
-========================================================= */
+/* =====================================================
+   LINEA
+===================================================== */
 
 .center-line {
-
     position: absolute;
 
     left: 50%;
@@ -124,19 +93,17 @@ body {
 
     transform: translateX(-50%);
 
-    background:
-        rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.18);
 
     pointer-events: none;
 }
 
 
-/* =========================================================
+/* =====================================================
    TACCHETTE
-========================================================= */
+===================================================== */
 
 .tick {
-
     position: absolute;
 
     left: 50%;
@@ -144,49 +111,38 @@ body {
     width: 6px;
     height: 1px;
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 
-    background:
-        rgba(255,255,255,0.20);
+    background: rgba(255,255,255,0.20);
 
     pointer-events: none;
 }
 
 .tick.major {
-
     width: 11px;
-
-    background:
-        rgba(255,255,255,0.34);
+    background: rgba(255,255,255,0.34);
 }
 
 .tick.zero {
-
     width: 16px;
-
-    background:
-        rgba(255,255,255,0.70);
+    background: rgba(255,255,255,0.70);
 }
 
 
-/* =========================================================
+/* =====================================================
    NUMERI SCALA
-========================================================= */
+===================================================== */
 
 .scale-label {
-
     position: absolute;
 
     left: calc(50% - 27px);
 
-    transform:
-        translate(-100%, -50%);
+    transform: translate(-100%, -50%);
 
     white-space: nowrap;
 
     font-size: 10px;
-
     font-weight: 500;
 
     pointer-events: none;
@@ -195,22 +151,18 @@ body {
 }
 
 
-/* =========================================================
+/* =====================================================
    NOTE
-========================================================= */
+===================================================== */
 
 .note {
-
     position: absolute;
 
-    left:
-        calc(50% + 30px);
+    left: calc(50% + 30px);
 
-    transform:
-        translateY(-50%);
+    transform: translateY(-50%);
 
-    max-width:
-        calc(50% - 40px);
+    max-width: calc(50% - 40px);
 
     white-space: nowrap;
 
@@ -224,24 +176,20 @@ body {
 }
 
 .note-value {
-
     font-weight: 700;
-
     margin-right: 7px;
 }
 
 .note-text {
-
     opacity: 0.85;
 }
 
 
-/* =========================================================
-   INDICATORE CENTRALE
-========================================================= */
+/* =====================================================
+   INDICATORE FISSO
+===================================================== */
 
 .fixed-indicator {
-
     position: absolute;
 
     left: 50%;
@@ -256,92 +204,75 @@ body {
 }
 
 
-/* =========================================================
+/* =====================================================
    RAZZO
-========================================================= */
+===================================================== */
 
 .rocket {
-
     position: absolute;
 
     left: 8px;
     top: 0;
 
-    width: 65px;
-    height: 33px;
+    width: 60px;
+    height: 31px;
 
-    transform:
-        translateY(-50%);
+    transform: translateY(-50%);
 
     overflow: visible;
 
     pointer-events: none;
 
-    transition:
-        filter 0.25s ease;
+    transition: filter 0.25s ease;
 }
 
 .rocket-part {
-
     fill: #fff;
-
-    transition:
-        fill 0.25s ease;
+    transition: fill 0.25s ease;
 }
 
 .rocket-window {
-
     fill: #000;
 }
 
 
-/* =========================================================
-   VALORE ATTUALE
-========================================================= */
+/* =====================================================
+   VALORE + NOTA ATTUALE
+===================================================== */
 
 .current-info {
-
     position: absolute;
 
-    left: 86px;
+    left: 80px;
     top: 0;
 
-    transform:
-        translateY(-50%);
+    transform: translateY(-50%);
 
     display: flex;
-
     flex-direction: column;
 
     pointer-events: auto;
 }
 
 .current-value {
-
-    font-size: 22px;
-
-    line-height: 27px;
+    font-size: 21px;
+    line-height: 26px;
 
     font-weight: 700;
 
     white-space: nowrap;
 
-    transition:
-        color 0.25s ease;
+    transition: color 0.25s ease;
 }
 
 .current-note {
-
-    width: 190px;
-
+    width: 185px;
     height: 28px;
 
     margin-top: 1px;
-
     padding: 0;
 
     border: none;
-
     outline: none;
 
     background: transparent;
@@ -354,17 +285,15 @@ body {
 }
 
 .current-note::placeholder {
-
     color: #505050;
 }
 
 
-/* =========================================================
-   CONTROLLI
-========================================================= */
+/* =====================================================
+   VARIAZIONE
+===================================================== */
 
 .controls {
-
     position: absolute;
 
     left: 50%;
@@ -375,11 +304,9 @@ body {
             env(safe-area-inset-bottom)
         );
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 
     display: flex;
-
     align-items: center;
 
     gap: 8px;
@@ -388,13 +315,10 @@ body {
 }
 
 .change-input {
-
     width: 175px;
-
     height: 50px;
 
-    border:
-        1px solid #363636;
+    border: 1px solid #363636;
 
     border-radius: 13px;
 
@@ -407,60 +331,52 @@ body {
     text-align: center;
 
     font-size: 18px;
-
     font-weight: 600;
 
     /*
-       TEL mantiene la tastiera
-       numerica su iPhone ma rende
-       disponibili + e -.
+       TASTIERA NORMALE.
+       NON forziamo più quella numerica.
+       In questo modo puoi scrivere:
+       +1300
+       -1300
+       ecc.
     */
 
     touch-action: auto;
 }
 
 .change-input::placeholder {
-
     color: #505050;
 }
 
 .change-input:focus {
-
     border-color: #666;
 }
 
 .change-button {
-
     width: 55px;
-
     height: 50px;
 
     border: none;
-
     border-radius: 13px;
 
     background: #fff;
-
     color: #000;
 
     font-size: 15px;
-
     font-weight: 700;
 }
 
 .change-button:active {
-
-    transform:
-        scale(0.96);
+    transform: scale(0.96);
 }
 
 
-/* =========================================================
+/* =====================================================
    RESET
-========================================================= */
+===================================================== */
 
 .reset-button {
-
     position: absolute;
 
     top:
@@ -473,11 +389,9 @@ body {
 
     height: 38px;
 
-    padding:
-        0 13px;
+    padding: 0 13px;
 
     border: none;
-
     border-radius: 11px;
 
     background: #181818;
@@ -490,12 +404,11 @@ body {
 }
 
 
-/* =========================================================
+/* =====================================================
    SCHERMATA INIZIALE
-========================================================= */
+===================================================== */
 
 .start-screen {
-
     position: absolute;
 
     inset: 0;
@@ -507,7 +420,6 @@ body {
     flex-direction: column;
 
     justify-content: center;
-
     align-items: center;
 
     padding: 30px;
@@ -516,16 +428,13 @@ body {
 }
 
 .start-title {
-
     margin-bottom: 8px;
 
     font-size: 30px;
-
     font-weight: 700;
 }
 
 .start-subtitle {
-
     margin-bottom: 24px;
 
     color: #777;
@@ -536,110 +445,89 @@ body {
 }
 
 .start-input {
-
     width: 220px;
-
     height: 55px;
 
-    border:
-        1px solid #444;
+    border: 1px solid #444;
 
     border-radius: 14px;
 
     outline: none;
 
     background: #111;
-
     color: #fff;
 
     text-align: center;
 
     font-size: 22px;
-
     font-weight: 600;
 
-    touch-action: auto;
+    /*
+       Anche qui tastiera normale,
+       così puoi mettere eventualmente
+       un valore iniziale negativo.
+    */
 }
 
 .start-input::placeholder {
-
     color: #555;
 }
 
 .start-button {
-
     width: 220px;
-
     height: 50px;
 
     margin-top: 15px;
 
     border: none;
-
     border-radius: 14px;
 
     background: #fff;
-
     color: #000;
 
     font-size: 16px;
-
     font-weight: 700;
 }
 
 .hidden {
-
     display: none !important;
 }
 
 
-/* =========================================================
-   MOBILE
-========================================================= */
-
 @media (max-width: 480px) {
 
     .rocket {
-
-        width: 58px;
-        height: 30px;
+        width: 56px;
+        height: 29px;
     }
 
     .current-info {
-
-        left: 77px;
+        left: 74px;
     }
 
     .current-value {
-
         font-size: 20px;
     }
 
     .current-note {
-
         width: 170px;
     }
 
     .note {
-
         font-size: 12px;
     }
 }
 
 </style>
-
 </head>
 
 
 <body>
 
-
 <div class="app">
 
 
-    <!-- =====================================================
-         TIMELINE
-    ====================================================== -->
+    <!-- SCROLL -->
 
     <div
         id="timeline"
@@ -656,26 +544,18 @@ body {
                 class="center-line"
             ></div>
 
-            <div
-                id="ticks"
-            ></div>
+            <div id="ticks"></div>
 
-            <div
-                id="labels"
-            ></div>
+            <div id="labels"></div>
 
-            <div
-                id="notes"
-            ></div>
+            <div id="notes"></div>
 
         </div>
 
     </div>
 
 
-    <!-- =====================================================
-         RAZZO + VALORE
-    ====================================================== -->
+    <!-- RAZZO FISSO -->
 
     <div
         id="fixedIndicator"
@@ -759,9 +639,7 @@ body {
         </svg>
 
 
-        <div
-            class="current-info"
-        >
+        <div class="current-info">
 
             <div
                 id="currentValue"
@@ -776,6 +654,9 @@ body {
                 type="text"
                 maxlength="100"
                 autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
                 placeholder="Nota..."
             >
 
@@ -784,32 +665,18 @@ body {
     </div>
 
 
-    <!-- =====================================================
-         VARIAZIONE
-    ====================================================== -->
+    <!-- VARIAZIONE -->
 
-    <div
-        class="controls"
-    >
+    <div class="controls">
 
         <input
             id="changeInput"
             class="change-input"
             type="text"
-
-            /*
-               IMPORTANTISSIMO:
-               inputmode tel = tastiera
-               numerica con + e -
-            */
-
-            inputmode="tel"
-
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
-
             placeholder="+ / - variazione"
         >
 
@@ -823,9 +690,7 @@ body {
     </div>
 
 
-    <!-- =====================================================
-         RESET
-    ====================================================== -->
+    <!-- RESET -->
 
     <button
         id="resetButton"
@@ -835,24 +700,18 @@ body {
     </button>
 
 
-    <!-- =====================================================
-         START
-    ====================================================== -->
+    <!-- VALORE INIZIALE -->
 
     <div
         id="startScreen"
         class="start-screen"
     >
 
-        <div
-            class="start-title"
-        >
+        <div class="start-title">
             Rocket
         </div>
 
-        <div
-            class="start-subtitle"
-        >
+        <div class="start-subtitle">
             Inserisci il valore iniziale
         </div>
 
@@ -860,7 +719,6 @@ body {
             id="startInput"
             class="start-input"
             type="text"
-            inputmode="tel"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
@@ -883,9 +741,9 @@ body {
 <script>
 
 
-/* =========================================================
+/* =====================================================
    STORAGE
-========================================================= */
+===================================================== */
 
 const START_KEY =
     "rocket-start-value";
@@ -897,94 +755,62 @@ const NOTES_KEY =
     "rocket-notes";
 
 
-/* =========================================================
+/* =====================================================
    ELEMENTI
-========================================================= */
+===================================================== */
 
 const timeline =
-    document.getElementById(
-        "timeline"
-    );
+    document.getElementById("timeline");
 
 const timelineContent =
-    document.getElementById(
-        "timelineContent"
-    );
+    document.getElementById("timelineContent");
 
 const centerLine =
-    document.getElementById(
-        "centerLine"
-    );
+    document.getElementById("centerLine");
 
 const ticks =
-    document.getElementById(
-        "ticks"
-    );
+    document.getElementById("ticks");
 
 const labels =
-    document.getElementById(
-        "labels"
-    );
+    document.getElementById("labels");
 
 const notesContainer =
-    document.getElementById(
-        "notes"
-    );
+    document.getElementById("notes");
 
 const currentValueElement =
-    document.getElementById(
-        "currentValue"
-    );
+    document.getElementById("currentValue");
 
 const currentNote =
-    document.getElementById(
-        "currentNote"
-    );
+    document.getElementById("currentNote");
 
 const changeInput =
-    document.getElementById(
-        "changeInput"
-    );
+    document.getElementById("changeInput");
 
 const changeButton =
-    document.getElementById(
-        "changeButton"
-    );
+    document.getElementById("changeButton");
 
 const resetButton =
-    document.getElementById(
-        "resetButton"
-    );
+    document.getElementById("resetButton");
 
 const startScreen =
-    document.getElementById(
-        "startScreen"
-    );
+    document.getElementById("startScreen");
 
 const startInput =
-    document.getElementById(
-        "startInput"
-    );
+    document.getElementById("startInput");
 
 const startButton =
-    document.getElementById(
-        "startButton"
-    );
+    document.getElementById("startButton");
 
 const rocket =
-    document.getElementById(
-        "rocket"
-    );
+    document.getElementById("rocket");
 
 const rocketParts =
-    document.querySelectorAll(
-        ".rocket-part"
-    );
+    document.querySelectorAll(".rocket-part");
 
 
-/* =========================================================
+/* =====================================================
    DATI
-========================================================= */
+===================================================== */
 
 let startValue =
     parseStoredNumber(
@@ -1014,42 +840,40 @@ try {
 } catch {
 
     notes = {};
-
 }
 
 
-/* =========================================================
-   CONFIGURAZIONE
-========================================================= */
+/* =====================================================
+   SCALA
 
-const RANGE =
-    1000;
+   PORTATA LEGGERMENTE OLTRE ±1000
 
-const TICK_STEP =
-    25;
+   Questo serve a non tagliare
+   il riferimento +1000 / -1000.
+===================================================== */
 
-const PIXELS_PER_25 =
-    28;
+const RANGE = 1100;
+
+const DISPLAY_STEP = 25;
+
+const PIXELS_PER_25 = 27;
 
 const PIXELS_PER_EURO =
     PIXELS_PER_25 /
-    TICK_STEP;
+    DISPLAY_STEP;
 
 
-/* =========================================================
-   PARSING NUMERI
-========================================================= */
+/* =====================================================
+   PARSING
+===================================================== */
 
-function parseStoredNumber(
-    value
-) {
+function parseStoredNumber(value) {
 
     if (
         value === null ||
         value === undefined ||
         value === ""
     ) {
-
         return NaN;
     }
 
@@ -1063,45 +887,33 @@ function parseStoredNumber(
 
 
 /*
-   Questa funzione accetta:
+    Accetta:
 
-   1300
-   +1300
-   -1300
-   - 1300
-   + 1300
-   1300,50
-   -1300,50
+    1300
+    +1300
+    -1300
+    - 1300
+    + 1300
+    1300,50
+    -1300,50
 */
 
-function parseInput(
-    value
-) {
+function parseInput(value) {
 
     if (
-        typeof value !==
-        "string"
+        typeof value !== "string"
     ) {
-
         return NaN;
     }
-
 
     let text =
         value.trim();
 
-
     if (
         text === ""
     ) {
-
         return NaN;
     }
-
-
-    /*
-       Togliamo gli spazi.
-    */
 
     text =
         text.replace(
@@ -1109,44 +921,20 @@ function parseInput(
             ""
         );
 
-
-    /*
-       Virgola italiana → punto.
-    */
-
     text =
         text.replace(
             ",",
             "."
         );
 
-
-    /*
-       Permettiamo solamente:
-
-       +
-       -
-       numeri
-       punto
-    */
-
-    const match =
-        text.match(
-            /^[+-]?\d*\.?\d+$/
-        );
-
-
     if (
-        !match
+        !/^[+-]?\d*\.?\d+$/.test(text)
     ) {
-
         return NaN;
     }
 
-
     const number =
         Number(text);
-
 
     return Number.isFinite(number)
         ? number
@@ -1154,19 +942,16 @@ function parseInput(
 }
 
 
-/* =========================================================
-   FORMATTAZIONE
-========================================================= */
+/* =====================================================
+   FORMATTA EURO
+===================================================== */
 
-function formatValue(
-    value
-) {
+function formatValue(value) {
 
     const rounded =
         Math.round(
             value * 100
         ) / 100;
-
 
     const absolute =
         Math.abs(
@@ -1175,67 +960,51 @@ function formatValue(
             "it-IT",
             {
                 minimumFractionDigits:
-                    Number.isInteger(
-                        rounded
-                    )
+                    Number.isInteger(rounded)
                         ? 0
                         : 2,
 
-                maximumFractionDigits:
-                    2
+                maximumFractionDigits: 2
             }
         );
-
 
     if (
         rounded > 0
     ) {
-
         return "+" +
             absolute +
             " €";
     }
 
-
     if (
         rounded < 0
     ) {
-
         return "-" +
             absolute +
             " €";
     }
 
-
     return "0 €";
 }
 
 
-/* =========================================================
+/* =====================================================
    COLORI
-========================================================= */
 
-function getValueColor(
-    value
-) {
+   0       = bianco
+   positivo = verde
+   negativo = rosso
 
+   Fino a ±5000.
+===================================================== */
 
-    /*
-       ZERO = BIANCO
-    */
+function getValueColor(value) {
 
     if (
         value === 0
     ) {
-
         return "rgb(255,255,255)";
     }
-
-
-    /*
-       Il colore arriva al massimo
-       a 5000 €.
-    */
 
     const amount =
         Math.min(
@@ -1243,14 +1012,11 @@ function getValueColor(
             5000
         );
 
-
     const t =
         amount / 5000;
 
 
-    /* =====================================================
-       POSITIVO = VERDE
-    ====================================================== */
+    /* VERDE */
 
     if (
         value > 0
@@ -1263,7 +1029,6 @@ function getValueColor(
         const endR = 25;
         const endG = 215;
         const endB = 105;
-
 
         const r =
             Math.round(
@@ -1283,14 +1048,11 @@ function getValueColor(
                 (startB - endB) * t
             );
 
-
         return `rgb(${r},${g},${b})`;
     }
 
 
-    /* =====================================================
-       NEGATIVO = ROSSO
-    ====================================================== */
+    /* ROSSO */
 
     const startR = 255;
     const startG = 245;
@@ -1299,7 +1061,6 @@ function getValueColor(
     const endR = 235;
     const endG = 35;
     const endB = 55;
-
 
     const r =
         Math.round(
@@ -1319,14 +1080,13 @@ function getValueColor(
             (startB - endB) * t
         );
 
-
     return `rgb(${r},${g},${b})`;
 }
 
 
-/* =========================================================
+/* =====================================================
    COLORE RAZZO
-========================================================= */
+===================================================== */
 
 function updateRocketColor() {
 
@@ -1335,70 +1095,55 @@ function updateRocketColor() {
             currentValue
         );
 
-
     rocketParts.forEach(
         part => {
-
             part.style.fill =
                 color;
         }
     );
 
-
     currentValueElement.style.color =
         color;
-
 
     rocket.style.filter =
         `drop-shadow(0 0 8px ${color})`;
 }
 
 
-/* =========================================================
-   SCALA
-========================================================= */
+/* =====================================================
+   COSTRUISCI SCALA
+===================================================== */
 
 function buildScale() {
 
-    ticks.innerHTML =
-        "";
-
-    labels.innerHTML =
-        "";
-
+    ticks.innerHTML = "";
+    labels.innerHTML = "";
 
     const totalHeight =
         RANGE *
         2 *
         PIXELS_PER_EURO;
 
-
     timelineContent.style.height =
-        totalHeight +
-        "px";
-
+        totalHeight + "px";
 
     const centerY =
         totalHeight / 2;
-
 
     centerLine.style.top =
         "0px";
 
     centerLine.style.height =
-        totalHeight +
-        "px";
+        totalHeight + "px";
 
 
     for (
-        let value =
-            -RANGE;
+        let value = -RANGE;
 
         value <= RANGE;
 
-        value += TICK_STEP
+        value += DISPLAY_STEP
     ) {
-
 
         const y =
             centerY -
@@ -1406,11 +1151,10 @@ function buildScale() {
             PIXELS_PER_EURO;
 
 
-        const tick =
-            document.createElement(
-                "div"
-            );
+        /* TACCA */
 
+        const tick =
+            document.createElement("div");
 
         tick.className =
             "tick";
@@ -1419,7 +1163,6 @@ function buildScale() {
         if (
             value % 250 === 0
         ) {
-
             tick.classList.add(
                 "major"
             );
@@ -1429,7 +1172,6 @@ function buildScale() {
         if (
             value === 0
         ) {
-
             tick.classList.add(
                 "zero"
             );
@@ -1439,15 +1181,12 @@ function buildScale() {
         tick.style.top =
             y + "px";
 
-
         ticks.appendChild(
             tick
         );
 
 
-        /*
-           Numero ogni 250 €.
-        */
+        /* NUMERO */
 
         if (
             value % 250 === 0
@@ -1458,10 +1197,8 @@ function buildScale() {
                     "div"
                 );
 
-
             label.className =
                 "scale-label";
-
 
             label.style.top =
                 y + "px";
@@ -1492,15 +1229,14 @@ function buildScale() {
 }
 
 
-/* =========================================================
+/* =====================================================
    NOTE
-========================================================= */
+===================================================== */
 
 function drawNotes() {
 
     notesContainer.innerHTML =
         "";
-
 
     const entries =
         Object.entries(
@@ -1508,12 +1244,8 @@ function drawNotes() {
         )
         .map(
             ([value, text]) => ({
-
-                value:
-                    Number(value),
-
-                text:
-                    String(text)
+                value: Number(value),
+                text: String(text)
             })
         )
         .filter(
@@ -1525,18 +1257,11 @@ function drawNotes() {
 
 
     /*
-       ORDINE NUMERICO REALE.
+       ORDINE MATEMATICO.
 
-       Esempio:
-
-       -3500
-       -3000
-       -2000
-       -350
-       -100
-       0
-       500
-       1300
+       -365
+       viene prima di
+       -350.
     */
 
     entries.sort(
@@ -1548,12 +1273,11 @@ function drawNotes() {
 
     const centerY =
         timelineContent
-        .clientHeight /
-        2;
+        .clientHeight / 2;
 
 
     /*
-       NOTE SOPRA IL RAZZO
+       NOTE SOPRA
     */
 
     const above =
@@ -1571,7 +1295,7 @@ function drawNotes() {
 
 
     /*
-       NOTE SOTTO IL RAZZO
+       NOTE SOTTO
     */
 
     const below =
@@ -1589,7 +1313,7 @@ function drawNotes() {
 
 
     above.forEach(
-        (item,index) => {
+        (item, index) => {
 
             const note =
                 createNote(
@@ -1597,15 +1321,12 @@ function drawNotes() {
                     item.text
                 );
 
-
             note.style.top =
                 (
                     centerY -
                     55 -
                     index * 44
-                ) +
-                "px";
-
+                ) + "px";
 
             notesContainer.appendChild(
                 note
@@ -1615,7 +1336,7 @@ function drawNotes() {
 
 
     below.forEach(
-        (item,index) => {
+        (item, index) => {
 
             const note =
                 createNote(
@@ -1623,15 +1344,12 @@ function drawNotes() {
                     item.text
                 );
 
-
             note.style.top =
                 (
                     centerY +
                     55 +
                     index * 44
-                ) +
-                "px";
-
+                ) + "px";
 
             notesContainer.appendChild(
                 note
@@ -1641,9 +1359,9 @@ function drawNotes() {
 }
 
 
-/* =========================================================
+/* =====================================================
    CREA NOTA
-========================================================= */
+===================================================== */
 
 function createNote(
     value,
@@ -1655,7 +1373,6 @@ function createNote(
             "div"
         );
 
-
     note.className =
         "note";
 
@@ -1664,7 +1381,6 @@ function createNote(
         getValueColor(
             value
         );
-
 
     note.style.color =
         color;
@@ -1675,16 +1391,13 @@ function createNote(
             "span"
         );
 
-
     valueElement.className =
         "note-value";
-
 
     valueElement.textContent =
         formatValue(
             value
         );
-
 
     valueElement.style.color =
         color;
@@ -1695,14 +1408,11 @@ function createNote(
             "span"
         );
 
-
     textElement.className =
         "note-text";
 
-
     textElement.textContent =
         text;
-
 
     textElement.style.color =
         color;
@@ -1711,7 +1421,6 @@ function createNote(
     note.appendChild(
         valueElement
     );
-
 
     note.appendChild(
         textElement
@@ -1722,9 +1431,9 @@ function createNote(
 }
 
 
-/* =========================================================
+/* =====================================================
    SALVA NOTA
-========================================================= */
+===================================================== */
 
 function saveCurrentNote() {
 
@@ -1733,7 +1442,6 @@ function saveCurrentNote() {
             currentValue
         )
     ) {
-
         return;
     }
 
@@ -1773,9 +1481,9 @@ function saveCurrentNote() {
 }
 
 
-/* =========================================================
+/* =====================================================
    CARICA NOTA
-========================================================= */
+===================================================== */
 
 function loadCurrentNote() {
 
@@ -1801,9 +1509,9 @@ function loadCurrentNote() {
 }
 
 
-/* =========================================================
-   ATUALIZA TUDO
-========================================================= */
+/* =====================================================
+   AGGIORNA SCHERMATA
+===================================================== */
 
 function updateDisplay() {
 
@@ -1812,21 +1520,18 @@ function updateDisplay() {
             currentValue
         );
 
-
     updateRocketColor();
-
 
     buildScale();
 
-
     drawNotes();
-
 
     loadCurrentNote();
 
 
     /*
-       Razzo sempre al centro.
+       Il razzo rimane sempre
+       al centro.
     */
 
     requestAnimationFrame(
@@ -1838,15 +1543,14 @@ function updateDisplay() {
                     .clientHeight -
                     timeline.clientHeight
                 ) / 2;
-
         }
     );
 }
 
 
-/* =========================================================
+/* =====================================================
    VALORE INIZIALE
-========================================================= */
+===================================================== */
 
 function setInitialValue() {
 
@@ -1871,15 +1575,8 @@ function setInitialValue() {
     startValue =
         value;
 
-
     currentValue =
         value;
-
-
-    /*
-       Nuovo valore iniziale =
-       nuovo progetto.
-    */
 
     notes = {};
 
@@ -1891,14 +1588,12 @@ function setInitialValue() {
         )
     );
 
-
     localStorage.setItem(
         CURRENT_KEY,
         String(
             currentValue
         )
     );
-
 
     localStorage.setItem(
         NOTES_KEY,
@@ -1917,9 +1612,9 @@ function setInitialValue() {
 }
 
 
-/* =========================================================
+/* =====================================================
    VARIAZIONE
-========================================================= */
+===================================================== */
 
 function applyChange() {
 
@@ -1942,21 +1637,20 @@ function applyChange() {
 
 
     /*
-       Salviamo la nota prima
-       di cambiare valore.
+       Salva prima la nota
+       del valore attuale.
     */
 
     saveCurrentNote();
 
 
     /*
-       QUI AVVIENE LA VARIAZIONE.
-
        Esempio:
 
-       -3000 + 1000 = -2000
+       valore = -3000
+       variazione = +1000
 
-       -2000 - 500 = -2500
+       risultato = -2000
     */
 
     currentValue =
@@ -1980,9 +1674,9 @@ function applyChange() {
 }
 
 
-/* =========================================================
+/* =====================================================
    RESET
-========================================================= */
+===================================================== */
 
 function resetApp() {
 
@@ -1995,7 +1689,6 @@ function resetApp() {
     if (
         !confirmed
     ) {
-
         return;
     }
 
@@ -2039,18 +1732,16 @@ function resetApp() {
 
     setTimeout(
         () => {
-
             startInput.focus();
-
         },
         100
     );
 }
 
 
-/* =========================================================
+/* =====================================================
    EVENTI
-========================================================= */
+===================================================== */
 
 startButton.addEventListener(
     "click",
@@ -2065,7 +1756,6 @@ startInput.addEventListener(
         if (
             event.key === "Enter"
         ) {
-
             setInitialValue();
         }
     }
@@ -2085,7 +1775,6 @@ changeInput.addEventListener(
         if (
             event.key === "Enter"
         ) {
-
             applyChange();
         }
     }
@@ -2120,9 +1809,9 @@ resetButton.addEventListener(
 );
 
 
-/* =========================================================
+/* =====================================================
    RESIZE
-========================================================= */
+===================================================== */
 
 window.addEventListener(
     "resize",
@@ -2133,16 +1822,15 @@ window.addEventListener(
                 currentValue
             )
         ) {
-
             updateDisplay();
         }
     }
 );
 
 
-/* =========================================================
+/* =====================================================
    AVVIO
-========================================================= */
+===================================================== */
 
 if (
     Number.isFinite(
@@ -2155,7 +1843,6 @@ if (
             currentValue
         )
     ) {
-
         currentValue =
             startValue;
     }
@@ -2178,5 +1865,4 @@ if (
 </script>
 
 </body>
-
 </html>
