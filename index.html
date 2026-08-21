@@ -16,10 +16,6 @@
 
 <style>
 
-/* =====================================================
-   BASE
-===================================================== */
-
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -65,7 +61,7 @@ body {
 
 
 /* =====================================================
-   AREA SCORRIMENTO
+   SCALA SCORRIBILE
 ===================================================== */
 
 .timeline {
@@ -91,21 +87,11 @@ body {
 }
 
 
-/* =====================================================
-   CONTENITORE SCALA
-===================================================== */
-
 .timeline-content {
 
     position: relative;
 
     width: 100%;
-
-    /*
-       Spazio verticale limitato.
-
-       Non permettiamo uno scroll infinito.
-    */
 
     height: 2400px;
 }
@@ -177,7 +163,7 @@ body {
 
 
 /* =====================================================
-   NUMERI DELLA SCALA
+   NUMERI SCALA
 ===================================================== */
 
 .scale-label {
@@ -202,7 +188,32 @@ body {
 
 
 /* =====================================================
-   NOTE
+   CONTENITORE NOTE
+===================================================== */
+
+/*
+   IMPORTANTISSIMO:
+
+   Le note NON sono più dentro la scala
+   che scorre.
+
+   Rimangono invece in un layer fisso.
+*/
+
+.notes-layer {
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 50;
+}
+
+
+/* =====================================================
+   NOTE A DESTRA
 ===================================================== */
 
 .note {
@@ -210,9 +221,6 @@ body {
     position: absolute;
 
     left: calc(50% + 31px);
-
-    transform:
-        translateY(-50%);
 
     max-width:
         calc(50% - 42px);
@@ -229,7 +237,7 @@ body {
 
     pointer-events: none;
 
-    z-index: 30;
+    z-index: 55;
 }
 
 .note-value {
@@ -246,7 +254,7 @@ body {
 
 
 /* =====================================================
-   INDICATORE FISSO
+   RAZZO FISSO
 ===================================================== */
 
 .fixed-indicator {
@@ -264,10 +272,6 @@ body {
     pointer-events: none;
 }
 
-
-/* =====================================================
-   RAZZO
-===================================================== */
 
 .rocket {
 
@@ -361,7 +365,6 @@ body {
 }
 
 .current-note::placeholder {
-
     color: #555;
 }
 
@@ -419,27 +422,10 @@ body {
     font-size: 17px;
 
     font-weight: 600;
-
-    /*
-       TASTIERA NORMALE.
-       In questo modo puoi inserire:
-
-       -700
-       +1300
-       500
-    */
-
-    touch-action: auto;
 }
 
 .change-input::placeholder {
-
     color: #555;
-}
-
-.change-input:focus {
-
-    border-color: #666;
 }
 
 .change-button {
@@ -504,7 +490,7 @@ body {
 
 
 /* =====================================================
-   SCHERMATA VALORE INIZIALE
+   SCHERMATA INIZIALE
 ===================================================== */
 
 .start-screen {
@@ -576,7 +562,6 @@ body {
 }
 
 .start-input::placeholder {
-
     color: #555;
 }
 
@@ -602,14 +587,9 @@ body {
 }
 
 .hidden {
-
     display: none !important;
 }
 
-
-/* =====================================================
-   MOBILE
-===================================================== */
 
 @media (max-width: 480px) {
 
@@ -620,22 +600,18 @@ body {
     }
 
     .current-info {
-
         left: 73px;
     }
 
     .current-value {
-
         font-size: 19px;
     }
 
     .current-note {
-
         width: 165px;
     }
 
     .note {
-
         font-size: 12px;
     }
 }
@@ -651,7 +627,7 @@ body {
 
 
     <!-- =================================================
-         SCALA SCORRIBILE
+         SCALA
     ================================================== -->
 
     <div
@@ -665,7 +641,6 @@ body {
         >
 
             <div
-                id="centerLine"
                 class="center-line"
             ></div>
 
@@ -673,11 +648,19 @@ body {
 
             <div id="labels"></div>
 
-            <div id="notes"></div>
-
         </div>
 
     </div>
+
+
+    <!-- =================================================
+         NOTE FISSE
+    ================================================== -->
+
+    <div
+        id="notesLayer"
+        class="notes-layer"
+    ></div>
 
 
     <!-- =================================================
@@ -783,7 +766,7 @@ body {
 
 
     <!-- =================================================
-         VARIAZIONE
+         CONTROLLI
     ================================================== -->
 
     <div class="controls">
@@ -868,13 +851,13 @@ body {
 ===================================================== */
 
 const START_KEY =
-    "rocket_start_value_v3";
+    "rocket_start_value_v4";
 
 const CURRENT_KEY =
-    "rocket_current_value_v3";
+    "rocket_current_value_v4";
 
 const NOTES_KEY =
-    "rocket_notes_v3";
+    "rocket_notes_v4";
 
 
 /* =====================================================
@@ -901,9 +884,9 @@ const labels =
         "labels"
     );
 
-const notesContainer =
+const notesLayer =
     document.getElementById(
-        "notes"
+        "notesLayer"
     );
 
 const currentValueElement =
@@ -958,20 +941,11 @@ const rocket =
 
 
 /* =====================================================
-   PARAMETRI SCALA
+   SCALA
 ===================================================== */
 
 const DISPLAY_RANGE =
     1100;
-
-/*
-   Ogni 25 euro c'è una tacchetta.
-
-   25 euro = 27 pixel.
-
-   Quindi la scala è abbastanza
-   leggibile ma non enorme.
-*/
 
 const STEP =
     25;
@@ -985,7 +959,7 @@ const PIXELS_PER_EURO =
 
 
 /* =====================================================
-   LETTURA NUMERI
+   NUMERI
 ===================================================== */
 
 function parseNumber(value) {
@@ -1033,11 +1007,6 @@ function parseNumber(value) {
             ",",
             "."
         );
-
-    /*
-       Se rimane un numero valido,
-       lo convertiamo.
-    */
 
     const number =
         Number(text);
@@ -1097,20 +1066,6 @@ function formatValue(value) {
 
 /* =====================================================
    COLORI
-=====================================================
-
-   BIANCO
-   0
-
-   VERDE
-   +1 → +1000
-   +1001 → +2000
-   +2001 → +3000
-   +3001 → +4000
-   +4001 → +5000
-
-   ROSSO
-   stessa logica sotto zero.
 ===================================================== */
 
 function getValueColor(value) {
@@ -1122,10 +1077,6 @@ function getValueColor(value) {
         return "#FFFFFF";
     }
 
-
-    /* -------------------------------
-       VERDE
-    -------------------------------- */
 
     if (
         value > 0
@@ -1163,14 +1114,11 @@ function getValueColor(value) {
     }
 
 
-    /* -------------------------------
-       ROSSO
-    -------------------------------- */
-
     const amount =
         Math.abs(
             value
         );
+
 
     if (
         amount <= 1000
@@ -1205,7 +1153,7 @@ function getValueColor(value) {
 
 
 /* =====================================================
-   COLORE RAZZO + NUMERO
+   COLORE RAZZO
 ===================================================== */
 
 function updateColor() {
@@ -1237,7 +1185,7 @@ function updateColor() {
 
 
 /* =====================================================
-   COSTRUZIONE SCALA
+   COSTRUISCI SCALA
 ===================================================== */
 
 function buildScale() {
@@ -1249,20 +1197,9 @@ function buildScale() {
         "";
 
 
-    /*
-       1100 sopra
-       1100 sotto
-
-       Rispetto al centro.
-    */
-
-    const halfRange =
-        DISPLAY_RANGE;
-
-
     const totalHeight =
         (
-            halfRange * 2
+            DISPLAY_RANGE * 2
         ) *
         PIXELS_PER_EURO;
 
@@ -1276,31 +1213,19 @@ function buildScale() {
         totalHeight / 2;
 
 
-    /*
-       Tacchette ogni 25.
-    */
-
     for (
         let relativeValue =
-            -halfRange;
+            -DISPLAY_RANGE;
 
         relativeValue <=
-            halfRange;
+            DISPLAY_RANGE;
 
         relativeValue += STEP
     ) {
 
-
         /*
-           Questa è una
-           vera coordinata
-           sulla retta numerica.
-
-           Valore positivo
-           -> sopra
-
-           Valore negativo
-           -> sotto
+           VALORI POSITIVI SOPRA.
+           VALORI NEGATIVI SOTTO.
         */
 
         const y =
@@ -1350,10 +1275,6 @@ function buildScale() {
         );
 
 
-        /*
-           Numeri ogni 250.
-        */
-
         if (
             relativeValue %
             250 === 0
@@ -1370,28 +1291,6 @@ function buildScale() {
             label.style.top =
                 `${y}px`;
 
-
-            /*
-               IMPORTANTISSIMO:
-
-               La scala rappresenta
-               il valore relativo
-               al valore attuale.
-
-               Se attuale = -400
-
-               sopra:
-
-               -150
-               +100
-               ...
-
-               sotto:
-
-               -650
-               -900
-               ...
-            */
 
             const scaleValue =
                 currentValue +
@@ -1419,7 +1318,7 @@ function buildScale() {
 
 
 /* =====================================================
-   CREAZIONE NOTA
+   CREA NOTA
 ===================================================== */
 
 function createNote(
@@ -1492,12 +1391,24 @@ function createNote(
 
 
 /* =====================================================
-   DISEGNA NOTE
+   NOTE BLOCCATE A DESTRA
 ===================================================== */
+
+/*
+   QUI CAMBIA IL COMPORTAMENTO.
+
+   Le note NON sono più dentro .timeline.
+
+   Sono dentro .notes-layer,
+   che è fisso sullo schermo.
+
+   Quindi lo scroll della scala
+   non le muove.
+*/
 
 function drawNotes() {
 
-    notesContainer.innerHTML =
+    notesLayer.innerHTML =
         "";
 
 
@@ -1527,17 +1438,19 @@ function drawNotes() {
 
 
     /*
-       Ordine numerico VERO.
-
-       Non viene usato Math.abs().
+       ORDINE NUMERICO.
 
        Esempio:
 
        -2000
        -700
-       -400
-       +100
+       -300
+       0
        +500
+
+       Quindi:
+
+       -300 è maggiore di -700.
     */
 
     entries.sort(
@@ -1548,110 +1461,97 @@ function drawNotes() {
 
 
     /*
-       Centro reale della scala.
+       Dividiamo le note:
+
+       MAGGIORI del valore attuale
+       = SOPRA
+
+       MINORI del valore attuale
+       = SOTTO
     */
 
-    const centerY =
-        timelineContent
-        .clientHeight / 2;
-
-
-    entries.forEach(
-        item => {
-
-
-            /*
-               Se la nota è esattamente
-               sul valore attuale,
-               non la disegniamo come
-               nota separata perché
-               abbiamo il campo "Nota..."
-               sotto il razzo.
-            */
-
-            if (
-                item.value ===
+    const above =
+        entries.filter(
+            item =>
+                item.value >
                 currentValue
-            ) {
+        );
 
-                return;
-            }
-
-
-            /*
-               =================================================
-               PARTE FONDAMENTALE
-               =================================================
-
-               NON:
-
-               Math.abs()
-
-               NON:
-
-               valore assoluto
-
-               MA:
-
-               nota - valore attuale
+    const below =
+        entries.filter(
+            item =>
+                item.value <
+                currentValue
+        );
 
 
-               Esempio:
+    /*
+       NOTA IMPORTANTE:
 
-               attuale = -400
-               nota    = -700
+       Il gruppo sopra viene ordinato
+       dal valore più vicino al razzo
+       verso l'alto.
 
-               -700 - (-400)
-               = -300
+       Esempio attuale -400:
 
-               differenza NEGATIVA
+       -300
+       +100
+       +500
 
-               quindi:
+       viene mostrato:
 
-               Y = centro + distanza
+       -300
+       +100
+       +500
+    */
 
-               -> SOTTO
-
-
-               Altro esempio:
-
-               attuale = -700
-               nota    = -400
-
-               -400 - (-700)
-               = +300
-
-               differenza POSITIVA
-
-               quindi:
-
-               Y = centro - distanza
-
-               -> SOPRA
-            */
-
-            const difference =
-                item.value -
-                currentValue;
+    above.sort(
+        (a, b) =>
+            a.value -
+            b.value
+    );
 
 
-            /*
-               CSS:
+    /*
+       Sotto:
 
-               Y piccolo
-               = sopra
+       -700
+       -1200
+       -2000
 
-               Y grande
-               = sotto
-            */
+       Il valore più vicino
+       al razzo viene subito sotto.
+    */
 
-            const y =
-                centerY -
-                (
-                    difference *
-                    PIXELS_PER_EURO
-                );
+    below.sort(
+        (a, b) =>
+            b.value -
+            a.value
+    );
 
+
+    /*
+       Posizione verticale.
+
+       NON usiamo più la coordinata
+       della scala.
+
+       Usiamo semplicemente
+       una distanza fissa dal razzo.
+
+       Questo blocca le note.
+    */
+
+    const NOTE_GAP =
+        34;
+
+
+    /*
+       SOPRA
+    */
+
+    above.forEach(
+        (item, index) => {
 
             const note =
                 createNote(
@@ -1661,10 +1561,55 @@ function drawNotes() {
 
 
             note.style.top =
-                `${y}px`;
+                `calc(
+                    50% -
+                    ${
+                        NOTE_GAP *
+                        (index + 1)
+                    }px
+                )`;
 
 
-            notesContainer.appendChild(
+            note.style.transform =
+                "translateY(-50%)";
+
+
+            notesLayer.appendChild(
+                note
+            );
+        }
+    );
+
+
+    /*
+       SOTTO
+    */
+
+    below.forEach(
+        (item, index) => {
+
+            const note =
+                createNote(
+                    item.value,
+                    item.text
+                );
+
+
+            note.style.top =
+                `calc(
+                    50% +
+                    ${
+                        NOTE_GAP *
+                        (index + 1)
+                    }px
+                )`;
+
+
+            note.style.transform =
+                "translateY(-50%)";
+
+
+            notesLayer.appendChild(
                 note
             );
         }
@@ -1724,7 +1669,7 @@ function saveCurrentNote() {
 
 
 /* =====================================================
-   CARICA NOTA
+   CARICA NOTA ATTUALE
 ===================================================== */
 
 function loadCurrentNote() {
@@ -1752,7 +1697,7 @@ function loadCurrentNote() {
 
 
 /* =====================================================
-   CENTRA LO SCROLL
+   CENTRA SCALA
 ===================================================== */
 
 function centerTimeline() {
@@ -1800,23 +1745,18 @@ function updateDisplay() {
     loadCurrentNote();
 
 
-    /*
-       Il razzo è fisso.
-       Riportiamo la scala
-       al centro.
-    */
-
     requestAnimationFrame(
         () => {
 
             centerTimeline();
+
         }
     );
 }
 
 
 /* =====================================================
-   IMPOSTA VALORE INIZIALE
+   VALORE INIZIALE
 ===================================================== */
 
 function setInitialValue() {
@@ -1846,12 +1786,8 @@ function setInitialValue() {
         value;
 
 
-    /*
-       Nuova partenza
-       = nuove note.
-    */
-
-    notes = {};
+    notes =
+        {};
 
 
     localStorage.setItem(
@@ -1861,12 +1797,14 @@ function setInitialValue() {
         )
     );
 
+
     localStorage.setItem(
         CURRENT_KEY,
         String(
             currentValue
         )
     );
+
 
     localStorage.setItem(
         NOTES_KEY,
@@ -1886,7 +1824,7 @@ function setInitialValue() {
 
 
 /* =====================================================
-   APPLICA VARIAZIONE
+   VARIAZIONE
 ===================================================== */
 
 function applyChange() {
@@ -1911,19 +1849,20 @@ function applyChange() {
 
     /*
        Prima salviamo la nota
-       del valore dal quale
-       stiamo partendo.
+       del valore attuale.
     */
 
     saveCurrentNote();
 
 
     /*
-       Variazione vera.
+       Esempi:
 
        -700 + 300 = -400
 
        -700 - 300 = -1000
+
+       -400 + 1000 = +600
     */
 
     currentValue =
@@ -1986,7 +1925,8 @@ function resetApp() {
     currentValue =
         NaN;
 
-    notes = {};
+    notes =
+        {};
 
 
     startInput.value =
@@ -2094,14 +2034,14 @@ resetButton.addEventListener(
    AVVIO
 ===================================================== */
 
-let savedStart =
+let startValue =
     parseNumber(
         localStorage.getItem(
             START_KEY
         )
     );
 
-let savedCurrent =
+let currentValue =
     parseNumber(
         localStorage.getItem(
             CURRENT_KEY
@@ -2109,21 +2049,39 @@ let savedCurrent =
     );
 
 
+let notes;
+
+try {
+
+    notes =
+        JSON.parse(
+            localStorage.getItem(
+                NOTES_KEY
+            )
+        ) || {};
+
+} catch {
+
+    notes =
+        {};
+}
+
+
 if (
     Number.isFinite(
-        savedStart
+        startValue
     )
 ) {
 
-    startValue =
-        savedStart;
-
-    currentValue =
-        Number.isFinite(
-            savedCurrent
+    if (
+        !Number.isFinite(
+            currentValue
         )
-        ? savedCurrent
-        : savedStart;
+    ) {
+
+        currentValue =
+            startValue;
+    }
 
 
     startScreen.classList.add(
