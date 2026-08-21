@@ -1,28 +1,19 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width,
-    initial-scale=1.0,
-    viewport-fit=cover,
-    user-scalable=no"
->
+<meta name="viewport"
+      content="width=device-width,
+      initial-scale=1.0,
+      viewport-fit=cover">
 
 <meta name="theme-color" content="#000000">
 
 <title>Rocket</title>
 
-
 <style>
-
-/* ==================================================
-   BASE
-================================================== */
 
 * {
     box-sizing: border-box;
@@ -30,171 +21,93 @@
 
 html,
 body {
-
     margin: 0;
     padding: 0;
-
     width: 100%;
     height: 100%;
-
     background: #000;
-    color: #fff;
-
+    color: white;
     font-family:
         -apple-system,
         BlinkMacSystemFont,
         "SF Pro Display",
         Arial,
         sans-serif;
-
     overflow: hidden;
-
-    touch-action: none;
 }
 
 
+/* =========================
+   APP
+========================= */
+
 .app {
-
-    position: relative;
-
     width: 100%;
     height: 100%;
-
+    position: relative;
     background: #000;
 }
 
 
-/* ==================================================
-   AREA SCROLLABILE
-================================================== */
-
-#world {
-
-    position: absolute;
-
-    inset: 0;
-
-    overflow: hidden;
-
-    touch-action: none;
-}
-
-
-/* ==================================================
+/* =========================
    LINEA CENTRALE
-================================================== */
+========================= */
 
 .center-line {
-
     position: absolute;
 
     left: 50%;
-    top: -10000px;
+    top: 0;
 
     width: 2px;
-    height: 20000px;
+    height: 100%;
 
-    background: #505050;
+    background: #4d4d4d;
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 }
 
 
-/* ==================================================
-   SCALA
-================================================== */
+/* =========================
+   TACCHETTE
+========================= */
 
-#scale {
-
+.scale {
     position: absolute;
 
     left: 0;
     top: 0;
 
     width: 100%;
+    height: 100%;
 
     pointer-events: none;
 }
 
-
 .tick {
-
     position: absolute;
 
     left: 50%;
 
+    width: 7px;
     height: 1px;
 
     background: #666;
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
+
+    opacity: 0.3;
 }
 
 
-.tick.small {
-
-    width: 7px;
-
-    opacity: 0.28;
-}
-
-
-.tick.medium {
-
-    width: 11px;
-
-    opacity: 0.42;
-}
-
-
-.tick.zero {
-
-    width: 16px;
-
-    opacity: 0.65;
-}
-
-
-/* ==================================================
-   NOTE SULLA SCALA
-================================================== */
-
-.saved-note {
-
-    position: absolute;
-
-    left:
-        calc(50% + 18px);
-
-    transform:
-        translateY(-50%);
-
-    color: #777;
-
-    font-size: 12px;
-
-    white-space: nowrap;
-
-    max-width: 42vw;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-}
-
-
-/* ==================================================
+/* =========================
    INDICATORE
-================================================== */
+========================= */
 
 .indicator {
-
     position: absolute;
 
     left: 50%;
-
     top: 50%;
 
     width: 0;
@@ -202,133 +115,97 @@ body {
 
     z-index: 20;
 
-    pointer-events: none;
+    transition:
+        top 0.25s ease;
 }
 
 
-/* ==================================================
+/* =========================
    RAZZO
-================================================== */
+========================= */
 
 .rocket {
-
     position: absolute;
 
     right: 12px;
-
     top: 50%;
 
-    width: 58px;
+    width: 60px;
     height: 30px;
 
-    transform:
-        translateY(-50%);
+    transform: translateY(-50%);
 
     transition:
-        filter 0.15s ease;
+        filter 0.2s ease;
 }
 
 
-/* ==================================================
-   PANNELLO VALORE ATTUALE
-================================================== */
+/* =========================
+   VALORE ATTUALE
+========================= */
 
-.current-panel {
-
+.current-info {
     position: absolute;
 
     left: 18px;
-
     top: 50%;
 
-    transform:
-        translateY(-50%);
+    transform: translateY(-50%);
 
     display: flex;
-
     flex-direction: column;
-
-    align-items: flex-start;
-
-    pointer-events: auto;
 
     white-space: nowrap;
 }
 
-
 .current-value {
-
-    font-size: 21px;
-
-    line-height: 25px;
-
+    font-size: 22px;
     font-weight: 600;
 
+    line-height: 26px;
+
     transition:
-        color 0.15s ease;
+        color 0.2s ease;
 }
 
-
-.note-input {
-
-    width: 155px;
-
-    height: 30px;
+.current-note {
+    width: 180px;
 
     margin-top: 2px;
 
     padding: 0;
 
-    background: transparent;
-
     border: none;
-
     outline: none;
+
+    background: transparent;
 
     color: #888;
 
     font-size: 13px;
-
-    line-height: 18px;
 }
 
 
-.note-input::placeholder {
-
-    color: #444;
-}
-
-
-.note-input:focus {
-
-    color: #aaa;
-}
-
-
-/* ==================================================
+/* =========================
    COLORI
-================================================== */
+========================= */
 
 .positive {
-
     color: #35d982;
 }
 
-
 .negative {
-
     color: #ff4d5a;
 }
 
-
 .neutral {
-
-    color: #fff;
+    color: white;
 }
 
 
-.rocket.positive {
+/* Razzo verde */
 
+.rocket.positive {
     filter:
         brightness(0)
         saturate(100%)
@@ -340,8 +217,9 @@ body {
 }
 
 
-.rocket.negative {
+/* Razzo rosso */
 
+.rocket.negative {
     filter:
         brightness(0)
         saturate(100%)
@@ -353,91 +231,286 @@ body {
 }
 
 
-/* ==================================================
-   INPUT
-================================================== */
+/* =========================
+   INPUT VARIAZIONE
+========================= */
 
-.input-area {
-
+.controls {
     position: absolute;
 
     left: 50%;
 
     bottom:
         calc(
-            30px +
+            28px +
             env(safe-area-inset-bottom)
         );
 
     transform:
         translateX(-50%);
 
+    display: flex;
+    gap: 8px;
+
     z-index: 50;
 }
 
-
-.value-input {
-
-    width: 185px;
-
-    height: 52px;
-
-    padding: 0 15px;
-
-    background: #111;
+.change-input {
+    width: 170px;
+    height: 50px;
 
     border:
         1px solid #3d3d3d;
 
     border-radius: 13px;
 
-    outline: none;
+    background: #111;
 
-    color: #fff;
+    color: white;
+
+    outline: none;
 
     text-align: center;
 
-    font-size: 22px;
-
+    font-size: 20px;
     font-weight: 600;
 }
 
+.change-input::placeholder {
+    color: #4d4d4d;
+}
 
-.value-input:focus {
-
+.change-input:focus {
     border-color: #777;
 }
 
 
-.value-input::placeholder {
+/* =========================
+   BOTTONI
+========================= */
 
-    color: #4d4d4d;
+button {
+    height: 50px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    padding: 0 16px;
+
+    background: #181818;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 600;
 }
 
+button:active {
+    background: #292929;
+}
 
-/* ==================================================
-   INDICAZIONE ZOOM
-================================================== */
-
-.zoom-info {
-
+.reset-button {
     position: absolute;
 
     top:
         calc(
-            14px +
+            16px +
             env(safe-area-inset-top)
         );
 
     right: 15px;
 
-    color: #333;
+    height: 38px;
 
-    font-size: 10px;
+    padding: 0 13px;
 
-    z-index: 40;
+    font-size: 13px;
 
-    pointer-events: none;
+    color: #999;
+
+    z-index: 60;
+}
+
+
+/* =========================
+   PANNELLO INIZIALE
+========================= */
+
+.start-screen {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 100;
+
+    background: #000;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 30px;
+}
+
+.start-title {
+    font-size: 28px;
+
+    font-weight: 600;
+
+    margin-bottom: 12px;
+}
+
+.start-subtitle {
+    color: #777;
+
+    font-size: 14px;
+
+    margin-bottom: 25px;
+
+    text-align: center;
+}
+
+.start-input {
+    width: 220px;
+
+    height: 55px;
+
+    border:
+        1px solid #444;
+
+    border-radius: 14px;
+
+    background: #111;
+
+    color: white;
+
+    outline: none;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    font-weight: 600;
+}
+
+.start-input::placeholder {
+    color: #555;
+}
+
+.start-button {
+    margin-top: 15px;
+
+    width: 220px;
+
+    height: 50px;
+
+    background: #fff;
+
+    color: #000;
+}
+
+
+/* =========================
+   CRONOLOGIA NOTE
+========================= */
+
+.notes-panel {
+    position: absolute;
+
+    left:
+        calc(50% + 18px);
+
+    right: 12px;
+
+    top: 12px;
+
+    bottom: 100px;
+
+    overflow-y: auto;
+
+    pointer-events: auto;
+
+    padding-top: 20px;
+
+    padding-bottom: 20px;
+
+    scrollbar-width: none;
+}
+
+.notes-panel::-webkit-scrollbar {
+    display: none;
+}
+
+
+.note-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    min-height: 32px;
+
+    margin-bottom: 5px;
+
+    font-size: 12px;
+
+    color: #777;
+}
+
+
+.note-number {
+    min-width: 65px;
+
+    font-weight: 500;
+}
+
+
+.note-text {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================
+   ADATTAMENTO IPHONE
+========================= */
+
+@media (
+    max-width: 480px
+) {
+
+    .current-value {
+        font-size: 20px;
+    }
+
+    .current-note {
+        width: 160px;
+    }
+
+    .notes-panel {
+        left:
+            calc(50% + 15px);
+    }
+
+}
+
+
+/* =========================
+   NASCONDI APP
+========================= */
+
+.hidden {
+    display: none !important;
 }
 
 </style>
@@ -447,162 +520,251 @@ body {
 
 <body>
 
-
 <div class="app">
 
 
-    <div id="world">
+    <!-- =====================
+         LINEA
+    ====================== -->
+
+    <div class="center-line"></div>
 
 
-        <!-- LINEA -->
+    <!-- =====================
+         TACCHETTE
+    ====================== -->
 
-        <div class="center-line"></div>
+    <div
+        id="scale"
+        class="scale">
+    </div>
 
 
-        <!-- SCALA -->
+    <!-- =====================
+         CRONOLOGIA NOTE
+    ====================== -->
 
-        <div id="scale"></div>
+    <div
+        id="notesPanel"
+        class="notes-panel">
+    </div>
 
 
-        <!-- INDICATORE -->
+    <!-- =====================
+         RAZZO
+    ====================== -->
+
+    <div
+        id="indicator"
+        class="indicator">
+
+
+        <svg
+            id="rocket"
+            class="rocket"
+            viewBox="0 0 100 50"
+            xmlns="http://www.w3.org/2000/svg">
+
+
+            <!-- Corpo -->
+
+            <path
+                d="
+                    M 10 25
+                    C 28 10,
+                      52 8,
+                      78 25
+                    C 52 42,
+                      28 40,
+                      10 25
+                    Z
+                "
+                fill="white"
+            />
+
+
+            <!-- Punta -->
+
+            <path
+                d="
+                    M 65 13
+                    C 82 15,
+                      94 21,
+                      99 25
+                    C 94 29,
+                      82 35,
+                      65 37
+                    Z
+                "
+                fill="white"
+            />
+
+
+            <!-- Finestrino -->
+
+            <circle
+                cx="67"
+                cy="25"
+                r="5"
+                fill="black"
+            />
+
+
+            <!-- Ala -->
+
+            <path
+                d="
+                    M 38 16
+                    L 25 5
+                    L 28 20
+                    Z
+                "
+                fill="white"
+            />
+
+
+            <path
+                d="
+                    M 38 34
+                    L 25 45
+                    L 28 30
+                    Z
+                "
+                fill="white"
+            />
+
+
+            <!-- Fiamma -->
+
+            <path
+                d="
+                    M 12 18
+                    C 2 20,
+                      2 30,
+                      12 32
+                    L 22 25
+                    Z
+                "
+                fill="white"
+            />
+
+        </svg>
+
+
+        <!-- =====================
+             VALORE E NOTA
+        ====================== -->
 
         <div
-            id="indicator"
-            class="indicator"
-        >
+            class="current-info">
 
-
-            <!-- RAZZO -->
-
-            <svg
-                id="rocket"
-                class="rocket"
-                viewBox="0 0 100 50"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-
-                <path
-                    d="
-                        M 10 25
-                        C 28 10,
-                          52 8,
-                          78 25
-                        C 52 42,
-                          28 40,
-                          10 25
-                        Z
-                    "
-                    fill="white"
-                />
-
-                <path
-                    d="
-                        M 65 13
-                        C 82 15,
-                          94 21,
-                          99 25
-                        C 94 29,
-                          82 35,
-                          65 37
-                        Z
-                    "
-                    fill="white"
-                />
-
-                <circle
-                    cx="67"
-                    cy="25"
-                    r="5"
-                    fill="black"
-                />
-
-                <path
-                    d="
-                        M 38 16
-                        L 25 5
-                        L 28 20
-                        Z
-                    "
-                    fill="white"
-                />
-
-                <path
-                    d="
-                        M 38 34
-                        L 25 45
-                        L 28 30
-                        Z
-                    "
-                    fill="white"
-                />
-
-                <path
-                    d="
-                        M 12 18
-                        C 2 20,
-                          2 30,
-                          12 32
-                        L 22 25
-                        Z
-                    "
-                    fill="white"
-                />
-
-            </svg>
-
-
-            <!-- VALORE ATTUALE -->
 
             <div
-                class="current-panel"
-            >
-
-                <div
-                    id="currentValue"
-                    class="current-value"
-                >
-                    0 €
-                </div>
-
-
-                <input
-                    id="noteInput"
-                    class="note-input"
-                    type="text"
-                    maxlength="60"
-                    autocomplete="off"
-                    autocorrect="on"
-                    autocapitalize="sentences"
-                    placeholder="Nota..."
-                >
-
+                id="currentValue"
+                class="current-value">
+                0 €
             </div>
+
+
+            <input
+                id="currentNote"
+                class="current-note"
+                type="text"
+                maxlength="80"
+                placeholder="Nota..."
+                autocomplete="off"
+            >
 
         </div>
 
     </div>
 
 
-    <!-- INPUT VALORE -->
+    <!-- =====================
+         CONTROLLI
+    ====================== -->
 
     <div
-        class="input-area"
-    >
+        id="controls"
+        class="controls">
+
 
         <input
-            id="valueInput"
-            class="value-input"
+            id="changeInput"
+            class="change-input"
             type="text"
             inputmode="text"
+            placeholder="+ / - variazione"
             autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            placeholder="Inserisci valore"
-        >
+        />
+
+
+        <button
+            id="changeButton">
+            OK
+        </button>
 
     </div>
 
+
+    <!-- =====================
+         RESET
+    ====================== -->
+
+    <button
+        id="resetButton"
+        class="reset-button">
+
+        Reset
+
+    </button>
+
+
+    <!-- =====================
+         SCHERMATA INIZIALE
+    ====================== -->
+
+    <div
+        id="startScreen"
+        class="start-screen">
+
+
+        <div
+            class="start-title">
+
+            Rocket
+
+        </div>
+
+
+        <div
+            class="start-subtitle">
+
+            Inserisci il valore
+            da cui vuoi partire
+
+        </div>
+
+
+        <input
+            id="startInput"
+            class="start-input"
+            type="text"
+            inputmode="text"
+            placeholder="Valore iniziale"
+            autocomplete="off"
+        />
+
+
+        <button
+            id="startButton"
+            class="start-button">
+
+            OK
+
+        </button>
+
+    </div>
 
 </div>
 
@@ -610,59 +772,101 @@ body {
 <script>
 
 /* ==================================================
-   CONFIGURAZIONE
+   MEMORIA
 ================================================== */
 
-const MIN_VALUE = -10000;
+const START_KEY =
+    "rocket-start-value";
 
-const MAX_VALUE = 20000;
-
-const STEP = 25;
-
-
-/*
-   Distanza iniziale tra
-   due tacche da 25 €.
-*/
-
-let pixelsPerStep = 8;
-
-
-/*
-   Memoria.
-*/
-
-const VALUE_KEY =
+const CURRENT_KEY =
     "rocket-current-value";
 
 const NOTES_KEY =
     "rocket-notes";
 
-const ZOOM_KEY =
-    "rocket-zoom";
+
+/* ==================================================
+   ELEMENTI
+================================================== */
+
+const startScreen =
+    document.getElementById(
+        "startScreen"
+    );
+
+const startInput =
+    document.getElementById(
+        "startInput"
+    );
+
+const startButton =
+    document.getElementById(
+        "startButton"
+    );
+
+const changeInput =
+    document.getElementById(
+        "changeInput"
+    );
+
+const changeButton =
+    document.getElementById(
+        "changeButton"
+    );
+
+const resetButton =
+    document.getElementById(
+        "resetButton"
+    );
+
+const currentValueElement =
+    document.getElementById(
+        "currentValue"
+    );
+
+const currentNote =
+    document.getElementById(
+        "currentNote"
+    );
+
+const indicator =
+    document.getElementById(
+        "indicator"
+    );
+
+const rocket =
+    document.getElementById(
+        "rocket"
+    );
+
+const scale =
+    document.getElementById(
+        "scale"
+    );
+
+const notesPanel =
+    document.getElementById(
+        "notesPanel"
+    );
 
 
 /* ==================================================
-   VALORE ATTUALE
+   DATI
 ================================================== */
+
+let startValue =
+    Number(
+        localStorage.getItem(
+            START_KEY
+        )
+    );
 
 let currentValue =
     Number(
         localStorage.getItem(
-            VALUE_KEY
+            CURRENT_KEY
         )
     );
-
-
-if (
-    !Number.isFinite(
-        currentValue
-    )
-) {
-
-    currentValue = 0;
-
-}
 
 
 /* ==================================================
@@ -680,9 +884,7 @@ try {
             )
         ) || {};
 
-}
-
-catch {
+} catch {
 
     notes = {};
 
@@ -690,89 +892,36 @@ catch {
 
 
 /* ==================================================
-   ZOOM SALVATO
+   CONTROLLO PRIMA APERTURA
 ================================================== */
-
-const savedZoom =
-    Number(
-        localStorage.getItem(
-            ZOOM_KEY
-        )
-    );
-
 
 if (
-    Number.isFinite(
-        savedZoom
-    )
+    Number.isFinite(startValue)
 ) {
 
-    pixelsPerStep =
-        Math.max(
-            3,
-            Math.min(
-                25,
-                savedZoom
-            )
-        );
+    startScreen.classList.add(
+        "hidden"
+    );
+
+
+    if (
+        !Number.isFinite(
+            currentValue
+        )
+    ) {
+
+        currentValue =
+            startValue;
+
+    }
+
+} else {
+
+    startScreen.classList.remove(
+        "hidden"
+    );
 
 }
-
-
-/* ==================================================
-   POSIZIONE VISIVA
-================================================== */
-
-/*
-   viewValue è il punto che
-   stiamo guardando.
-
-   Non deve per forza coincidere
-   con il valore attuale del razzo.
-*/
-
-let viewValue =
-    currentValue;
-
-
-/* ==================================================
-   ELEMENTI
-================================================== */
-
-const world =
-    document.getElementById(
-        "world"
-    );
-
-const scale =
-    document.getElementById(
-        "scale"
-    );
-
-const indicator =
-    document.getElementById(
-        "indicator"
-    );
-
-const rocket =
-    document.getElementById(
-        "rocket"
-    );
-
-const currentValueElement =
-    document.getElementById(
-        "currentValue"
-    );
-
-const noteInput =
-    document.getElementById(
-        "noteInput"
-    );
-
-const valueInput =
-    document.getElementById(
-        "valueInput"
-    );
 
 
 /* ==================================================
@@ -793,8 +942,8 @@ function formatValue(value) {
     ) {
 
         return "+" +
-               absolute +
-               " €";
+            absolute +
+            " €";
 
     }
 
@@ -804,14 +953,13 @@ function formatValue(value) {
     ) {
 
         return "-" +
-               absolute +
-               " €";
+            absolute +
+            " €";
 
     }
 
 
     return "0 €";
-
 }
 
 
@@ -819,7 +967,7 @@ function formatValue(value) {
    COLORE
 ================================================== */
 
-function updateColors() {
+function updateColor() {
 
     currentValueElement.classList.remove(
         "positive",
@@ -873,10 +1021,92 @@ function updateColors() {
 
 
 /* ==================================================
+   POSIZIONE RAZZO
+================================================== */
+
+function updateRocket() {
+
+    /*
+       Non imponiamo limiti.
+
+       La posizione viene compressa
+       usando una scala logaritmica,
+       così valori enormi rimangono
+       comunque visualizzabili.
+    */
+
+    const height =
+        window.innerHeight;
+
+
+    const scaleFactor =
+        110;
+
+
+    let position;
+
+
+    if (
+        currentValue === 0
+    ) {
+
+        position =
+            height / 2;
+
+    }
+
+    else {
+
+        const sign =
+            currentValue > 0
+                ? -1
+                : 1;
+
+
+        const distance =
+            Math.log10(
+                Math.abs(
+                    currentValue
+                ) + 1
+            ) *
+            scaleFactor;
+
+
+        position =
+            (
+                height / 2
+            ) +
+            sign *
+            distance;
+
+    }
+
+
+    /*
+       Manteniamo comunque il razzo
+       dentro lo schermo.
+    */
+
+    position =
+        Math.max(
+            70,
+            Math.min(
+                height - 140,
+                position
+            )
+        );
+
+
+    indicator.style.top =
+        position + "px";
+}
+
+
+/* ==================================================
    SALVA NOTA
 ================================================== */
 
-function saveNote() {
+function saveCurrentNote() {
 
     const key =
         String(
@@ -884,7 +1114,7 @@ function saveNote() {
         );
 
     const text =
-        noteInput.value.trim();
+        currentNote.value.trim();
 
 
     if (
@@ -911,7 +1141,7 @@ function saveNote() {
     );
 
 
-    drawScale();
+    drawNotes();
 
 }
 
@@ -920,37 +1150,19 @@ function saveNote() {
    CARICA NOTA
 ================================================== */
 
-function loadNote() {
+function loadCurrentNote() {
 
-    noteInput.value =
+    currentNote.value =
         notes[
-            String(currentValue)
+            String(
+                currentValue
+            )
         ] || "";
-
 }
 
 
 /* ==================================================
-   POSIZIONE RAZZO
-================================================== */
-
-function updateIndicator() {
-
-    /*
-       Il valore corrente è sempre
-       al centro dello schermo.
-    */
-
-    indicator.style.top =
-        (
-            window.innerHeight / 2
-        ) + "px";
-
-}
-
-
-/* ==================================================
-   DISEGNA SCALA
+   TACCHETTE
 ================================================== */
 
 function drawScale() {
@@ -958,69 +1170,30 @@ function drawScale() {
     scale.innerHTML = "";
 
 
+    /*
+       Le tacche sono solo
+       un riferimento visivo.
+
+       Non cerchiamo di rappresentare
+       miliardi di euro fisicamente.
+    */
+
     const center =
         window.innerHeight / 2;
 
 
-    /*
-       Quanti euro corrispondono
-       a un pixel.
-    */
-
-    const pixelsPerEuro =
-        pixelsPerStep / STEP;
-
-
-    /*
-       Il punto viewValue
-       viene messo al centro.
-    */
-
-    const viewY =
-        center;
-
-
-    /*
-       Quante tacche servono.
-    */
-
-    const visibleSteps =
-        Math.ceil(
-            window.innerHeight /
-            pixelsPerStep
-        ) + 4;
-
-
-    const centerStep =
-        Math.round(
-            viewValue / STEP
-        );
-
-
-    const firstStep =
-        centerStep -
-        visibleSteps;
-
-
-    const lastStep =
-        centerStep +
-        visibleSteps;
+    const spacing =
+        32;
 
 
     for (
-        let step = firstStep;
-        step <= lastStep;
-        step++
+        let i = -12;
+        i <= 12;
+        i++
     ) {
 
-
-        const tickValue =
-            step * STEP;
-
-
         if (
-            tickValue < MIN_VALUE ||
-            tickValue > MAX_VALUE
+            i === 0
         ) {
 
             continue;
@@ -1028,106 +1201,154 @@ function drawScale() {
         }
 
 
-        /*
-           Posizione della tacca
-           rispetto al centro.
-        */
-
-        const y =
-            viewY -
-            (
-                tickValue -
-                viewValue
-            ) *
-            pixelsPerEuro;
-
-
-        /*
-           TACCA
-        */
-
         const tick =
             document.createElement(
                 "div"
             );
 
 
-        if (
-            tickValue === 0
-        ) {
-
-            tick.className =
-                "tick zero";
-
-        }
-
-        else if (
-            Math.abs(
-                tickValue
-            ) % 250 === 0
-        ) {
-
-            tick.className =
-                "tick medium";
-
-        }
-
-        else {
-
-            tick.className =
-                "tick small";
-
-        }
+        tick.className =
+            "tick";
 
 
         tick.style.top =
-            y + "px";
+            (
+                center +
+                i * spacing
+            ) + "px";
 
 
         scale.appendChild(
             tick
         );
 
-
-        /*
-           NOTA SALVATA
-        */
-
-        const savedNote =
-            notes[
-                String(tickValue)
-            ];
+    }
 
 
-        if (
-            savedNote
-        ) {
+    /*
+       Tacca centrale.
+    */
 
-            const note =
-                document.createElement(
-                    "div"
-                );
-
-
-            note.className =
-                "saved-note";
+    const zero =
+        document.createElement(
+            "div"
+        );
 
 
-            note.style.top =
-                y + "px";
+    zero.className =
+        "tick";
 
 
-            note.textContent =
-                tickValue +
-                " €  ·  " +
-                savedNote;
+    zero.style.width =
+        "15px";
 
 
-            scale.appendChild(
-                note
+    zero.style.opacity =
+        "0.6";
+
+
+    zero.style.top =
+        center + "px";
+
+
+    scale.appendChild(
+        zero
+    );
+
+}
+
+
+/* ==================================================
+   NOTE IN ORDINE CRESCENTE
+================================================== */
+
+function drawNotes() {
+
+    notesPanel.innerHTML = "";
+
+
+    const entries =
+        Object.entries(
+            notes
+        )
+        .map(
+            ([value, note]) => ({
+                value:
+                    Number(value),
+
+                note:
+                    note
+            })
+        )
+        .filter(
+            item =>
+                Number.isFinite(
+                    item.value
+                )
+        )
+        .sort(
+            (a, b) =>
+                a.value -
+                b.value
+        );
+
+
+    for (
+        const item of entries
+    ) {
+
+        const row =
+            document.createElement(
+                "div"
             );
 
-        }
+
+        row.className =
+            "note-row";
+
+
+        const number =
+            document.createElement(
+                "span"
+            );
+
+
+        number.className =
+            "note-number";
+
+
+        number.textContent =
+            formatValue(
+                item.value
+            );
+
+
+        const text =
+            document.createElement(
+                "span"
+            );
+
+
+        text.className =
+            "note-text";
+
+
+        text.textContent =
+            item.note;
+
+
+        row.appendChild(
+            number
+        );
+
+        row.appendChild(
+            text
+        );
+
+
+        notesPanel.appendChild(
+            row
+        );
 
     }
 
@@ -1135,10 +1356,10 @@ function drawScale() {
 
 
 /* ==================================================
-   AGGIORNA VALORE ATTUALE
+   AGGIORNAMENTO
 ================================================== */
 
-function updateCurrentValue() {
+function updateDisplay() {
 
     currentValueElement.textContent =
         formatValue(
@@ -1146,89 +1367,33 @@ function updateCurrentValue() {
         );
 
 
-    if (
-        currentValue > 0
-    ) {
+    loadCurrentNote();
 
-        valueInput.value =
-            "+" +
-            currentValue;
+    updateColor();
 
-    }
-
-    else {
-
-        valueInput.value =
-            String(
-                currentValue
-            );
-
-    }
-
-
-    updateColors();
-
-    loadNote();
-
-    updateIndicator();
-
-}
-
-
-/* ==================================================
-   SALTA A UN VALORE
-================================================== */
-
-function goToValue(newValue) {
-
-    /*
-       Salva la nota prima
-       di cambiare posizione.
-    */
-
-    saveNote();
-
-
-    currentValue =
-        Math.max(
-            MIN_VALUE,
-            Math.min(
-                MAX_VALUE,
-                newValue
-            )
-        );
-
-
-    /*
-       Il punto visualizzato
-       diventa quello attuale.
-    */
-
-    viewValue =
-        currentValue;
-
-
-    localStorage.setItem(
-        VALUE_KEY,
-        currentValue
-    );
-
-
-    updateCurrentValue();
+    updateRocket();
 
     drawScale();
 
+    drawNotes();
+
+
+    localStorage.setItem(
+        CURRENT_KEY,
+        currentValue
+    );
+
 }
 
 
 /* ==================================================
-   INPUT VALORE
+   VALORE INIZIALE
 ================================================== */
 
-function readValue() {
+function setInitialValue() {
 
     const text =
-        valueInput.value.trim();
+        startInput.value.trim();
 
 
     if (
@@ -1255,38 +1420,191 @@ function readValue() {
         )
     ) {
 
-        valueInput.value =
-            formatValue(
-                currentValue
-            );
+        return;
+
+    }
+
+
+    startValue =
+        number;
+
+    currentValue =
+        number;
+
+
+    localStorage.setItem(
+        START_KEY,
+        startValue
+    );
+
+    localStorage.setItem(
+        CURRENT_KEY,
+        currentValue
+    );
+
+
+    startScreen.classList.add(
+        "hidden"
+    );
+
+
+    updateDisplay();
+
+}
+
+
+/* ==================================================
+   VARIAZIONE
+================================================== */
+
+function applyChange() {
+
+    const text =
+        changeInput.value.trim();
+
+
+    if (
+        text === ""
+    ) {
 
         return;
 
     }
 
 
-    goToValue(
-        number
+    const change =
+        Number(
+            text.replace(
+                ",",
+                "."
+            )
+        );
+
+
+    if (
+        !Number.isFinite(
+            change
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+       SALVA LA NOTA DELLA
+       POSIZIONE ATTUALE
+       PRIMA DI MUOVERE IL RAZZO.
+    */
+
+    saveCurrentNote();
+
+
+    /*
+       ECCO LA LOGICA PRINCIPALE:
+
+       posizione nuova =
+       posizione vecchia +
+       variazione
+    */
+
+    currentValue +=
+        change;
+
+
+    changeInput.value =
+        "";
+
+
+    updateDisplay();
+
+
+    changeInput.focus();
+
+}
+
+
+/* ==================================================
+   RESET
+================================================== */
+
+function resetApp() {
+
+    const confirmed =
+        confirm(
+            "Vuoi davvero resettare il valore iniziale e ripartire da zero?"
+        );
+
+
+    if (
+        !confirmed
+    ) {
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        START_KEY
+    );
+
+    localStorage.removeItem(
+        CURRENT_KEY
+    );
+
+    localStorage.removeItem(
+        NOTES_KEY
+    );
+
+
+    startValue =
+        NaN;
+
+    currentValue =
+        0;
+
+    notes =
+        {};
+
+
+    startInput.value =
+        "";
+
+    changeInput.value =
+        "";
+
+    currentNote.value =
+        "";
+
+
+    startScreen.classList.remove(
+        "hidden"
     );
 
 }
 
 
 /* ==================================================
-   TASTIERA
+   EVENTI
 ================================================== */
 
-valueInput.addEventListener(
+startButton.addEventListener(
+    "click",
+    setInitialValue
+);
+
+
+startInput.addEventListener(
     "keydown",
-    function(event) {
+    event => {
 
         if (
             event.key === "Enter"
         ) {
 
-            readValue();
-
-            valueInput.blur();
+            setInitialValue();
 
         }
 
@@ -1294,41 +1612,21 @@ valueInput.addEventListener(
 );
 
 
-valueInput.addEventListener(
-    "blur",
-    function() {
-
-        readValue();
-
-    }
+changeButton.addEventListener(
+    "click",
+    applyChange
 );
 
 
-/* ==================================================
-   NOTA
-================================================== */
-
-noteInput.addEventListener(
-    "blur",
-    function() {
-
-        saveNote();
-
-    }
-);
-
-
-noteInput.addEventListener(
+changeInput.addEventListener(
     "keydown",
-    function(event) {
+    event => {
 
         if (
             event.key === "Enter"
         ) {
 
-            saveNote();
-
-            noteInput.blur();
+            applyChange();
 
         }
 
@@ -1336,240 +1634,23 @@ noteInput.addEventListener(
 );
 
 
-/* ==================================================
-   GESTIONE TOUCH
-================================================== */
-
-let isDragging = false;
-
-let lastY = 0;
-
-let pinchStartDistance = null;
-
-let pinchStartZoom = null;
-
-
-/*
-   Con un dito:
-   SCORRIMENTO.
-*/
-
-world.addEventListener(
-    "touchstart",
-    function(event) {
-
-        /*
-           Due dita = zoom.
-        */
-
-        if (
-            event.touches.length === 2
-        ) {
-
-            isDragging = false;
-
-            pinchStartDistance =
-                getDistance(
-                    event.touches[0],
-                    event.touches[1]
-                );
-
-            pinchStartZoom =
-                pixelsPerStep;
-
-            return;
-
-        }
-
-
-        /*
-           Un dito.
-        */
-
-        if (
-            event.touches.length === 1
-        ) {
-
-            /*
-               Se tocchiamo l'input,
-               non iniziare il drag.
-            */
-
-            if (
-                event.target.closest(
-                    "input"
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            isDragging = true;
-
-            lastY =
-                event.touches[0].clientY;
-
-        }
-
-    },
-    {
-        passive: false
-    }
+currentNote.addEventListener(
+    "blur",
+    saveCurrentNote
 );
 
 
-/*
-   Movimento.
-*/
-
-world.addEventListener(
-    "touchmove",
-    function(event) {
-
-        event.preventDefault();
-
-
-        /*
-           =========================
-           ZOOM
-        =========================
-        */
+currentNote.addEventListener(
+    "keydown",
+    event => {
 
         if (
-            event.touches.length === 2
+            event.key === "Enter"
         ) {
 
-            const distance =
-                getDistance(
-                    event.touches[0],
-                    event.touches[1]
-                );
+            saveCurrentNote();
 
-
-            if (
-                pinchStartDistance
-            ) {
-
-                const ratio =
-                    distance /
-                    pinchStartDistance;
-
-
-                pixelsPerStep =
-                    Math.max(
-                        3,
-                        Math.min(
-                            25,
-                            pinchStartZoom *
-                            ratio
-                        )
-                    );
-
-
-                localStorage.setItem(
-                    ZOOM_KEY,
-                    pixelsPerStep
-                );
-
-
-                drawScale();
-
-            }
-
-
-            return;
-
-        }
-
-
-        /*
-           =========================
-           SCROLL
-        =========================
-        */
-
-        if (
-            isDragging &&
-            event.touches.length === 1
-        ) {
-
-            const y =
-                event.touches[0].clientY;
-
-
-            const delta =
-                y -
-                lastY;
-
-
-            /*
-               Se trascini verso l'alto,
-               vai verso valori maggiori.
-            */
-
-            const pixelsPerEuro =
-                pixelsPerStep /
-                STEP;
-
-
-            viewValue -=
-                delta /
-                pixelsPerEuro;
-
-
-            viewValue =
-                Math.max(
-                    MIN_VALUE,
-                    Math.min(
-                        MAX_VALUE,
-                        viewValue
-                    )
-                );
-
-
-            lastY =
-                y;
-
-
-            drawScale();
-
-        }
-
-    },
-    {
-        passive: false
-    }
-);
-
-
-/*
-   Fine touch.
-*/
-
-world.addEventListener(
-    "touchend",
-    function(event) {
-
-        if (
-            event.touches.length < 2
-        ) {
-
-            pinchStartDistance =
-                null;
-
-            pinchStartZoom =
-                null;
-
-        }
-
-
-        if (
-            event.touches.length === 0
-        ) {
-
-            isDragging = false;
+            currentNote.blur();
 
         }
 
@@ -1577,42 +1658,39 @@ world.addEventListener(
 );
 
 
-/* ==================================================
-   DISTANZA TRA DUE DITA
-================================================== */
-
-function getDistance(
-    touch1,
-    touch2
-) {
-
-    const dx =
-        touch1.clientX -
-        touch2.clientX;
-
-    const dy =
-        touch1.clientY -
-        touch2.clientY;
+resetButton.addEventListener(
+    "click",
+    resetApp
+);
 
 
-    return Math.sqrt(
-        dx * dx +
-        dy * dy
-    );
+window.addEventListener(
+    "resize",
+    () => {
 
-}
+        updateRocket();
+
+        drawScale();
+
+    }
+);
 
 
 /* ==================================================
    AVVIO
 ================================================== */
 
-updateCurrentValue();
+if (
+    Number.isFinite(
+        startValue
+    )
+) {
 
-drawScale();
+    updateDisplay();
+
+}
 
 </script>
 
 </body>
-
 </html>
