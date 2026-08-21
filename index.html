@@ -39,7 +39,6 @@ body {
     height: 100%;
 
     background: #000;
-
     color: #fff;
 
     font-family:
@@ -57,7 +56,6 @@ body {
     overscroll-behavior: none;
 }
 
-
 .app {
 
     position: relative;
@@ -72,7 +70,7 @@ body {
 
 
 /* =========================================================
-   AREA SCALA + NOTE
+   TIMELINE
 ========================================================= */
 
 .timeline {
@@ -94,13 +92,12 @@ body {
 }
 
 .timeline::-webkit-scrollbar {
-
     display: none;
 }
 
 
 /* =========================================================
-   CONTENITORE DELLA SCALA
+   CONTENUTO TIMELINE
 ========================================================= */
 
 .timeline-content {
@@ -109,20 +106,12 @@ body {
 
     width: 100%;
 
-    /*
-       La vera altezza viene impostata
-       da JavaScript.
-
-       È SEMPRE limitata a ±1000 €
-       dal valore attuale.
-    */
-
     height: 2000px;
 }
 
 
 /* =========================================================
-   LINEA VERTICALE
+   LINEA CENTRALE
 ========================================================= */
 
 .center-line {
@@ -164,11 +153,6 @@ body {
     pointer-events: none;
 }
 
-
-/*
-   Ogni 250 €
-*/
-
 .tick.major {
 
     width: 11px;
@@ -176,11 +160,6 @@ body {
     background:
         rgba(255,255,255,0.34);
 }
-
-
-/*
-   ZERO
-*/
 
 .tick.zero {
 
@@ -192,7 +171,7 @@ body {
 
 
 /* =========================================================
-   NUMERI DELLA SCALA
+   NUMERI SCALA
 ========================================================= */
 
 .scale-label {
@@ -212,7 +191,7 @@ body {
 
     pointer-events: none;
 
-    opacity: 0.40;
+    opacity: 0.55;
 }
 
 
@@ -244,7 +223,6 @@ body {
     pointer-events: none;
 }
 
-
 .note-value {
 
     font-weight: 700;
@@ -252,15 +230,14 @@ body {
     margin-right: 7px;
 }
 
-
 .note-text {
 
-    opacity: 0.82;
+    opacity: 0.85;
 }
 
 
 /* =========================================================
-   INDICATORE CENTRALE FISSO
+   INDICATORE CENTRALE
 ========================================================= */
 
 .fixed-indicator {
@@ -304,7 +281,6 @@ body {
         filter 0.25s ease;
 }
 
-
 .rocket-part {
 
     fill: #fff;
@@ -313,7 +289,6 @@ body {
         fill 0.25s ease;
 }
 
-
 .rocket-window {
 
     fill: #000;
@@ -321,7 +296,7 @@ body {
 
 
 /* =========================================================
-   INFORMAZIONI ATTUALI
+   VALORE ATTUALE
 ========================================================= */
 
 .current-info {
@@ -341,7 +316,6 @@ body {
     pointer-events: auto;
 }
 
-
 .current-value {
 
     font-size: 22px;
@@ -355,7 +329,6 @@ body {
     transition:
         color 0.25s ease;
 }
-
 
 .current-note {
 
@@ -380,7 +353,6 @@ body {
     touch-action: auto;
 }
 
-
 .current-note::placeholder {
 
     color: #505050;
@@ -388,7 +360,7 @@ body {
 
 
 /* =========================================================
-   CAMPO VARIAZIONE
+   CONTROLLI
 ========================================================= */
 
 .controls {
@@ -415,7 +387,6 @@ body {
     z-index: 80;
 }
 
-
 .change-input {
 
     width: 175px;
@@ -439,21 +410,24 @@ body {
 
     font-weight: 600;
 
+    /*
+       TEL mantiene la tastiera
+       numerica su iPhone ma rende
+       disponibili + e -.
+    */
+
     touch-action: auto;
 }
-
 
 .change-input::placeholder {
 
     color: #505050;
 }
 
-
 .change-input:focus {
 
     border-color: #666;
 }
-
 
 .change-button {
 
@@ -473,7 +447,6 @@ body {
 
     font-weight: 700;
 }
-
 
 .change-button:active {
 
@@ -542,7 +515,6 @@ body {
     background: #000;
 }
 
-
 .start-title {
 
     margin-bottom: 8px;
@@ -551,7 +523,6 @@ body {
 
     font-weight: 700;
 }
-
 
 .start-subtitle {
 
@@ -563,7 +534,6 @@ body {
 
     text-align: center;
 }
-
 
 .start-input {
 
@@ -591,12 +561,10 @@ body {
     touch-action: auto;
 }
 
-
 .start-input::placeholder {
 
     color: #555;
 }
-
 
 .start-button {
 
@@ -618,7 +586,6 @@ body {
 
     font-weight: 700;
 }
-
 
 .hidden {
 
@@ -707,14 +674,13 @@ body {
 
 
     <!-- =====================================================
-         RAZZO + VALORE FISSI
+         RAZZO + VALORE
     ====================================================== -->
 
     <div
         id="fixedIndicator"
         class="fixed-indicator"
     >
-
 
         <svg
             id="rocket"
@@ -804,7 +770,6 @@ body {
                 0 €
             </div>
 
-
             <input
                 id="currentNote"
                 class="current-note"
@@ -820,7 +785,7 @@ body {
 
 
     <!-- =====================================================
-         CONTROLLI
+         VARIAZIONE
     ====================================================== -->
 
     <div
@@ -831,8 +796,20 @@ body {
             id="changeInput"
             class="change-input"
             type="text"
-            inputmode="decimal"
+
+            /*
+               IMPORTANTISSIMO:
+               inputmode tel = tastiera
+               numerica con + e -
+            */
+
+            inputmode="tel"
+
             autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+
             placeholder="+ / - variazione"
         >
 
@@ -859,7 +836,7 @@ body {
 
 
     <!-- =====================================================
-         SCHERMATA VALORE INIZIALE
+         START
     ====================================================== -->
 
     <div
@@ -873,23 +850,23 @@ body {
             Rocket
         </div>
 
-
         <div
             class="start-subtitle"
         >
             Inserisci il valore iniziale
         </div>
 
-
         <input
             id="startInput"
             class="start-input"
             type="text"
-            inputmode="decimal"
+            inputmode="tel"
             autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
             placeholder="Valore iniziale"
         >
-
 
         <button
             id="startButton"
@@ -1023,7 +1000,6 @@ let currentValue =
         )
     );
 
-
 let notes = {};
 
 try {
@@ -1043,49 +1019,17 @@ try {
 
 
 /* =========================================================
-   CONFIGURAZIONE SCALA
+   CONFIGURAZIONE
 ========================================================= */
-
-/*
-   IMPORTANTE:
-
-   Il valore attuale è al centro.
-
-   Possiamo vedere:
-
-       +1000 €
-          ↑
-       centro
-          ↓
-       -1000 €
-
-   Non è possibile scorrere oltre.
-*/
-
 
 const RANGE =
     1000;
 
-
-/*
-   Una tacca ogni 25 €.
-*/
-
 const TICK_STEP =
     25;
 
-
-/*
-   Una posizione ogni 25 €.
-*/
-
 const PIXELS_PER_25 =
     28;
-
-
-/*
-   Pixel per euro.
-*/
 
 const PIXELS_PER_EURO =
     PIXELS_PER_25 /
@@ -1093,7 +1037,7 @@ const PIXELS_PER_EURO =
 
 
 /* =========================================================
-   NUMERI
+   PARSING NUMERI
 ========================================================= */
 
 function parseStoredNumber(
@@ -1109,16 +1053,26 @@ function parseStoredNumber(
         return NaN;
     }
 
-
     const number =
         Number(value);
-
 
     return Number.isFinite(number)
         ? number
         : NaN;
 }
 
+
+/*
+   Questa funzione accetta:
+
+   1300
+   +1300
+   -1300
+   - 1300
+   + 1300
+   1300,50
+   -1300,50
+*/
 
 function parseInput(
     value
@@ -1134,10 +1088,7 @@ function parseInput(
 
 
     let text =
-        value
-        .trim()
-        .replace(/\s/g, "")
-        .replace(",", ".");
+        value.trim();
 
 
     if (
@@ -1148,12 +1099,63 @@ function parseInput(
     }
 
 
-    return Number(text);
+    /*
+       Togliamo gli spazi.
+    */
+
+    text =
+        text.replace(
+            /\s/g,
+            ""
+        );
+
+
+    /*
+       Virgola italiana → punto.
+    */
+
+    text =
+        text.replace(
+            ",",
+            "."
+        );
+
+
+    /*
+       Permettiamo solamente:
+
+       +
+       -
+       numeri
+       punto
+    */
+
+    const match =
+        text.match(
+            /^[+-]?\d*\.?\d+$/
+        );
+
+
+    if (
+        !match
+    ) {
+
+        return NaN;
+    }
+
+
+    const number =
+        Number(text);
+
+
+    return Number.isFinite(number)
+        ? number
+        : NaN;
 }
 
 
 /* =========================================================
-   FORMATTA EURO
+   FORMATTAZIONE
 ========================================================= */
 
 function formatValue(
@@ -1213,29 +1215,14 @@ function formatValue(
    COLORI
 ========================================================= */
 
-/*
-   REGOLA:
-
-   0       = BIANCO
-
-   POSITIVI = VERDE
-   NEGATIVI = ROSSO
-
-
-   Il colore cresce fino a 5000.
-
-   Ogni 1000 € la differenza
-   è volutamente evidente.
-*/
-
 function getValueColor(
     value
 ) {
 
 
-    /* =====================================================
-       ZERO
-    ====================================================== */
+    /*
+       ZERO = BIANCO
+    */
 
     if (
         value === 0
@@ -1246,7 +1233,8 @@ function getValueColor(
 
 
     /*
-       Limite massimo colore.
+       Il colore arriva al massimo
+       a 5000 €.
     */
 
     const amount =
@@ -1255,10 +1243,6 @@ function getValueColor(
             5000
         );
 
-
-    /*
-       Percentuale.
-    */
 
     const t =
         amount / 5000;
@@ -1272,25 +1256,9 @@ function getValueColor(
         value > 0
     ) {
 
-
-        /*
-           Verde iniziale già chiaramente
-           visibile anche con valori piccoli.
-
-           0 €
-           ↓
-           verde chiarissimo
-
-           5000 €
-           ↓
-           verde scuro brillante
-        */
-
-
         const startR = 245;
         const startG = 255;
         const startB = 245;
-
 
         const endR = 25;
         const endG = 215;
@@ -1303,13 +1271,11 @@ function getValueColor(
                 (startR - endR) * t
             );
 
-
         const g =
             Math.round(
                 startG -
                 (startG - endG) * t
             );
-
 
         const b =
             Math.round(
@@ -1330,7 +1296,6 @@ function getValueColor(
     const startG = 245;
     const startB = 245;
 
-
     const endR = 235;
     const endG = 35;
     const endB = 55;
@@ -1342,13 +1307,11 @@ function getValueColor(
             (startR - endR) * t
         );
 
-
     const g =
         Math.round(
             startG -
             (startG - endG) * t
         );
-
 
     const b =
         Math.round(
@@ -1392,29 +1355,17 @@ function updateRocketColor() {
 
 
 /* =========================================================
-   COSTRUZIONE SCALA
+   SCALA
 ========================================================= */
 
 function buildScale() {
 
+    ticks.innerHTML =
+        "";
 
-    ticks.innerHTML = "";
-    labels.innerHTML = "";
+    labels.innerHTML =
+        "";
 
-
-    const height =
-        window.innerHeight;
-
-
-    /*
-       L'intera area rappresenta:
-
-       -1000
-       fino
-       +1000
-
-       rispetto al valore attuale.
-    */
 
     const totalHeight =
         RANGE *
@@ -1427,18 +1378,9 @@ function buildScale() {
         "px";
 
 
-    /*
-       Il centro della timeline
-       corrisponde al valore attuale.
-    */
-
     const centerY =
         totalHeight / 2;
 
-
-    /*
-       Linea centrale.
-    */
 
     centerLine.style.top =
         "0px";
@@ -1447,10 +1389,6 @@ function buildScale() {
         totalHeight +
         "px";
 
-
-    /*
-       Generiamo una tacca ogni 25 €.
-    */
 
     for (
         let value =
@@ -1478,11 +1416,6 @@ function buildScale() {
             "tick";
 
 
-        /*
-           Ogni 250 €
-           tacca più evidente.
-        */
-
         if (
             value % 250 === 0
         ) {
@@ -1492,10 +1425,6 @@ function buildScale() {
             );
         }
 
-
-        /*
-           Lo zero.
-        */
 
         if (
             value === 0
@@ -1524,7 +1453,6 @@ function buildScale() {
             value % 250 === 0
         ) {
 
-
             const label =
                 document.createElement(
                     "div"
@@ -1538,11 +1466,6 @@ function buildScale() {
             label.style.top =
                 y + "px";
 
-
-            /*
-               Il valore mostrato
-               è relativo al valore attuale.
-            */
 
             const realValue =
                 currentValue +
@@ -1575,7 +1498,6 @@ function buildScale() {
 
 function drawNotes() {
 
-
     notesContainer.innerHTML =
         "";
 
@@ -1603,14 +1525,18 @@ function drawNotes() {
 
 
     /*
-       ORDINE CRESCENTE REALE.
+       ORDINE NUMERICO REALE.
 
-       Questo risolve anche il problema:
+       Esempio:
 
-       -365 viene prima di -350
-
-       perché -365 è matematicamente
-       minore di -350.
+       -3500
+       -3000
+       -2000
+       -350
+       -100
+       0
+       500
+       1300
     */
 
     entries.sort(
@@ -1627,19 +1553,8 @@ function drawNotes() {
 
 
     /*
-       Le note vengono posizionate
-       in base alla loro posizione
-       rispetto al valore attuale.
-
-       La distanza è COMPATTA:
-
-       non rappresenta realmente
-       i 250 €.
-
-       Serve soltanto a mantenere
-       l'ordine.
+       NOTE SOPRA IL RAZZO
     */
-
 
     const above =
         entries
@@ -1655,6 +1570,10 @@ function drawNotes() {
         );
 
 
+    /*
+       NOTE SOTTO IL RAZZO
+    */
+
     const below =
         entries
         .filter(
@@ -1669,16 +1588,8 @@ function drawNotes() {
         );
 
 
-    /*
-       Nota sopra.
-
-       La più vicina al valore attuale
-       è quella più vicina al razzo.
-    */
-
     above.forEach(
         (item,index) => {
-
 
             const note =
                 createNote(
@@ -1703,13 +1614,8 @@ function drawNotes() {
     );
 
 
-    /*
-       Nota sotto.
-    */
-
     below.forEach(
         (item,index) => {
-
 
             const note =
                 createNote(
@@ -1736,14 +1642,13 @@ function drawNotes() {
 
 
 /* =========================================================
-   CREA UNA NOTA
+   CREA NOTA
 ========================================================= */
 
 function createNote(
     value,
     text
 ) {
-
 
     const note =
         document.createElement(
@@ -1754,12 +1659,6 @@ function createNote(
     note.className =
         "note";
 
-
-    /*
-       Colore della nota = colore
-       della posizione in cui è stata
-       salvata.
-    */
 
     const color =
         getValueColor(
@@ -1829,7 +1728,6 @@ function createNote(
 
 function saveCurrentNote() {
 
-
     if (
         !Number.isFinite(
             currentValue
@@ -1881,7 +1779,6 @@ function saveCurrentNote() {
 
 function loadCurrentNote() {
 
-
     if (
         !Number.isFinite(
             currentValue
@@ -1905,11 +1802,10 @@ function loadCurrentNote() {
 
 
 /* =========================================================
-   AGGIORNA SCHERMATA
+   ATUALIZA TUDO
 ========================================================= */
 
 function updateDisplay() {
-
 
     currentValueElement.textContent =
         formatValue(
@@ -1930,9 +1826,7 @@ function updateDisplay() {
 
 
     /*
-       Il valore attuale deve stare
-       esattamente al centro della
-       finestra di scrolling.
+       Razzo sempre al centro.
     */
 
     requestAnimationFrame(
@@ -1951,11 +1845,10 @@ function updateDisplay() {
 
 
 /* =========================================================
-   IMPOSTA VALORE INIZIALE
+   VALORE INIZIALE
 ========================================================= */
 
 function setInitialValue() {
-
 
     const value =
         parseInput(
@@ -1984,11 +1877,8 @@ function setInitialValue() {
 
 
     /*
-       Nuovo progetto:
-
-       le note vengono azzerate
-       soltanto quando viene impostato
-       un nuovo valore iniziale.
+       Nuovo valore iniziale =
+       nuovo progetto.
     */
 
     notes = {};
@@ -2028,11 +1918,10 @@ function setInitialValue() {
 
 
 /* =========================================================
-   APPLICA VARIAZIONE
+   VARIAZIONE
 ========================================================= */
 
 function applyChange() {
-
 
     const change =
         parseInput(
@@ -2053,23 +1942,21 @@ function applyChange() {
 
 
     /*
-       Prima salviamo la nota
-       associata al valore attuale.
+       Salviamo la nota prima
+       di cambiare valore.
     */
 
     saveCurrentNote();
 
 
     /*
-       QUI il valore cambia davvero.
+       QUI AVVIENE LA VARIAZIONE.
 
        Esempio:
 
-       iniziale -3000
+       -3000 + 1000 = -2000
 
-       +1000
-
-       = -2000
+       -2000 - 500 = -2500
     */
 
     currentValue =
@@ -2099,7 +1986,6 @@ function applyChange() {
 
 function resetApp() {
 
-
     const confirmed =
         confirm(
             "Vuoi resettare tutto e inserire un nuovo valore iniziale?"
@@ -2118,11 +2004,9 @@ function resetApp() {
         START_KEY
     );
 
-
     localStorage.removeItem(
         CURRENT_KEY
     );
-
 
     localStorage.removeItem(
         NOTES_KEY
@@ -2132,10 +2016,8 @@ function resetApp() {
     startValue =
         NaN;
 
-
     currentValue =
         NaN;
-
 
     notes = {};
 
@@ -2268,7 +2150,6 @@ if (
     )
 ) {
 
-
     if (
         !Number.isFinite(
             currentValue
@@ -2289,14 +2170,12 @@ if (
 
 } else {
 
-
     startScreen.classList.remove(
         "hidden"
     );
 }
 
 </script>
-
 
 </body>
 
