@@ -2,6 +2,7 @@
 <html lang="it">
 
 <head>
+
 <meta charset="UTF-8">
 
 <meta
@@ -55,13 +56,16 @@ body {
 ===================================================== */
 
 .timeline {
+
     position: absolute;
+
     inset: 0;
 
     overflow-y: auto;
     overflow-x: hidden;
 
     -webkit-overflow-scrolling: touch;
+
     overscroll-behavior-y: contain;
 
     scrollbar-width: none;
@@ -73,18 +77,23 @@ body {
     display: none;
 }
 
+
 .timeline-content {
+
     position: relative;
+
     width: 100%;
+
     height: 2200px;
 }
 
 
 /* =====================================================
-   LINEA
+   LINEA CENTRALE
 ===================================================== */
 
 .center-line {
+
     position: absolute;
 
     left: 50%;
@@ -93,7 +102,8 @@ body {
 
     transform: translateX(-50%);
 
-    background: rgba(255,255,255,0.18);
+    background:
+        rgba(255,255,255,0.18);
 
     pointer-events: none;
 }
@@ -104,6 +114,7 @@ body {
 ===================================================== */
 
 .tick {
+
     position: absolute;
 
     left: 50%;
@@ -113,41 +124,51 @@ body {
 
     transform: translateX(-50%);
 
-    background: rgba(255,255,255,0.20);
+    background:
+        rgba(255,255,255,0.20);
 
     pointer-events: none;
 }
 
 .tick.major {
+
     width: 11px;
-    background: rgba(255,255,255,0.34);
+
+    background:
+        rgba(255,255,255,0.34);
 }
 
 .tick.zero {
+
     width: 16px;
-    background: rgba(255,255,255,0.70);
+
+    background:
+        rgba(255,255,255,0.70);
 }
 
 
 /* =====================================================
-   NUMERI SCALA
+   NUMERI DELLA SCALA
 ===================================================== */
 
 .scale-label {
+
     position: absolute;
 
     left: calc(50% - 27px);
 
-    transform: translate(-100%, -50%);
+    transform:
+        translate(-100%, -50%);
 
     white-space: nowrap;
 
     font-size: 10px;
+
     font-weight: 500;
 
-    pointer-events: none;
+    opacity: 0.65;
 
-    opacity: 0.55;
+    pointer-events: none;
 }
 
 
@@ -156,13 +177,15 @@ body {
 ===================================================== */
 
 .note {
+
     position: absolute;
 
     left: calc(50% + 30px);
 
     transform: translateY(-50%);
 
-    max-width: calc(50% - 40px);
+    max-width:
+        calc(50% - 40px);
 
     white-space: nowrap;
 
@@ -173,15 +196,21 @@ body {
     font-size: 13px;
 
     pointer-events: none;
+
+    transition:
+        top 0.2s ease;
 }
 
 .note-value {
+
     font-weight: 700;
+
     margin-right: 7px;
 }
 
 .note-text {
-    opacity: 0.85;
+
+    opacity: 0.90;
 }
 
 
@@ -190,6 +219,7 @@ body {
 ===================================================== */
 
 .fixed-indicator {
+
     position: absolute;
 
     left: 50%;
@@ -209,6 +239,7 @@ body {
 ===================================================== */
 
 .rocket {
+
     position: absolute;
 
     left: 8px;
@@ -217,62 +248,78 @@ body {
     width: 60px;
     height: 31px;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
     overflow: visible;
 
     pointer-events: none;
 
-    transition: filter 0.25s ease;
+    transition:
+        filter 0.25s ease;
 }
 
 .rocket-part {
+
     fill: #fff;
-    transition: fill 0.25s ease;
+
+    transition:
+        fill 0.25s ease;
 }
 
 .rocket-window {
+
     fill: #000;
 }
 
 
 /* =====================================================
-   VALORE + NOTA ATTUALE
+   VALORE ATTUALE
 ===================================================== */
 
 .current-info {
+
     position: absolute;
 
     left: 80px;
     top: 0;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
     display: flex;
+
     flex-direction: column;
 
     pointer-events: auto;
 }
 
 .current-value {
+
     font-size: 21px;
+
     line-height: 26px;
 
     font-weight: 700;
 
     white-space: nowrap;
 
-    transition: color 0.25s ease;
+    transition:
+        color 0.25s ease;
 }
 
 .current-note {
+
     width: 185px;
+
     height: 28px;
 
     margin-top: 1px;
+
     padding: 0;
 
     border: none;
+
     outline: none;
 
     background: transparent;
@@ -285,6 +332,7 @@ body {
 }
 
 .current-note::placeholder {
+
     color: #505050;
 }
 
@@ -294,6 +342,7 @@ body {
 ===================================================== */
 
 .controls {
+
     position: absolute;
 
     left: 50%;
@@ -304,9 +353,11 @@ body {
             env(safe-area-inset-bottom)
         );
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     display: flex;
+
     align-items: center;
 
     gap: 8px;
@@ -315,10 +366,13 @@ body {
 }
 
 .change-input {
+
     width: 175px;
+
     height: 50px;
 
-    border: 1px solid #363636;
+    border:
+        1px solid #363636;
 
     border-radius: 13px;
 
@@ -331,44 +385,50 @@ body {
     text-align: center;
 
     font-size: 18px;
+
     font-weight: 600;
 
     /*
-       TASTIERA NORMALE.
-       NON forziamo più quella numerica.
-       In questo modo puoi scrivere:
-       +1300
-       -1300
-       ecc.
+       TASTIERA NORMALE
+       per permettere + e -
     */
 
     touch-action: auto;
 }
 
 .change-input::placeholder {
+
     color: #505050;
 }
 
 .change-input:focus {
+
     border-color: #666;
 }
 
 .change-button {
+
     width: 55px;
+
     height: 50px;
 
     border: none;
+
     border-radius: 13px;
 
     background: #fff;
+
     color: #000;
 
     font-size: 15px;
+
     font-weight: 700;
 }
 
 .change-button:active {
-    transform: scale(0.96);
+
+    transform:
+        scale(0.96);
 }
 
 
@@ -377,6 +437,7 @@ body {
 ===================================================== */
 
 .reset-button {
+
     position: absolute;
 
     top:
@@ -389,9 +450,11 @@ body {
 
     height: 38px;
 
-    padding: 0 13px;
+    padding:
+        0 13px;
 
     border: none;
+
     border-radius: 11px;
 
     background: #181818;
@@ -409,6 +472,7 @@ body {
 ===================================================== */
 
 .start-screen {
+
     position: absolute;
 
     inset: 0;
@@ -420,6 +484,7 @@ body {
     flex-direction: column;
 
     justify-content: center;
+
     align-items: center;
 
     padding: 30px;
@@ -428,13 +493,16 @@ body {
 }
 
 .start-title {
+
     margin-bottom: 8px;
 
     font-size: 30px;
+
     font-weight: 700;
 }
 
 .start-subtitle {
+
     margin-bottom: 24px;
 
     color: #777;
@@ -445,51 +513,57 @@ body {
 }
 
 .start-input {
+
     width: 220px;
+
     height: 55px;
 
-    border: 1px solid #444;
+    border:
+        1px solid #444;
 
     border-radius: 14px;
 
     outline: none;
 
     background: #111;
+
     color: #fff;
 
     text-align: center;
 
     font-size: 22px;
-    font-weight: 600;
 
-    /*
-       Anche qui tastiera normale,
-       così puoi mettere eventualmente
-       un valore iniziale negativo.
-    */
+    font-weight: 600;
 }
 
 .start-input::placeholder {
+
     color: #555;
 }
 
 .start-button {
+
     width: 220px;
+
     height: 50px;
 
     margin-top: 15px;
 
     border: none;
+
     border-radius: 14px;
 
     background: #fff;
+
     color: #000;
 
     font-size: 16px;
+
     font-weight: 700;
 }
 
 .hidden {
+
     display: none !important;
 }
 
@@ -497,28 +571,35 @@ body {
 @media (max-width: 480px) {
 
     .rocket {
+
         width: 56px;
+
         height: 29px;
     }
 
     .current-info {
+
         left: 74px;
     }
 
     .current-value {
+
         font-size: 20px;
     }
 
     .current-note {
+
         width: 170px;
     }
 
     .note {
+
         font-size: 12px;
     }
 }
 
 </style>
+
 </head>
 
 
@@ -527,7 +608,9 @@ body {
 <div class="app">
 
 
-    <!-- SCROLL -->
+    <!-- =================================================
+         AREA SCORRIMENTO
+    ================================================== -->
 
     <div
         id="timeline"
@@ -555,7 +638,9 @@ body {
     </div>
 
 
-    <!-- RAZZO FISSO -->
+    <!-- =================================================
+         RAZZO FISSO
+    ================================================== -->
 
     <div
         id="fixedIndicator"
@@ -665,7 +750,9 @@ body {
     </div>
 
 
-    <!-- VARIAZIONE -->
+    <!-- =================================================
+         VARIAZIONE
+    ================================================== -->
 
     <div class="controls">
 
@@ -690,7 +777,9 @@ body {
     </div>
 
 
-    <!-- RESET -->
+    <!-- =================================================
+         RESET
+    ================================================== -->
 
     <button
         id="resetButton"
@@ -700,7 +789,9 @@ body {
     </button>
 
 
-    <!-- VALORE INIZIALE -->
+    <!-- =================================================
+         VALORE INIZIALE
+    ================================================== -->
 
     <div
         id="startScreen"
@@ -760,52 +851,84 @@ const NOTES_KEY =
 ===================================================== */
 
 const timeline =
-    document.getElementById("timeline");
+    document.getElementById(
+        "timeline"
+    );
 
 const timelineContent =
-    document.getElementById("timelineContent");
+    document.getElementById(
+        "timelineContent"
+    );
 
 const centerLine =
-    document.getElementById("centerLine");
+    document.getElementById(
+        "centerLine"
+    );
 
 const ticks =
-    document.getElementById("ticks");
+    document.getElementById(
+        "ticks"
+    );
 
 const labels =
-    document.getElementById("labels");
+    document.getElementById(
+        "labels"
+    );
 
 const notesContainer =
-    document.getElementById("notes");
+    document.getElementById(
+        "notes"
+    );
 
 const currentValueElement =
-    document.getElementById("currentValue");
+    document.getElementById(
+        "currentValue"
+    );
 
 const currentNote =
-    document.getElementById("currentNote");
+    document.getElementById(
+        "currentNote"
+    );
 
 const changeInput =
-    document.getElementById("changeInput");
+    document.getElementById(
+        "changeInput"
+    );
 
 const changeButton =
-    document.getElementById("changeButton");
+    document.getElementById(
+        "changeButton"
+    );
 
 const resetButton =
-    document.getElementById("resetButton");
+    document.getElementById(
+        "resetButton"
+    );
 
 const startScreen =
-    document.getElementById("startScreen");
+    document.getElementById(
+        "startScreen"
+    );
 
 const startInput =
-    document.getElementById("startInput");
+    document.getElementById(
+        "startInput"
+    );
 
 const startButton =
-    document.getElementById("startButton");
+    document.getElementById(
+        "startButton"
+    );
 
 const rocket =
-    document.getElementById("rocket");
+    document.getElementById(
+        "rocket"
+    );
 
 const rocketParts =
-    document.querySelectorAll(".rocket-part");
+    document.querySelectorAll(
+        ".rocket-part"
+    );
 
 
 /* =====================================================
@@ -845,11 +968,6 @@ try {
 
 /* =====================================================
    SCALA
-
-   PORTATA LEGGERMENTE OLTRE ±1000
-
-   Questo serve a non tagliare
-   il riferimento +1000 / -1000.
 ===================================================== */
 
 const RANGE = 1100;
@@ -867,7 +985,9 @@ const PIXELS_PER_EURO =
    PARSING
 ===================================================== */
 
-function parseStoredNumber(value) {
+function parseStoredNumber(
+    value
+) {
 
     if (
         value === null ||
@@ -886,22 +1006,13 @@ function parseStoredNumber(value) {
 }
 
 
-/*
-    Accetta:
-
-    1300
-    +1300
-    -1300
-    - 1300
-    + 1300
-    1300,50
-    -1300,50
-*/
-
-function parseInput(value) {
+function parseInput(
+    value
+) {
 
     if (
-        typeof value !== "string"
+        typeof value !==
+        "string"
     ) {
         return NaN;
     }
@@ -928,7 +1039,9 @@ function parseInput(value) {
         );
 
     if (
-        !/^[+-]?\d*\.?\d+$/.test(text)
+        !/^[+-]?\d*\.?\d+$/.test(
+            text
+        )
     ) {
         return NaN;
     }
@@ -943,10 +1056,12 @@ function parseInput(value) {
 
 
 /* =====================================================
-   FORMATTA EURO
+   FORMATTAZIONE
 ===================================================== */
 
-function formatValue(value) {
+function formatValue(
+    value
+) {
 
     const rounded =
         Math.round(
@@ -960,17 +1075,21 @@ function formatValue(value) {
             "it-IT",
             {
                 minimumFractionDigits:
-                    Number.isInteger(rounded)
-                        ? 0
-                        : 2,
+                    Number.isInteger(
+                        rounded
+                    )
+                    ? 0
+                    : 2,
 
-                maximumFractionDigits: 2
+                maximumFractionDigits:
+                    2
             }
         );
 
     if (
         rounded > 0
     ) {
+
         return "+" +
             absolute +
             " €";
@@ -979,6 +1098,7 @@ function formatValue(value) {
     if (
         rounded < 0
     ) {
+
         return "-" +
             absolute +
             " €";
@@ -989,98 +1109,112 @@ function formatValue(value) {
 
 
 /* =====================================================
-   COLORI
+   COLORI DEFINITI
+=====================================================
 
    0       = bianco
-   positivo = verde
-   negativo = rosso
 
-   Fino a ±5000.
+   1-1000   = livello 1
+   1001-2000 = livello 2
+   2001-3000 = livello 3
+   3001-4000 = livello 4
+   4001-5000 = livello 5
+
+   >5000 = livello 5
 ===================================================== */
 
-function getValueColor(value) {
+function getValueColor(
+    value
+) {
 
     if (
         value === 0
     ) {
-        return "rgb(255,255,255)";
+
+        return "#FFFFFF";
     }
 
-    const amount =
-        Math.min(
-            Math.abs(value),
-            5000
-        );
 
-    const t =
-        amount / 5000;
-
-
-    /* VERDE */
+    /*
+       VERDI
+    */
 
     if (
         value > 0
     ) {
 
-        const startR = 245;
-        const startG = 255;
-        const startB = 245;
+        if (
+            value <= 1000
+        ) {
 
-        const endR = 25;
-        const endG = 215;
-        const endB = 105;
+            return "#B9FFD1";
+        }
 
-        const r =
-            Math.round(
-                startR -
-                (startR - endR) * t
-            );
+        if (
+            value <= 2000
+        ) {
 
-        const g =
-            Math.round(
-                startG -
-                (startG - endG) * t
-            );
+            return "#63F08A";
+        }
 
-        const b =
-            Math.round(
-                startB -
-                (startB - endB) * t
-            );
+        if (
+            value <= 3000
+        ) {
 
-        return `rgb(${r},${g},${b})`;
+            return "#20D966";
+        }
+
+        if (
+            value <= 4000
+        ) {
+
+            return "#0BC955";
+        }
+
+        return "#00A943";
     }
 
 
-    /* ROSSO */
+    /*
+       ROSSI
 
-    const startR = 255;
-    const startG = 245;
-    const startB = 245;
+       Più si scende,
+       più il rosso diventa evidente.
+    */
 
-    const endR = 235;
-    const endG = 35;
-    const endB = 55;
+    const amount =
+        Math.abs(value);
 
-    const r =
-        Math.round(
-            startR -
-            (startR - endR) * t
-        );
 
-    const g =
-        Math.round(
-            startG -
-            (startG - endG) * t
-        );
+    if (
+        amount <= 1000
+    ) {
 
-    const b =
-        Math.round(
-            startB -
-            (startB - endB) * t
-        );
+        return "#FFB8C0";
+    }
 
-    return `rgb(${r},${g},${b})`;
+    if (
+        amount <= 2000
+    ) {
+
+        return "#FF6F7D";
+    }
+
+    if (
+        amount <= 3000
+    ) {
+
+        return "#F83E50";
+    }
+
+    if (
+        amount <= 4000
+    ) {
+
+        return "#E82035";
+    }
+
+    return "#C90020";
 }
 
 
@@ -1097,6 +1231,7 @@ function updateRocketColor() {
 
     rocketParts.forEach(
         part => {
+
             part.style.fill =
                 color;
         }
@@ -1106,35 +1241,44 @@ function updateRocketColor() {
         color;
 
     rocket.style.filter =
-        `drop-shadow(0 0 8px ${color})`;
+        `drop-shadow(
+            0 0 8px ${color}
+        )`;
 }
 
 
 /* =====================================================
-   COSTRUISCI SCALA
+   COSTRUZIONE SCALA
 ===================================================== */
 
 function buildScale() {
 
     ticks.innerHTML = "";
+
     labels.innerHTML = "";
+
 
     const totalHeight =
         RANGE *
         2 *
         PIXELS_PER_EURO;
 
+
     timelineContent.style.height =
-        totalHeight + "px";
+        totalHeight +
+        "px";
+
 
     const centerY =
         totalHeight / 2;
+
 
     centerLine.style.top =
         "0px";
 
     centerLine.style.height =
-        totalHeight + "px";
+        totalHeight +
+        "px";
 
 
     for (
@@ -1151,10 +1295,10 @@ function buildScale() {
             PIXELS_PER_EURO;
 
 
-        /* TACCA */
-
         const tick =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         tick.className =
             "tick";
@@ -1163,6 +1307,7 @@ function buildScale() {
         if (
             value % 250 === 0
         ) {
+
             tick.classList.add(
                 "major"
             );
@@ -1172,6 +1317,7 @@ function buildScale() {
         if (
             value === 0
         ) {
+
             tick.classList.add(
                 "zero"
             );
@@ -1179,14 +1325,18 @@ function buildScale() {
 
 
         tick.style.top =
-            y + "px";
+            y +
+            "px";
+
 
         ticks.appendChild(
             tick
         );
 
 
-        /* NUMERO */
+        /*
+           Etichette ogni 250.
+        */
 
         if (
             value % 250 === 0
@@ -1201,7 +1351,8 @@ function buildScale() {
                 "scale-label";
 
             label.style.top =
-                y + "px";
+                y +
+                "px";
 
 
             const realValue =
@@ -1238,14 +1389,18 @@ function drawNotes() {
     notesContainer.innerHTML =
         "";
 
+
     const entries =
         Object.entries(
             notes
         )
         .map(
             ([value, text]) => ({
-                value: Number(value),
-                text: String(text)
+                value:
+                    Number(value),
+
+                text:
+                    String(text)
             })
         )
         .filter(
@@ -1257,11 +1412,17 @@ function drawNotes() {
 
 
     /*
-       ORDINE MATEMATICO.
+       ORDINE NUMERICO REALE.
 
-       -365
-       viene prima di
-       -350.
+       Esempio:
+
+       -1000
+       -700
+       -400
+       0
+       +400
+       +700
+       +1000
     */
 
     entries.sort(
@@ -1277,43 +1438,44 @@ function drawNotes() {
 
 
     /*
-       NOTE SOPRA
+       ==================================================
+       IMPORTANTE
+
+       La posizione viene calcolata usando:
+
+       currentValue - noteValue
+
+       NON Math.abs()
+
+       Se:
+
+       current = -700
+       note    = -400
+
+       -400 è maggiore di -700
+       quindi deve stare SOPRA.
+
+       Se:
+
+       current = -700
+       note    = -1000
+
+       -1000 è minore di -700
+       quindi deve stare SOTTO.
+       ==================================================
     */
 
-    const above =
-        entries
-        .filter(
-            item =>
-                item.value >
+
+    entries.forEach(
+        item => {
+
+            if (
+                item.value ===
                 currentValue
-        )
-        .sort(
-            (a,b) =>
-                b.value -
-                a.value
-        );
+            ) {
+                return;
+            }
 
-
-    /*
-       NOTE SOTTO
-    */
-
-    const below =
-        entries
-        .filter(
-            item =>
-                item.value <
-                currentValue
-        )
-        .sort(
-            (a,b) =>
-                b.value -
-                a.value
-        );
-
-
-    above.forEach(
-        (item, index) => {
 
             const note =
                 createNote(
@@ -1321,35 +1483,32 @@ function drawNotes() {
                     item.text
                 );
 
+
+            /*
+               Questa è la parte fondamentale.
+
+               Valore maggiore
+               -> posizione più in alto.
+
+               Valore minore
+               -> posizione più in basso.
+            */
+
+            const difference =
+                item.value -
+                currentValue;
+
+
+            const y =
+                centerY -
+                difference *
+                PIXELS_PER_EURO;
+
+
             note.style.top =
-                (
-                    centerY -
-                    55 -
-                    index * 44
-                ) + "px";
+                y +
+                "px";
 
-            notesContainer.appendChild(
-                note
-            );
-        }
-    );
-
-
-    below.forEach(
-        (item, index) => {
-
-            const note =
-                createNote(
-                    item.value,
-                    item.text
-                );
-
-            note.style.top =
-                (
-                    centerY +
-                    55 +
-                    index * 44
-                ) + "px";
 
             notesContainer.appendChild(
                 note
@@ -1377,10 +1536,16 @@ function createNote(
         "note";
 
 
+    /*
+       La nota mantiene
+       il colore del suo valore.
+    */
+
     const color =
         getValueColor(
             value
         );
+
 
     note.style.color =
         color;
@@ -1482,7 +1647,7 @@ function saveCurrentNote() {
 
 
 /* =====================================================
-   CARICA NOTA
+   CARICA NOTA ATTUALE
 ===================================================== */
 
 function loadCurrentNote() {
@@ -1510,7 +1675,7 @@ function loadCurrentNote() {
 
 
 /* =====================================================
-   AGGIORNA SCHERMATA
+   AGGIORNAMENTO SCHERMATA
 ===================================================== */
 
 function updateDisplay() {
@@ -1519,6 +1684,7 @@ function updateDisplay() {
         formatValue(
             currentValue
         );
+
 
     updateRocketColor();
 
@@ -1530,8 +1696,8 @@ function updateDisplay() {
 
 
     /*
-       Il razzo rimane sempre
-       al centro.
+       Il razzo rimane
+       sempre al centro.
     */
 
     requestAnimationFrame(
@@ -1637,20 +1803,21 @@ function applyChange() {
 
 
     /*
-       Salva prima la nota
-       del valore attuale.
+       Prima salviamo
+       la nota del valore
+       attuale.
     */
 
     saveCurrentNote();
 
 
     /*
+       Aggiungiamo la variazione.
+
        Esempio:
 
-       valore = -3000
-       variazione = +1000
-
-       risultato = -2000
+       -700 + 300 = -400
+       -700 - 300 = -1000
     */
 
     currentValue =
@@ -1732,7 +1899,9 @@ function resetApp() {
 
     setTimeout(
         () => {
+
             startInput.focus();
+
         },
         100
     );
@@ -1754,8 +1923,10 @@ startInput.addEventListener(
     event => {
 
         if (
-            event.key === "Enter"
+            event.key ===
+            "Enter"
         ) {
+
             setInitialValue();
         }
     }
@@ -1773,8 +1944,10 @@ changeInput.addEventListener(
     event => {
 
         if (
-            event.key === "Enter"
+            event.key ===
+            "Enter"
         ) {
+
             applyChange();
         }
     }
@@ -1792,7 +1965,8 @@ currentNote.addEventListener(
     event => {
 
         if (
-            event.key === "Enter"
+            event.key ===
+            "Enter"
         ) {
 
             saveCurrentNote();
@@ -1809,10 +1983,6 @@ resetButton.addEventListener(
 );
 
 
-/* =====================================================
-   RESIZE
-===================================================== */
-
 window.addEventListener(
     "resize",
     () => {
@@ -1822,6 +1992,7 @@ window.addEventListener(
                 currentValue
             )
         ) {
+
             updateDisplay();
         }
     }
@@ -1843,6 +2014,7 @@ if (
             currentValue
         )
     ) {
+
         currentValue =
             startValue;
     }
