@@ -386,7 +386,12 @@ body {
 .rocket {
     position: absolute;
 
-    left: 8px;
+    /*
+       IL RAZZO È SEMPRE
+       A SINISTRA DELLA LINEA
+    */
+    left: -68px;
+
     top: 0;
 
     width: 58px;
@@ -417,7 +422,12 @@ body {
 .current-info {
     position: absolute;
 
-    left: 76px;
+    /*
+       IL VALORE RESTA
+       A DESTRA DEL RAZZO
+    */
+    left: 8px;
+
     top: 0;
 
     transform: translateY(-50%);
@@ -667,6 +677,8 @@ body {
 <div class="app">
 
 
+    <!-- SCALA -->
+
     <div
         id="timeline"
         class="timeline"
@@ -709,7 +721,7 @@ body {
     </button>
 
 
-    <!-- STORICO -->
+    <!-- STORICO OPERAZIONI -->
 
     <div
         id="historyLayer"
@@ -717,7 +729,7 @@ body {
     ></div>
 
 
-    <!-- RAZZO -->
+    <!-- RAZZO CENTRALE -->
 
     <div
         id="fixedIndicator"
@@ -1059,7 +1071,7 @@ try {
 
 
 /* =====================================================
-   PARAMETRI
+   PARAMETRI SCALA
 ===================================================== */
 
 const DISPLAY_RANGE = 1100;
@@ -1073,7 +1085,7 @@ const PIXELS_PER_EURO =
 
 
 /* =====================================================
-   PARSE
+   PARSE NUMERI
 ===================================================== */
 
 function parseNumber(value) {
@@ -1095,16 +1107,6 @@ function parseNumber(value) {
     text =
         text.replace(/\s/g, "");
 
-    /*
-       Permette:
-
-       1000
-       1.000
-       1,5
-       +500
-       -500
-    */
-
     if (
         text.includes(",")
     ) {
@@ -1116,12 +1118,6 @@ function parseNumber(value) {
             text.replace(",", ".");
 
     } else {
-
-        /*
-           Se non c'è la virgola,
-           il punto viene considerato
-           separatore delle migliaia.
-        */
 
         text =
             text.replace(/\./g, "");
@@ -1269,7 +1265,7 @@ function updateColor() {
 
 
 /* =====================================================
-   SCALA
+   COSTRUZIONE SCALA
 ===================================================== */
 
 function buildScale() {
@@ -1417,6 +1413,7 @@ function drawHistory() {
             note.style.color =
                 color;
 
+
             note.addEventListener(
                 "input",
                 () => {
@@ -1445,16 +1442,16 @@ function drawHistory() {
             deleteButton.textContent =
                 "×";
 
+
             deleteButton.addEventListener(
                 "click",
                 () => {
 
-                    const confirmed =
-                        confirm(
+                    if (
+                        !confirm(
                             "Eliminare questa operazione?"
-                        );
-
-                    if (!confirmed) {
+                        )
+                    ) {
                         return;
                     }
 
@@ -1532,17 +1529,10 @@ function drawGoals() {
                 currentValue;
 
 
-            /*
-               Se l'obiettivo è oltre
-               la zona di ±1100 non viene
-               visualizzato.
-            */
-
             if (
                 Math.abs(difference) >
                 DISPLAY_RANGE
             ) {
-
                 return;
             }
 
@@ -1571,13 +1561,11 @@ function drawGoals() {
 
 
             /*
-               Posizione sulla scala.
+               Cible supérieure :
+               elle apparaît au-dessus.
 
-               Se target è maggiore
-               dell'attuale, va sopra.
-
-               Se target è minore,
-               va sotto.
+               Cible inférieure :
+               elle apparaît en dessous.
             */
 
             const y =
@@ -1710,7 +1698,6 @@ function addGoal() {
         name === null ||
         name.trim() === ""
     ) {
-
         return;
     }
 
@@ -1722,11 +1709,9 @@ function addGoal() {
             Math.random(),
 
         target:
-
             target,
 
         name:
-
             name.trim()
     });
 
@@ -1738,7 +1723,7 @@ function addGoal() {
 
 
 /* =====================================================
-   AGGIORNA NOTA TEMPORANEA
+   NOTA CORRENTE
 ===================================================== */
 
 function clearCurrentNote() {
@@ -1783,19 +1768,10 @@ function applyChange() {
 
 
     /*
-       Ogni variazione crea
-       SEMPRE una nuova voce.
+       OGNI OPERAZIONE È INDIPENDENTE.
 
-       Non cerchiamo un valore già
-       esistente.
-
-       Quindi posso fare:
-
-       0 → 1000
-       1000 → 500
-       500 → 1000
-
-       e avremo 3 operazioni diverse.
+       Anche se torno allo stesso valore,
+       viene creata una nuova voce.
     */
 
     history.push({
@@ -1921,7 +1897,7 @@ function resetApp() {
 
 
 /* =====================================================
-   AGGIORNA DISPLAY
+   AGGIORNA SCHERMATA
 ===================================================== */
 
 function updateDisplay() {
@@ -1942,9 +1918,11 @@ function updateDisplay() {
 
 
     /*
-       Manteniamo il razzo
-       sempre perfettamente
-       al centro della schermata.
+       IL RAZZO NON SI MUOVE.
+
+       È sempre al centro dello schermo.
+       Si sposta soltanto la scala sotto
+       quando l'utente effettua lo scroll.
     */
 
     requestAnimationFrame(
@@ -1965,7 +1943,7 @@ function updateDisplay() {
 
 
 /* =====================================================
-   IMPOSTA VALORE INIZIALE
+   VALORE INIZIALE
 ===================================================== */
 
 function setInitialValue() {
@@ -2038,7 +2016,6 @@ startInput.addEventListener(
         if (
             event.key === "Enter"
         ) {
-
             setInitialValue();
         }
     }
@@ -2058,7 +2035,6 @@ changeInput.addEventListener(
         if (
             event.key === "Enter"
         ) {
-
             applyChange();
         }
     }
