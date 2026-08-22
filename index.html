@@ -194,7 +194,7 @@ body {
 
 
 /* =====================================================
-   OBIETTIVI
+   OBIETTIVI A SINISTRA
 ===================================================== */
 
 .goals-layer {
@@ -203,7 +203,7 @@ body {
 
     top: 50%;
 
-    left: 10px;
+    left: 7px;
 
     width: calc(50% - 45px);
 
@@ -272,12 +272,10 @@ body {
 
 .goal-delete {
 
-    float: left;
+    float: right;
 
     width: 19px;
     height: 19px;
-
-    margin-right: 5px;
 
     padding: 0;
 
@@ -297,6 +295,114 @@ body {
 }
 
 .goal-delete:active {
+
+    transform:
+        scale(0.9);
+}
+
+
+/* =====================================================
+   NOTE A DESTRA
+===================================================== */
+
+.notes-layer {
+
+    position: absolute;
+
+    top: 50%;
+
+    right: 7px;
+
+    width: calc(50% - 40px);
+
+    max-height: 58vh;
+
+    transform:
+        translateY(-50%);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: none;
+
+    z-index: 50;
+
+    pointer-events: auto;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+.notes-layer::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* =====================================================
+   NOTA SINGOLA
+===================================================== */
+
+.note {
+
+    width: 100%;
+
+    margin-bottom: 14px;
+
+    padding-bottom: 10px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    font-size: 12px;
+
+    line-height: 16px;
+
+    word-break: break-word;
+
+    user-select: none;
+
+    -webkit-user-select: none;
+}
+
+.note-value {
+
+    display: inline-block;
+
+    margin-right: 5px;
+
+    font-weight: 700;
+}
+
+.note-text {
+
+    opacity: 0.90;
+}
+
+.note-delete {
+
+    float: right;
+
+    width: 19px;
+    height: 19px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #1b1b1b;
+
+    color: #777;
+
+    font-size: 11px;
+
+    line-height: 19px;
+
+    text-align: center;
+}
+
+.note-delete:active {
 
     transform:
         scale(0.9);
@@ -373,7 +479,7 @@ body {
 
     flex-direction: column;
 
-    pointer-events: auto;
+    pointer-events: none;
 }
 
 .current-value {
@@ -412,11 +518,22 @@ body {
 
     display: flex;
 
+    flex-direction: column;
+
     align-items: center;
 
     gap: 8px;
 
     z-index: 80;
+}
+
+.change-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
 }
 
 .change-input {
@@ -449,18 +566,12 @@ body {
     color: #555;
 }
 
-.change-note {
-
-    position: absolute;
+.note-input {
 
     width: 175px;
     height: 49px;
 
     padding: 0 12px;
-
-    left: 0;
-
-    top: 57px;
 
     border:
         1px solid #333;
@@ -475,12 +586,12 @@ body {
 
     text-align: center;
 
-    font-size: 17px;
+    font-size: 15px;
 
-    font-weight: 600;
+    font-weight: 500;
 }
 
-.change-note::placeholder {
+.note-input::placeholder {
 
     color: #555;
 }
@@ -511,10 +622,10 @@ body {
 
 
 /* =====================================================
-   PLUS OBIETTIVI
+   PULSANTE +
 ===================================================== */
 
-.add-goal-button {
+.plus-button {
 
     position: absolute;
 
@@ -526,143 +637,34 @@ body {
 
     left: 12px;
 
-    width: 37px;
-    height: 37px;
+    width: 42px;
+    height: 42px;
 
     padding: 0;
 
     border: none;
 
-    border-radius: 11px;
+    border-radius: 12px;
 
     background: #181818;
 
     color: #fff;
 
-    font-size: 25px;
+    font-size: 27px;
 
-    font-weight: 400;
+    font-weight: 300;
 
-    line-height: 37px;
+    line-height: 42px;
 
     text-align: center;
 
     z-index: 90;
 }
 
-.add-goal-button:active {
+.plus-button:active {
 
     transform:
         scale(0.94);
-}
-
-
-/* =====================================================
-   FINESTRA NUOVO OBIETTIVO
-===================================================== */
-
-.goal-modal {
-
-    position: absolute;
-
-    top: 60px;
-    left: 12px;
-
-    width: 220px;
-
-    padding: 14px;
-
-    border:
-        1px solid #333;
-
-    border-radius: 14px;
-
-    background: #111;
-
-    z-index: 95;
-}
-
-.goal-modal-title {
-
-    margin-bottom: 10px;
-
-    font-size: 15px;
-
-    font-weight: 700;
-}
-
-.goal-input {
-
-    width: 100%;
-    height: 42px;
-
-    margin-bottom: 8px;
-
-    padding: 0 10px;
-
-    border:
-        1px solid #333;
-
-    border-radius: 11px;
-
-    outline: none;
-
-    background: #000;
-
-    color: #fff;
-
-    font-size: 15px;
-}
-
-.goal-input::placeholder {
-
-    color: #555;
-}
-
-.goal-name-input {
-
-    width: 100%;
-    height: 42px;
-
-    margin-bottom: 10px;
-
-    padding: 0 10px;
-
-    border:
-        1px solid #333;
-
-    border-radius: 11px;
-
-    outline: none;
-
-    background: #000;
-
-    color: #fff;
-
-    font-size: 15px;
-}
-
-.goal-name-input::placeholder {
-
-    color: #555;
-}
-
-.goal-save-button {
-
-    width: 100%;
-    height: 42px;
-
-    border: none;
-
-    border-radius: 11px;
-
-    background: #fff;
-
-    color: #000;
-
-    font-size: 15px;
-
-    font-weight: 700;
 }
 
 
@@ -697,6 +699,132 @@ body {
     font-size: 13px;
 
     z-index: 90;
+}
+
+
+/* =====================================================
+   MODALE OBIETTIVO
+===================================================== */
+
+.goal-modal {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 200;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    background:
+        rgba(0,0,0,0.72);
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+}
+
+.goal-box {
+
+    width: min(
+        330px,
+        calc(100vw - 50px)
+    );
+
+    padding: 22px;
+
+    border:
+        1px solid #292929;
+
+    border-radius: 18px;
+
+    background: #111;
+}
+
+.goal-title {
+
+    margin-bottom: 17px;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+.goal-input {
+
+    width: 100%;
+    height: 49px;
+
+    margin-bottom: 9px;
+
+    padding: 0 13px;
+
+    border:
+        1px solid #333;
+
+    border-radius: 13px;
+
+    outline: none;
+
+    background: #080808;
+
+    color: #fff;
+
+    font-size: 16px;
+
+    text-align: center;
+}
+
+.goal-input::placeholder {
+
+    color: #555;
+}
+
+.goal-actions {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 6px;
+}
+
+.goal-cancel,
+.goal-save {
+
+    flex: 1;
+
+    height: 47px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+.goal-cancel {
+
+    background: #202020;
+
+    color: #aaa;
+}
+
+.goal-save {
+
+    background: #fff;
+
+    color: #000;
 }
 
 
@@ -827,10 +955,20 @@ body {
 
         left: 7px;
 
-        width: calc(50% - 40px);
+        width:
+            calc(50% - 40px);
     }
 
-    .goal-item {
+    .notes-layer {
+
+        right: 7px;
+
+        width:
+            calc(50% - 40px);
+    }
+
+    .goal-item,
+    .note {
 
         font-size: 11px;
 
@@ -887,6 +1025,16 @@ body {
     <div
         id="goalsLayer"
         class="goals-layer"
+    ></div>
+
+
+    <!-- =================================================
+         NOTE
+    ================================================= -->
+
+    <div
+        id="notesLayer"
+        class="notes-layer"
     ></div>
 
 
@@ -983,94 +1131,40 @@ body {
 
 
     <!-- =================================================
-         PLUS
-    ================================================= -->
-
-    <button
-        id="addGoalButton"
-        class="add-goal-button"
-    >
-        +
-    </button>
-
-
-    <!-- =================================================
-         NUOVO OBIETTIVO
-    ================================================= -->
-
-    <div
-        id="goalModal"
-        class="goal-modal hidden"
-    >
-
-        <div
-            class="goal-modal-title"
-        >
-            Nuovo obiettivo
-        </div>
-
-        <input
-            id="goalInput"
-            class="goal-input"
-            type="text"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            placeholder="Cifra"
-        >
-
-        <input
-            id="goalNameInput"
-            class="goal-name-input"
-            type="text"
-            maxlength="100"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            placeholder="Nome obiettivo"
-        >
-
-        <button
-            id="goalSaveButton"
-            class="goal-save-button"
-        >
-            Aggiungi
-        </button>
-
-    </div>
-
-
-    <!-- =================================================
-         VARIAZIONE
+         CONTROLLI
     ================================================= -->
 
     <div
         class="controls"
     >
 
-        <input
-            id="changeInput"
-            class="change-input"
-            type="text"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            placeholder="+ / - variazione"
+        <div
+            class="change-row"
         >
 
-        <button
-            id="changeButton"
-            class="change-button"
-        >
-            OK
-        </button>
+            <input
+                id="changeInput"
+                class="change-input"
+                type="text"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                placeholder="+ / - variazione"
+            >
+
+            <button
+                id="changeButton"
+                class="change-button"
+            >
+                OK
+            </button>
+
+        </div>
 
         <input
-            id="changeNote"
-            class="change-note"
+            id="noteInput"
+            class="note-input"
             type="text"
             maxlength="100"
             autocomplete="off"
@@ -1081,6 +1175,19 @@ body {
         >
 
     </div>
+
+
+    <!-- =================================================
+         PULSANTE +
+    ================================================= -->
+
+    <button
+        id="plusButton"
+        class="plus-button"
+        aria-label="Aggiungi obiettivo"
+    >
+        +
+    </button>
 
 
     <!-- =================================================
@@ -1096,7 +1203,74 @@ body {
 
 
     <!-- =================================================
-         SCHERMATA INIZIALE
+         MODALE OBIETTIVO
+    ================================================= -->
+
+    <div
+        id="goalModal"
+        class="goal-modal hidden"
+    >
+
+        <div
+            class="goal-box"
+        >
+
+            <div
+                class="goal-title"
+            >
+                Nuovo obiettivo
+            </div>
+
+            <input
+                id="goalValueInput"
+                class="goal-input"
+                type="text"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                placeholder="Cifra"
+            >
+
+            <input
+                id="goalNameInput"
+                class="goal-input"
+                type="text"
+                maxlength="100"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                placeholder="Nome obiettivo"
+            >
+
+            <div
+                class="goal-actions"
+            >
+
+                <button
+                    id="goalCancel"
+                    class="goal-cancel"
+                >
+                    Annulla
+                </button>
+
+                <button
+                    id="goalSave"
+                    class="goal-save"
+                >
+                    Salva
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         VALORE INIZIALE
     ================================================= -->
 
     <div
@@ -1148,9 +1322,7 @@ body {
 document.addEventListener(
     "gesturestart",
     function(event) {
-
         event.preventDefault();
-
     },
     {
         passive: false
@@ -1160,9 +1332,7 @@ document.addEventListener(
 document.addEventListener(
     "gesturechange",
     function(event) {
-
         event.preventDefault();
-
     },
     {
         passive: false
@@ -1172,9 +1342,7 @@ document.addEventListener(
 document.addEventListener(
     "gestureend",
     function(event) {
-
         event.preventDefault();
-
     },
     {
         passive: false
@@ -1188,9 +1356,7 @@ document.addEventListener(
         if (
             event.touches.length > 1
         ) {
-
             event.preventDefault();
-
         }
 
     },
@@ -1210,8 +1376,8 @@ const START_KEY =
 const CURRENT_KEY =
     "rocket_current_value_v8";
 
-const HISTORY_KEY =
-    "rocket_history_v8";
+const NOTES_KEY =
+    "rocket_notes_v8";
 
 const GOALS_KEY =
     "rocket_goals_v8";
@@ -1246,6 +1412,11 @@ const goalsLayer =
         "goalsLayer"
     );
 
+const notesLayer =
+    document.getElementById(
+        "notesLayer"
+    );
+
 const currentValueElement =
     document.getElementById(
         "currentValue"
@@ -1256,9 +1427,9 @@ const changeInput =
         "changeInput"
     );
 
-const changeNote =
+const noteInput =
     document.getElementById(
-        "changeNote"
+        "noteInput"
     );
 
 const changeButton =
@@ -1266,14 +1437,14 @@ const changeButton =
         "changeButton"
     );
 
+const plusButton =
+    document.getElementById(
+        "plusButton"
+    );
+
 const resetButton =
     document.getElementById(
         "resetButton"
-    );
-
-const addGoalButton =
-    document.getElementById(
-        "addGoalButton"
     );
 
 const goalModal =
@@ -1281,9 +1452,9 @@ const goalModal =
         "goalModal"
     );
 
-const goalInput =
+const goalValueInput =
     document.getElementById(
-        "goalInput"
+        "goalValueInput"
     );
 
 const goalNameInput =
@@ -1291,9 +1462,14 @@ const goalNameInput =
         "goalNameInput"
     );
 
-const goalSaveButton =
+const goalCancel =
     document.getElementById(
-        "goalSaveButton"
+        "goalCancel"
+    );
+
+const goalSave =
+    document.getElementById(
+        "goalSave"
     );
 
 const startScreen =
@@ -1336,8 +1512,7 @@ const PIXELS_PER_STEP =
     27;
 
 const PIXELS_PER_EURO =
-    PIXELS_PER_STEP /
-    STEP;
+    PIXELS_PER_STEP / STEP;
 
 
 /* =====================================================
@@ -1350,28 +1525,23 @@ function parseNumber(value) {
         value === null ||
         value === undefined
     ) {
-
         return NaN;
     }
 
     let text =
         String(value).trim();
 
-
     if (
         text === ""
     ) {
-
         return NaN;
     }
-
 
     text =
         text.replace(
             /\s/g,
             ""
         );
-
 
     if (
         text.includes(",")
@@ -1398,10 +1568,8 @@ function parseNumber(value) {
             );
     }
 
-
     const number =
         Number(text);
-
 
     return Number.isFinite(number)
         ? number
@@ -1420,7 +1588,6 @@ function formatValue(value) {
             value * 100
         ) / 100;
 
-
     const absolute =
         Math.abs(rounded)
             .toLocaleString(
@@ -1431,7 +1598,6 @@ function formatValue(value) {
                 }
             );
 
-
     if (
         rounded > 0
     ) {
@@ -1441,7 +1607,6 @@ function formatValue(value) {
             " €";
     }
 
-
     if (
         rounded < 0
     ) {
@@ -1450,7 +1615,6 @@ function formatValue(value) {
             absolute +
             " €";
     }
-
 
     return "0 €";
 }
@@ -1465,7 +1629,6 @@ function getValueColor(value) {
     if (
         value === 0
     ) {
-
         return "#FFFFFF";
     }
 
@@ -1477,28 +1640,24 @@ function getValueColor(value) {
         if (
             value <= 1000
         ) {
-
             return "#B8FFD0";
         }
 
         if (
             value <= 2000
         ) {
-
             return "#62F28A";
         }
 
         if (
             value <= 3000
         ) {
-
             return "#20DD65";
         }
 
         if (
             value <= 4000
         ) {
-
             return "#08C951";
         }
 
@@ -1513,28 +1672,24 @@ function getValueColor(value) {
     if (
         amount <= 1000
     ) {
-
         return "#FFB9C0";
     }
 
     if (
         amount <= 2000
     ) {
-
         return "#FF6877";
     }
 
     if (
         amount <= 3000
     ) {
-
         return "#F8374C";
     }
 
     if (
         amount <= 4000
     ) {
-
         return "#E91E35";
     }
 
@@ -1559,7 +1714,6 @@ function updateColor() {
 
             part.style.fill =
                 color;
-
         }
     );
 
@@ -1609,7 +1763,6 @@ function buildScale() {
         currentValue -
         DISPLAY_RANGE;
 
-
     const maximumValue =
         currentValue +
         DISPLAY_RANGE;
@@ -1638,7 +1791,6 @@ function buildScale() {
             STEP
     ) {
 
-
         const difference =
             scaleValue -
             currentValue;
@@ -1656,7 +1808,6 @@ function buildScale() {
             document.createElement(
                 "div"
             );
-
 
         tick.className =
             "tick";
@@ -1700,26 +1851,21 @@ function buildScale() {
                     "div"
                 );
 
-
             label.className =
                 "scale-label";
 
-
             label.style.top =
                 `${y}px`;
-
 
             label.textContent =
                 formatValue(
                     scaleValue
                 );
 
-
             label.style.color =
                 getValueColor(
                     scaleValue
                 );
-
 
             labels.appendChild(
                 label
@@ -1730,8 +1876,301 @@ function buildScale() {
 
 
 /* =====================================================
+   CREA NOTA
+===================================================== */
+
+function createNote(
+    value,
+    text,
+    index
+) {
+
+    const note =
+        document.createElement(
+            "div"
+        );
+
+    note.className =
+        "note";
+
+
+    const color =
+        getValueColor(
+            value
+        );
+
+
+    note.style.color =
+        color;
+
+
+    const valueElement =
+        document.createElement(
+            "span"
+        );
+
+    valueElement.className =
+        "note-value";
+
+    valueElement.textContent =
+        formatValue(
+            value
+        );
+
+    valueElement.style.color =
+        color;
+
+
+    const textElement =
+        document.createElement(
+            "span"
+        );
+
+    textElement.className =
+        "note-text";
+
+    textElement.textContent =
+        text;
+
+    textElement.style.color =
+        color;
+
+
+    const deleteButton =
+        document.createElement(
+            "button"
+        );
+
+    deleteButton.className =
+        "note-delete";
+
+    deleteButton.textContent =
+        "×";
+
+
+    deleteButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+            deleteNote(
+                index
+            );
+
+        }
+    );
+
+
+    note.appendChild(
+        valueElement
+    );
+
+    note.appendChild(
+        textElement
+    );
+
+    note.appendChild(
+        deleteButton
+    );
+
+
+    return note;
+}
+
+
+/* =====================================================
+   DISEGNA NOTE
+===================================================== */
+
+function drawNotes() {
+
+    notesLayer.innerHTML =
+        "";
+
+
+    notes.forEach(
+        (entry, index) => {
+
+            const note =
+                createNote(
+                    entry.value,
+                    entry.text,
+                    index
+                );
+
+
+            notesLayer.appendChild(
+                note
+            );
+        }
+    );
+}
+
+
+/* =====================================================
+   ELIMINA NOTA
+===================================================== */
+
+function deleteNote(index) {
+
+    if (
+        index < 0 ||
+        index >= notes.length
+    ) {
+        return;
+    }
+
+
+    notes.splice(
+        index,
+        1
+    );
+
+
+    saveNotes();
+
+    drawNotes();
+}
+
+
+/* =====================================================
+   SALVA NOTE
+===================================================== */
+
+function saveNotes() {
+
+    localStorage.setItem(
+        NOTES_KEY,
+        JSON.stringify(
+            notes
+        )
+    );
+}
+
+
+/* =====================================================
+   CREA OBIETTIVO
+===================================================== */
+
+function createGoal(
+    value,
+    name,
+    index
+) {
+
+    const item =
+        document.createElement(
+            "div"
+        );
+
+    item.className =
+        "goal-item";
+
+
+    const color =
+        getValueColor(
+            value
+        );
+
+
+    item.style.color =
+        color;
+
+
+    const valueElement =
+        document.createElement(
+            "span"
+        );
+
+    valueElement.className =
+        "goal-value";
+
+    valueElement.textContent =
+        formatValue(
+            value
+        );
+
+    valueElement.style.color =
+        color;
+
+
+    const nameElement =
+        document.createElement(
+            "span"
+        );
+
+    nameElement.className =
+        "goal-text";
+
+    nameElement.textContent =
+        name;
+
+    nameElement.style.color =
+        color;
+
+
+    const deleteButton =
+        document.createElement(
+            "button"
+        );
+
+    deleteButton.className =
+        "goal-delete";
+
+    deleteButton.textContent =
+        "×";
+
+
+    deleteButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+            deleteGoal(
+                index
+            );
+
+        }
+    );
+
+
+    item.appendChild(
+        valueElement
+    );
+
+    item.appendChild(
+        nameElement
+    );
+
+    item.appendChild(
+        deleteButton
+    );
+
+
+    return item;
+}
+
+
+/* =====================================================
    DISEGNA OBIETTIVI
 ===================================================== */
+
+/*
+   Gli obiettivi sono sempre
+   ordinati numericamente.
+
+   Esempio:
+
+   -500
+   -200
+   0
+   200
+   500
+
+   NON in ordine di inserimento.
+*/
 
 function drawGoals() {
 
@@ -1739,27 +2178,34 @@ function drawGoals() {
         "";
 
 
-    /*
-       ORDINE NUMERICO.
-
-       Esempio:
-
-       -500
-       -200
-       100
-       1000
-
-       NON:
-
-       -200
-       -500
-
-       quindi usiamo direttamente
-       a.value - b.value.
-    */
-
     const sortedGoals =
-        [...goals]
+        goals
+            .map(
+                (goal, index) => {
+
+                    return {
+                        value:
+                            Number(
+                                goal.value
+                            ),
+
+                        name:
+                            String(
+                                goal.name
+                            ),
+
+                        originalIndex:
+                            index
+                    };
+
+                }
+            )
+            .filter(
+                goal =>
+                    Number.isFinite(
+                        goal.value
+                    )
+            )
             .sort(
                 (a, b) =>
                     a.value -
@@ -1768,111 +2214,14 @@ function drawGoals() {
 
 
     sortedGoals.forEach(
-        (goal, index) => {
+        goal => {
 
             const item =
-                document.createElement(
-                    "div"
+                createGoal(
+                    goal.value,
+                    goal.name,
+                    goal.originalIndex
                 );
-
-
-            item.className =
-                "goal-item";
-
-
-            const color =
-                getValueColor(
-                    goal.value
-                );
-
-
-            const deleteButton =
-                document.createElement(
-                    "button"
-                );
-
-
-            deleteButton.className =
-                "goal-delete";
-
-            deleteButton.textContent =
-                "×";
-
-
-            deleteButton.addEventListener(
-                "click",
-                function(event) {
-
-                    event.stopPropagation();
-
-
-                    goals =
-                        goals.filter(
-                            currentGoal =>
-                                currentGoal.id !==
-                                goal.id
-                        );
-
-
-                    saveGoals();
-
-                    drawGoals();
-
-                }
-            );
-
-
-            const valueElement =
-                document.createElement(
-                    "span"
-                );
-
-
-            valueElement.className =
-                "goal-value";
-
-
-            valueElement.textContent =
-                formatValue(
-                    goal.value
-                );
-
-
-            valueElement.style.color =
-                color;
-
-
-            const textElement =
-                document.createElement(
-                    "span"
-                );
-
-
-            textElement.className =
-                "goal-text";
-
-
-            textElement.textContent =
-                goal.name;
-
-
-            textElement.style.color =
-                color;
-
-
-            item.appendChild(
-                deleteButton
-            );
-
-
-            item.appendChild(
-                valueElement
-            );
-
-
-            item.appendChild(
-                textElement
-            );
 
 
             goalsLayer.appendChild(
@@ -1900,14 +2249,87 @@ function saveGoals() {
 
 
 /* =====================================================
-   AGGIUNGI OBIETTIVO
+   ELIMINA OBIETTIVO
 ===================================================== */
 
-function addGoal() {
+function deleteGoal(index) {
+
+    if (
+        index < 0 ||
+        index >= goals.length
+    ) {
+        return;
+    }
+
+
+    goals.splice(
+        index,
+        1
+    );
+
+
+    saveGoals();
+
+    drawGoals();
+}
+
+
+/* =====================================================
+   APRI MODALE
+===================================================== */
+
+function openGoalModal() {
+
+    goalValueInput.value =
+        "";
+
+    goalNameInput.value =
+        "";
+
+
+    goalModal.classList.remove(
+        "hidden"
+    );
+
+
+    setTimeout(
+        () => {
+
+            goalValueInput.focus();
+
+        },
+        100
+    );
+}
+
+
+/* =====================================================
+   CHIUDI MODALE
+===================================================== */
+
+function closeGoalModal() {
+
+    goalModal.classList.add(
+        "hidden"
+    );
+
+    goalValueInput.value =
+        "";
+
+    goalNameInput.value =
+        "";
+}
+
+
+/* =====================================================
+   SALVA OBIETTIVO
+===================================================== */
+
+function saveGoal() {
 
     const value =
         parseNumber(
-            goalInput.value
+            goalValueInput.value
         );
 
 
@@ -1916,14 +2338,17 @@ function addGoal() {
 
 
     /*
-       Entrambi obbligatori.
+       Entrambi i campi
+       sono obbligatori.
     */
 
     if (
-        !Number.isFinite(value)
+        !Number.isFinite(
+            value
+        )
     ) {
 
-        goalInput.focus();
+        goalValueInput.focus();
 
         return;
     }
@@ -1941,9 +2366,6 @@ function addGoal() {
 
     goals.push({
 
-        id:
-            Date.now(),
-
         value:
             value,
 
@@ -1957,22 +2379,12 @@ function addGoal() {
 
     drawGoals();
 
-
-    goalInput.value =
-        "";
-
-    goalNameInput.value =
-        "";
-
-
-    goalModal.classList.add(
-        "hidden"
-    );
+    closeGoalModal();
 }
 
 
 /* =====================================================
-   CENTRA SCALA
+   CENTRA LA SCALA
 ===================================================== */
 
 function centerTimeline() {
@@ -2016,6 +2428,8 @@ function updateDisplay() {
 
     drawGoals();
 
+    drawNotes();
+
 
     requestAnimationFrame(
         () => {
@@ -2040,7 +2454,9 @@ function setInitialValue() {
 
 
     if (
-        !Number.isFinite(value)
+        !Number.isFinite(
+            value
+        )
     ) {
 
         startInput.focus();
@@ -2052,12 +2468,11 @@ function setInitialValue() {
     startValue =
         value;
 
-
     currentValue =
         value;
 
 
-    history = [];
+    notes = [];
 
     goals = [];
 
@@ -2078,20 +2493,9 @@ function setInitialValue() {
     );
 
 
-    localStorage.setItem(
-        HISTORY_KEY,
-        JSON.stringify(
-            history
-        )
-    );
+    saveNotes();
 
-
-    localStorage.setItem(
-        GOALS_KEY,
-        JSON.stringify(
-            goals
-        )
-    );
+    saveGoals();
 
 
     startScreen.classList.add(
@@ -2104,7 +2508,7 @@ function setInitialValue() {
 
 
 /* =====================================================
-   VARIAZIONE
+   APPLICA VARIAZIONE
 ===================================================== */
 
 function applyChange() {
@@ -2115,17 +2519,14 @@ function applyChange() {
         );
 
 
-    const note =
-        changeNote.value.trim();
-
-
     /*
-       VARIAZIONE E NOTA
-       SONO ENTRAMBI OBBLIGATORI.
+       La variazione è obbligatoria.
     */
 
     if (
-        !Number.isFinite(change)
+        !Number.isFinite(
+            change
+        )
     ) {
 
         changeInput.focus();
@@ -2134,19 +2535,29 @@ function applyChange() {
     }
 
 
+    /*
+       Anche la nota è obbligatoria.
+
+       Non è possibile registrare
+       una variazione senza nota.
+    */
+
+    const comment =
+        noteInput.value.trim();
+
+
     if (
-        note === ""
+        comment === ""
     ) {
 
-        changeNote.focus();
+        noteInput.focus();
 
         return;
     }
 
 
     /*
-       Il nuovo valore viene
-       calcolato:
+       NUOVO VALORE:
 
        precedente + variazione
     */
@@ -2156,13 +2567,19 @@ function applyChange() {
         change;
 
 
-    history.push({
+    /*
+       Lo storico delle note
+       mantiene l'ordine cronologico
+       nel quale vengono inserite.
+    */
+
+    notes.push({
 
         value:
             newValue,
 
         text:
-            note
+            comment
 
     });
 
@@ -2179,32 +2596,17 @@ function applyChange() {
     );
 
 
-    saveHistory();
+    saveNotes();
 
 
     changeInput.value =
         "";
 
-    changeNote.value =
+    noteInput.value =
         "";
 
 
     updateDisplay();
-}
-
-
-/* =====================================================
-   SALVA STORICO
-===================================================== */
-
-function saveHistory() {
-
-    localStorage.setItem(
-        HISTORY_KEY,
-        JSON.stringify(
-            history
-        )
-    );
 }
 
 
@@ -2216,7 +2618,7 @@ function resetApp() {
 
     const confirmed =
         confirm(
-            "Vuoi cancellare il valore iniziale, lo storico e tutti gli obiettivi?"
+            "Vuoi cancellare il valore iniziale, tutte le note e tutti gli obiettivi?"
         );
 
 
@@ -2237,7 +2639,7 @@ function resetApp() {
     );
 
     localStorage.removeItem(
-        HISTORY_KEY
+        NOTES_KEY
     );
 
     localStorage.removeItem(
@@ -2248,17 +2650,12 @@ function resetApp() {
     startValue =
         NaN;
 
-
     currentValue =
         NaN;
 
+    notes = [];
 
-    history =
-        [];
-
-
-    goals =
-        [];
+    goals = [];
 
 
     startInput.value =
@@ -2267,11 +2664,19 @@ function resetApp() {
     changeInput.value =
         "";
 
-    changeNote.value =
+    noteInput.value =
         "";
 
 
+    goalModal.classList.add(
+        "hidden"
+    );
+
+
     goalsLayer.innerHTML =
+        "";
+
+    notesLayer.innerHTML =
         "";
 
 
@@ -2310,7 +2715,6 @@ startInput.addEventListener(
         ) {
 
             setInitialValue();
-
         }
 
     }
@@ -2331,15 +2735,20 @@ changeInput.addEventListener(
             event.key === "Enter"
         ) {
 
-            applyChange();
+            /*
+               Se premo invio nella
+               variazione, provo a
+               registrare entrambe.
+            */
 
+            applyChange();
         }
 
     }
 );
 
 
-changeNote.addEventListener(
+noteInput.addEventListener(
     "keydown",
     event => {
 
@@ -2348,54 +2757,31 @@ changeNote.addEventListener(
         ) {
 
             applyChange();
-
         }
 
     }
 );
 
 
-/* =====================================================
-   APERTURA OBIETTIVI
-===================================================== */
-
-addGoalButton.addEventListener(
+plusButton.addEventListener(
     "click",
-    function(event) {
-
-        event.stopPropagation();
-
-
-        goalModal.classList.toggle(
-            "hidden"
-        );
-
-
-        if (
-            !goalModal.classList.contains(
-                "hidden"
-            )
-        ) {
-
-            goalInput.focus();
-
-        }
-
-    }
+    openGoalModal
 );
 
 
-/* =====================================================
-   SALVATAGGIO OBIETTIVO
-===================================================== */
-
-goalSaveButton.addEventListener(
+goalCancel.addEventListener(
     "click",
-    addGoal
+    closeGoalModal
 );
 
 
-goalInput.addEventListener(
+goalSave.addEventListener(
+    "click",
+    saveGoal
+);
+
+
+goalValueInput.addEventListener(
     "keydown",
     event => {
 
@@ -2404,7 +2790,6 @@ goalInput.addEventListener(
         ) {
 
             goalNameInput.focus();
-
         }
 
     }
@@ -2419,17 +2804,28 @@ goalNameInput.addEventListener(
             event.key === "Enter"
         ) {
 
-            addGoal();
-
+            saveGoal();
         }
 
     }
 );
 
 
-/* =====================================================
-   RESET
-===================================================== */
+goalModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            goalModal
+        ) {
+
+            closeGoalModal();
+        }
+
+    }
+);
+
 
 resetButton.addEventListener(
     "click",
@@ -2457,40 +2853,65 @@ let currentValue =
     );
 
 
-let history = [];
+let notes = [];
 
 
 let goals = [];
 
 
 /* =====================================================
-   CARICA STORICO
+   CARICA NOTE
 ===================================================== */
 
 try {
 
-    history =
+    const savedNotes =
         JSON.parse(
             localStorage.getItem(
-                HISTORY_KEY
+                NOTES_KEY
             )
-        ) || [];
+        );
 
 
     if (
-        !Array.isArray(
-            history
+        Array.isArray(
+            savedNotes
         )
     ) {
 
-        history = [];
+        notes =
+            savedNotes
+                .map(
+                    entry => {
 
+                        return {
+
+                            value:
+                                Number(
+                                    entry.value
+                                ),
+
+                            text:
+                                String(
+                                    entry.text
+                                )
+
+                        };
+
+                    }
+                )
+                .filter(
+                    entry =>
+                        Number.isFinite(
+                            entry.value
+                        ) &&
+                        entry.text.trim() !== ""
+                );
     }
 
 } catch {
 
-    history = [];
-
+    notes = [];
 }
 
 
@@ -2500,28 +2921,53 @@ try {
 
 try {
 
-    goals =
+    const savedGoals =
         JSON.parse(
             localStorage.getItem(
                 GOALS_KEY
             )
-        ) || [];
+        );
 
 
     if (
-        !Array.isArray(
-            goals
+        Array.isArray(
+            savedGoals
         )
     ) {
 
-        goals = [];
+        goals =
+            savedGoals
+                .map(
+                    goal => {
 
+                        return {
+
+                            value:
+                                Number(
+                                    goal.value
+                                ),
+
+                            name:
+                                String(
+                                    goal.name
+                                )
+
+                        };
+
+                    }
+                )
+                .filter(
+                    goal =>
+                        Number.isFinite(
+                            goal.value
+                        ) &&
+                        goal.name.trim() !== ""
+                );
     }
 
 } catch {
 
     goals = [];
-
 }
 
 
@@ -2543,7 +2989,6 @@ if (
 
         currentValue =
             startValue;
-
     }
 
 
