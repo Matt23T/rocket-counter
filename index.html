@@ -194,7 +194,7 @@ body {
 
 
 /* =====================================================
-   NOTE / PLUSVALENZE
+   NOTE / MOVIMENTI
 ===================================================== */
 
 .notes-layer {
@@ -212,7 +212,7 @@ body {
 
 
 /* =====================================================
-   SINGOLA PLUSVALENZA
+   SINGOLO MOVIMENTO
 ===================================================== */
 
 .note {
@@ -224,118 +224,46 @@ body {
     width:
         calc(50% - 42px);
 
-    min-height: 32px;
+    min-height: 30px;
 
-    padding-right: 4px;
+    padding: 3px 0;
 
-    pointer-events: auto;
+    font-size: 12px;
+
+    font-weight: 500;
+
+    pointer-events: none;
 
     user-select: none;
 
     -webkit-user-select: none;
 
     z-index: 55;
+
+    white-space: normal;
 }
 
-.note-main {
+.note-route {
 
-    display: flex;
-
-    align-items: center;
-
-    gap: 6px;
-
-    width: 100%;
-}
-
-.note-arrow {
-
-    font-size: 11px;
-
-    opacity: 0.65;
-
-    flex-shrink: 0;
-}
-
-.note-movement {
-
-    font-size: 12px;
+    display: inline;
 
     font-weight: 700;
 
-    white-space: nowrap;
-
-    flex-shrink: 0;
+    margin-right: 5px;
 }
 
-.note-difference {
+.note-change {
 
-    font-size: 11px;
+    font-weight: 800;
 
-    font-weight: 700;
-
-    white-space: nowrap;
-
-    flex-shrink: 0;
+    margin-right: 5px;
 }
 
 .note-text {
 
-    min-width: 0;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
-
-    font-size: 12px;
+    opacity: 0.92;
 
     font-weight: 500;
-
-    opacity: 0.90;
-}
-
-.note-actions {
-
-    display: flex;
-
-    gap: 5px;
-
-    margin-top: 3px;
-
-    margin-left: 0;
-
-    opacity: 0;
-
-    transition: opacity 0.15s ease;
-}
-
-.note:hover .note-actions {
-
-    opacity: 1;
-}
-
-.note-edit,
-.note-delete {
-
-    border: none;
-
-    background: #181818;
-
-    color: #aaa;
-
-    border-radius: 6px;
-
-    padding: 3px 7px;
-
-    font-size: 10px;
-}
-
-.note-edit:active,
-.note-delete:active {
-
-    transform: scale(0.95);
 }
 
 
@@ -362,7 +290,11 @@ body {
 
     position: absolute;
 
-    left: 8px;
+    /*
+       RAZZO A SINISTRA DELLA LINEA
+    */
+
+    left: -66px;
     top: 0;
 
     width: 58px;
@@ -672,111 +604,6 @@ body {
 
 
 /* =====================================================
-   MODIFICA NOTA
-===================================================== */
-
-.edit-overlay {
-
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 200;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    background:
-        rgba(0,0,0,0.75);
-
-    padding: 25px;
-}
-
-.edit-box {
-
-    width: 100%;
-    max-width: 340px;
-
-    padding: 20px;
-
-    border-radius: 17px;
-
-    background: #111;
-
-    border: 1px solid #333;
-}
-
-.edit-title {
-
-    margin-bottom: 12px;
-
-    font-size: 17px;
-
-    font-weight: 700;
-}
-
-.edit-input {
-
-    width: 100%;
-
-    height: 45px;
-
-    padding: 0 12px;
-
-    border: 1px solid #333;
-
-    border-radius: 10px;
-
-    background: #000;
-
-    color: #fff;
-
-    outline: none;
-
-    font-size: 15px;
-}
-
-.edit-buttons {
-
-    display: flex;
-
-    gap: 8px;
-
-    margin-top: 12px;
-}
-
-.edit-buttons button {
-
-    flex: 1;
-
-    height: 42px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    font-weight: 700;
-}
-
-.edit-save {
-
-    background: #fff;
-
-    color: #000;
-}
-
-.edit-cancel {
-
-    background: #222;
-
-    color: #aaa;
-}
-
-
-/* =====================================================
    MOBILE
 ===================================================== */
 
@@ -786,6 +613,8 @@ body {
 
         width: 56px;
         height: 28px;
+
+        left: -64px;
     }
 
     .current-info {
@@ -805,7 +634,12 @@ body {
 
     .note {
 
-        font-size: 12px;
+        font-size: 11px;
+
+        left: calc(50% + 31px);
+
+        width:
+            calc(50% - 38px);
     }
 }
 
@@ -851,7 +685,7 @@ body {
 
 
     <!-- =================================================
-         NOTE / PLUSVALENZE
+         MOVIMENTI / PLUSVALENZE
     ================================================= -->
 
     <div
@@ -1006,7 +840,7 @@ body {
 
 
     <!-- =================================================
-         SCHERMATA INIZIALE
+         VALORE INIZIALE
     ================================================= -->
 
     <div
@@ -1046,61 +880,6 @@ body {
 
     </div>
 
-
-    <!-- =================================================
-         MODIFICA NOTA
-    ================================================= -->
-
-    <div
-        id="editOverlay"
-        class="edit-overlay hidden"
-    >
-
-        <div
-            class="edit-box"
-        >
-
-            <div
-                class="edit-title"
-            >
-                Modifica nota
-            </div>
-
-            <input
-                id="editInput"
-                class="edit-input"
-                type="text"
-                maxlength="100"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
-                spellcheck="false"
-            >
-
-            <div
-                class="edit-buttons"
-            >
-
-                <button
-                    id="editCancel"
-                    class="edit-cancel"
-                >
-                    Annulla
-                </button>
-
-                <button
-                    id="editSave"
-                    class="edit-save"
-                >
-                    Salva
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
 </div>
 
 
@@ -1122,7 +901,6 @@ document.addEventListener(
     }
 );
 
-
 document.addEventListener(
     "gesturechange",
     function(event) {
@@ -1135,7 +913,6 @@ document.addEventListener(
     }
 );
 
-
 document.addEventListener(
     "gestureend",
     function(event) {
@@ -1147,7 +924,6 @@ document.addEventListener(
         passive: false
     }
 );
-
 
 document.addEventListener(
     "touchmove",
@@ -1179,7 +955,7 @@ const CURRENT_KEY =
     "rocket_current_value_v6";
 
 const NOTES_KEY =
-    "rocket_notes_v6";
+    "rocket_movements_v6";
 
 
 /* =====================================================
@@ -1261,26 +1037,6 @@ const rocket =
         "rocket"
     );
 
-const editOverlay =
-    document.getElementById(
-        "editOverlay"
-    );
-
-const editInput =
-    document.getElementById(
-        "editInput"
-    );
-
-const editSave =
-    document.getElementById(
-        "editSave"
-    );
-
-const editCancel =
-    document.getElementById(
-        "editCancel"
-    );
-
 
 /* =====================================================
    PARAMETRI SCALA
@@ -1329,17 +1085,39 @@ function parseNumber(value) {
             ""
         );
 
-    text =
-        text.replace(
-            /\./g,
-            ""
-        );
+    /*
+       Gestione corretta di numeri italiani
+       e del segno meno.
+    */
 
-    text =
-        text.replace(
-            ",",
-            "."
-        );
+    if (
+        text.includes(",")
+    ) {
+
+        text =
+            text.replace(
+                /\./g,
+                ""
+            );
+
+        text =
+            text.replace(
+                ",",
+                "."
+            );
+
+    } else {
+
+        /*
+           Non eliminiamo il meno.
+        */
+
+        text =
+            text.replace(
+                /(?<=\d)\.(?=\d{3}(?:\D|$))/g,
+                ""
+            );
+    }
 
     const number =
         Number(text);
@@ -1394,7 +1172,50 @@ function formatValue(value) {
 
 
 /* =====================================================
-   COLORE
+   FORMATTAZIONE SENZA + PER I VALORI DI PARTENZA
+===================================================== */
+
+function formatRouteValue(value) {
+
+    const rounded =
+        Math.round(
+            value * 100
+        ) / 100;
+
+    const absolute =
+        Math.abs(rounded)
+            .toLocaleString(
+                "it-IT",
+                {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                }
+            );
+
+    if (
+        rounded < 0
+    ) {
+
+        return "-" +
+            absolute +
+            " €";
+    }
+
+    if (
+        rounded > 0
+    ) {
+
+        return "+" +
+            absolute +
+            " €";
+    }
+
+    return "0 €";
+}
+
+
+/* =====================================================
+   COLORI
 ===================================================== */
 
 function getValueColor(value) {
@@ -1480,7 +1301,31 @@ function getValueColor(value) {
 
 
 /* =====================================================
-   COLORE RAZZO
+   COLORE DELLA VARIAZIONE
+===================================================== */
+
+function getChangeColor(change) {
+
+    if (
+        change > 0
+    ) {
+
+        return "#20DD65";
+    }
+
+    if (
+        change < 0
+    ) {
+
+        return "#F8374C";
+    }
+
+    return "#FFFFFF";
+}
+
+
+/* =====================================================
+   AGGIORNA COLORE RAZZO
 ===================================================== */
 
 function updateColor() {
@@ -1496,7 +1341,6 @@ function updateColor() {
 
             part.style.fill =
                 color;
-
         }
     );
 
@@ -1513,7 +1357,7 @@ function updateColor() {
 
 
 /* =====================================================
-   COSTRUZIONE SCALA
+   CREA SCALA
 ===================================================== */
 
 function buildScale() {
@@ -1634,12 +1478,11 @@ function buildScale() {
 
 
 /* =====================================================
-   CREA PLUSVALENZA
+   CREA MOVIMENTO
 ===================================================== */
 
-function createNote(
-    item,
-    index
+function createMovementNote(
+    movement
 ) {
 
     const note =
@@ -1651,81 +1494,62 @@ function createNote(
         "note";
 
 
-    const color =
+    /*
+       Il colore della registrazione
+       segue il valore di arrivo.
+    */
+
+    const destinationColor =
         getValueColor(
-            item.to
+            movement.to
+        );
+
+
+    const changeColor =
+        getChangeColor(
+            movement.change
         );
 
 
     note.style.color =
-        color;
+        destinationColor;
 
 
-    /*
-       RIGA PRINCIPALE
-    */
-
-    const main =
-        document.createElement(
-            "div"
-        );
-
-    main.className =
-        "note-main";
-
-
-    const arrow =
+    const route =
         document.createElement(
             "span"
         );
 
-    arrow.className =
-        "note-arrow";
+    route.className =
+        "note-route";
 
-    arrow.textContent =
-        "→";
+    route.textContent =
+        formatRouteValue(
+            movement.from
+        ) +
+        " → " +
+        formatRouteValue(
+            movement.to
+        );
 
 
-    const movement =
+    const change =
         document.createElement(
             "span"
         );
 
-    movement.className =
-        "note-movement";
+    change.className =
+        "note-change";
 
-    movement.textContent =
-        formatValue(
-            item.to
-        );
-
-    movement.style.color =
-        color;
-
-
-    /*
-       PLUSVALENZA / MINUSVALENZA
-    */
-
-    const difference =
-        document.createElement(
-            "span"
-        );
-
-    difference.className =
-        "note-difference";
-
-    difference.textContent =
+    change.textContent =
         "(" +
-        formatSignedDifference(
-            item.change
+        formatValue(
+            movement.change
         ) +
         ")";
 
-    difference.style.color =
-        getValueColor(
-            item.change
-        );
+    change.style.color =
+        changeColor;
 
 
     const text =
@@ -1737,109 +1561,22 @@ function createNote(
         "note-text";
 
     text.textContent =
-        item.text;
+        movement.text;
 
     text.style.color =
-        color;
+        destinationColor;
 
 
-    main.appendChild(
-        arrow
+    note.appendChild(
+        route
     );
 
-    main.appendChild(
-        movement
+    note.appendChild(
+        change
     );
 
-    main.appendChild(
-        difference
-    );
-
-    main.appendChild(
+    note.appendChild(
         text
-    );
-
-
-    note.appendChild(
-        main
-    );
-
-
-    /*
-       AZIONI
-    */
-
-    const actions =
-        document.createElement(
-            "div"
-        );
-
-    actions.className =
-        "note-actions";
-
-
-    const editButton =
-        document.createElement(
-            "button"
-        );
-
-    editButton.className =
-        "note-edit";
-
-    editButton.textContent =
-        "Modifica";
-
-
-    const deleteButton =
-        document.createElement(
-            "button"
-        );
-
-    deleteButton.className =
-        "note-delete";
-
-    deleteButton.textContent =
-        "Elimina";
-
-
-    editButton.addEventListener(
-        "click",
-        function(event) {
-
-            event.stopPropagation();
-
-            openEditNote(
-                item.id
-            );
-
-        }
-    );
-
-
-    deleteButton.addEventListener(
-        "click",
-        function(event) {
-
-            event.stopPropagation();
-
-            deleteNote(
-                item.id
-            );
-
-        }
-    );
-
-
-    actions.appendChild(
-        editButton
-    );
-
-    actions.appendChild(
-        deleteButton
-    );
-
-    note.appendChild(
-        actions
     );
 
 
@@ -1848,45 +1585,7 @@ function createNote(
 
 
 /* =====================================================
-   FORMATTA VARIAZIONE
-===================================================== */
-
-function formatSignedDifference(
-    value
-) {
-
-    if (
-        value > 0
-    ) {
-
-        return "+" +
-            Math.abs(value)
-                .toLocaleString(
-                    "it-IT"
-                ) +
-            " €";
-    }
-
-
-    if (
-        value < 0
-    ) {
-
-        return "-" +
-            Math.abs(value)
-                .toLocaleString(
-                    "it-IT"
-                ) +
-            " €";
-    }
-
-
-    return "0 €";
-}
-
-
-/* =====================================================
-   DISEGNA NOTE CRONOLOGICHE
+   DISEGNA MOVIMENTI
 ===================================================== */
 
 function drawNotes() {
@@ -1895,302 +1594,75 @@ function drawNotes() {
 
 
     /*
-       NON viene più fatto nessun
-       ordinamento numerico.
+       IMPORTANTE:
 
-       L'ordine dell'array è l'ordine
-       cronologico in cui le note
-       sono state create.
+       NON ordiniamo per valore.
+
+       L'ordine è esclusivamente
+       quello cronologico dell'array.
     */
 
-    notes.forEach(
-        (item, index) => {
+    movements.forEach(
+        (movement, index) => {
+
+            if (
+                !movement ||
+                !Number.isFinite(
+                    movement.from
+                ) ||
+                !Number.isFinite(
+                    movement.to
+                )
+            ) {
+
+                return;
+            }
+
 
             const note =
-                createNote(
-                    item,
-                    index
+                createMovementNote(
+                    movement
                 );
 
 
             /*
-               Le note sono semplicemente
-               disposte una sotto l'altra
-               sul lato destro.
+               Le registrazioni sono
+               semplicemente disposte
+               una sotto l'altra.
 
-               Non vengono più ancorate
+               Non sono ancorate
                alla scala.
             */
 
+            const NOTE_GAP =
+                38;
+
+
             note.style.top =
-                (
-                    18 +
-                    index * 43
-                ) +
-                "px";
+                `calc(
+                    50% +
+                    ${
+                        index *
+                        NOTE_GAP
+                    }px
+                )`;
+
+
+            /*
+               La prima nota parte
+               leggermente sotto
+               il valore corrente.
+            */
+
+            note.style.transform =
+                "translateY(20px)";
 
 
             notesLayer.appendChild(
                 note
             );
-
         }
     );
-}
-
-
-/* =====================================================
-   SALVA NOTA COME PLUSVALENZA
-===================================================== */
-
-function saveCurrentNote() {
-
-    if (
-        !Number.isFinite(
-            currentValue
-        )
-    ) {
-
-        return;
-    }
-
-
-    const text =
-        currentNote.value.trim();
-
-
-    /*
-       La nota inserita sul valore
-       corrente viene utilizzata come
-       descrizione del movimento che
-       avverrà con la prossima variazione.
-
-       Se non c'è testo non viene
-       creata nessuna plusvalenza.
-    */
-
-    return text;
-}
-
-
-/* =====================================================
-   CREA MOVIMENTO
-===================================================== */
-
-function createMovement(
-    from,
-    to,
-    text
-) {
-
-    if (
-        text === ""
-    ) {
-
-        return;
-    }
-
-
-    const change =
-        to - from;
-
-
-    const movement = {
-
-        id:
-            Date.now() +
-            "_" +
-            Math.random()
-                .toString(36)
-                .slice(2),
-
-        from:
-            from,
-
-        to:
-            to,
-
-        change:
-            change,
-
-        text:
-            text,
-
-        createdAt:
-            Date.now()
-    };
-
-
-    notes.push(
-        movement
-    );
-
-
-    localStorage.setItem(
-        NOTES_KEY,
-        JSON.stringify(
-            notes
-        )
-    );
-}
-
-
-/* =====================================================
-   MODIFICA NOTA
-===================================================== */
-
-let editingNoteId =
-    null;
-
-
-function openEditNote(
-    id
-) {
-
-    const item =
-        notes.find(
-            note =>
-                note.id === id
-        );
-
-
-    if (
-        !item
-    ) {
-
-        return;
-    }
-
-
-    editingNoteId =
-        id;
-
-
-    editInput.value =
-        item.text;
-
-
-    editOverlay.classList.remove(
-        "hidden"
-    );
-
-
-    setTimeout(
-        () => {
-
-            editInput.focus();
-
-        },
-        100
-    );
-}
-
-
-/* =====================================================
-   SALVA MODIFICA
-===================================================== */
-
-function saveEditedNote() {
-
-    if (
-        !editingNoteId
-    ) {
-
-        return;
-    }
-
-
-    const item =
-        notes.find(
-            note =>
-                note.id ===
-                editingNoteId
-        );
-
-
-    if (
-        !item
-    ) {
-
-        return;
-    }
-
-
-    const text =
-        editInput.value.trim();
-
-
-    if (
-        text === ""
-    ) {
-
-        return;
-    }
-
-
-    item.text =
-        text;
-
-
-    localStorage.setItem(
-        NOTES_KEY,
-        JSON.stringify(
-            notes
-        )
-    );
-
-
-    editOverlay.classList.add(
-        "hidden"
-    );
-
-
-    editingNoteId =
-        null;
-
-
-    drawNotes();
-}
-
-
-/* =====================================================
-   ELIMINA NOTA
-===================================================== */
-
-function deleteNote(
-    id
-) {
-
-    const confirmed =
-        confirm(
-            "Vuoi eliminare questa nota?"
-        );
-
-
-    if (
-        !confirmed
-    ) {
-
-        return;
-    }
-
-
-    notes =
-        notes.filter(
-            item =>
-                item.id !== id
-        );
-
-
-    localStorage.setItem(
-        NOTES_KEY,
-        JSON.stringify(
-            notes
-        )
-    );
-
-
-    drawNotes();
 }
 
 
@@ -2241,8 +1713,12 @@ function updateDisplay() {
 
 
     /*
-       Non esiste più una nota
-       legata direttamente al valore.
+       Non carichiamo più una nota
+       associata al numero.
+
+       La nota viene trasformata
+       in una registrazione quando
+       viene effettuata una variazione.
     */
 
     currentNote.value =
@@ -2288,7 +1764,7 @@ function setInitialValue() {
         value;
 
 
-    notes = [];
+    movements = [];
 
 
     localStorage.setItem(
@@ -2306,7 +1782,7 @@ function setInitialValue() {
     localStorage.setItem(
         NOTES_KEY,
         JSON.stringify(
-            notes
+            movements
         )
     );
 
@@ -2343,52 +1819,95 @@ function applyChange() {
 
 
     /*
-       Il valore attuale è il punto
-       di partenza del movimento.
+       VALORE DI PARTENZA
+
+       Questo è fondamentale:
+
+       il calcolo viene sempre
+       fatto dal valore corrente
+       PRIMA della variazione.
     */
 
-    const previousValue =
+    const from =
         currentValue;
 
 
     /*
-       La variazione viene sommata
-       al valore attuale.
+       VALORE DI ARRIVO
+
+       Sommiamo la variazione
+       al valore precedente.
     */
 
-    const newValue =
-        previousValue +
+    const to =
+        from +
         change;
 
 
     /*
-       La nota viene associata
-       ESCLUSIVAMENTE a questo
-       movimento.
-
-       Quindi anche se si torna
-       sullo stesso numero, viene
-       creata una nuova registrazione.
+       NOTA INSERITA DALL'UTENTE
     */
 
     const text =
         currentNote.value.trim();
 
 
+    /*
+       Se esiste una nota,
+       creiamo una NUOVA
+       registrazione cronologica.
+
+       Anche se "from" o "to"
+       sono già presenti in altre
+       registrazioni, questa
+       rimane una registrazione
+       completamente separata.
+    */
+
     if (
         text !== ""
     ) {
 
-        createMovement(
-            previousValue,
-            newValue,
-            text
+        movements.push({
+
+            id:
+                Date.now() +
+                "_" +
+                Math.random()
+                    .toString(36)
+                    .slice(2),
+
+            from:
+                from,
+
+            to:
+                to,
+
+            change:
+                change,
+
+            text:
+                text
+        });
+
+
+        localStorage.setItem(
+            NOTES_KEY,
+            JSON.stringify(
+                movements
+            )
         );
     }
 
 
+    /*
+       Aggiorniamo il valore
+       solo dopo aver salvato
+       la registrazione.
+    */
+
     currentValue =
-        newValue;
+        to;
 
 
     localStorage.setItem(
@@ -2416,7 +1935,7 @@ function resetApp() {
 
     const confirmed =
         confirm(
-            "Vuoi cancellare il valore iniziale e tutte le note?"
+            "Vuoi cancellare il valore iniziale e tutte le registrazioni?"
         );
 
 
@@ -2447,7 +1966,7 @@ function resetApp() {
     currentValue =
         NaN;
 
-    notes = [];
+    movements = [];
 
 
     startInput.value =
@@ -2495,9 +2014,7 @@ startInput.addEventListener(
         ) {
 
             setInitialValue();
-
         }
-
     }
 );
 
@@ -2517,53 +2034,29 @@ changeInput.addEventListener(
         ) {
 
             applyChange();
-
         }
-
     }
 );
 
 
-currentNote.addEventListener(
-    "keydown",
-    event => {
+/*
+   NON salviamo più la nota
+   con blur.
 
-        if (
-            event.key === "Enter"
-        ) {
+   Deve essere salvata insieme
+   alla variazione, perché solo
+   in quel momento conosciamo:
 
-            currentNote.blur();
-
-        }
-
-    }
-);
+   valore di partenza
+   valore di arrivo
+   plus/minus
+   nota
+*/
 
 
 resetButton.addEventListener(
     "click",
     resetApp
-);
-
-
-editSave.addEventListener(
-    "click",
-    saveEditedNote
-);
-
-
-editCancel.addEventListener(
-    "click",
-    function() {
-
-        editOverlay.classList.add(
-            "hidden"
-        );
-
-        editingNoteId =
-            null;
-
-    }
 );
 
 
@@ -2587,13 +2080,8 @@ let currentValue =
     );
 
 
-let notes = [];
+let movements = [];
 
-
-/*
-   Caricamento compatibile anche
-   con eventuali dati precedenti.
-*/
 
 try {
 
@@ -2609,20 +2097,17 @@ try {
         Array.isArray(saved)
     ) {
 
-        notes =
+        movements =
             saved;
 
     } else {
 
-        notes =
-            [];
-
+        movements = [];
     }
 
 } catch {
 
-    notes =
-        [];
+    movements = [];
 }
 
 
@@ -2659,7 +2144,6 @@ if (
     startScreen.classList.remove(
         "hidden"
     );
-
 }
 
 </script>
