@@ -169,7 +169,7 @@ body {
 
 
 /* =====================================================
-   NUMERI DELLA SCALA
+   NUMERI SCALA
 ===================================================== */
 
 .scale-label {
@@ -194,76 +194,110 @@ body {
 
 
 /* =====================================================
-   NOTE / MOVIMENTI
+   STORICO NOTE A DESTRA
 ===================================================== */
 
-.notes-layer {
+.history-layer {
 
     position: absolute;
 
-    inset: 0;
+    top: 50%;
 
-    pointer-events: none;
+    right: 10px;
+
+    width: calc(50% - 45px);
+
+    max-height: 58vh;
+
+    transform:
+        translateY(-50%);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: none;
 
     z-index: 50;
 
-    overflow: hidden;
+    pointer-events: auto;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+.history-layer::-webkit-scrollbar {
+    display: none;
 }
 
 
 /* =====================================================
-   SINGOLO MOVIMENTO
+   SINGOLO EVENTO STORICO
 ===================================================== */
 
-.note {
+.history-item {
 
-    position: absolute;
+    width: 100%;
 
-    left: calc(50% + 31px);
+    margin-bottom: 14px;
 
-    width:
-        calc(50% - 42px);
+    padding-bottom: 10px;
 
-    min-height: 30px;
-
-    padding: 3px 0;
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.08);
 
     font-size: 12px;
 
-    font-weight: 500;
+    line-height: 17px;
 
-    pointer-events: none;
+    word-break: break-word;
 
     user-select: none;
 
     -webkit-user-select: none;
-
-    z-index: 55;
-
-    white-space: normal;
 }
 
-.note-route {
+.history-value {
 
-    display: inline;
+    display: inline-block;
+
+    margin-right: 5px;
 
     font-weight: 700;
-
-    margin-right: 5px;
 }
 
-.note-change {
+.history-text {
 
-    font-weight: 800;
-
-    margin-right: 5px;
+    opacity: 0.90;
 }
 
-.note-text {
+.history-delete {
 
-    opacity: 0.92;
+    float: right;
 
-    font-weight: 500;
+    width: 19px;
+    height: 19px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #1b1b1b;
+
+    color: #777;
+
+    font-size: 11px;
+
+    line-height: 19px;
+
+    text-align: center;
+}
+
+.history-delete:active {
+
+    transform:
+        scale(0.9);
 }
 
 
@@ -290,18 +324,14 @@ body {
 
     position: absolute;
 
-    /*
-       RAZZO A SINISTRA DELLA LINEA
-    */
-
-    left: -66px;
+    right: 8px;
     top: 0;
 
     width: 58px;
     height: 29px;
 
     transform:
-        translateY(-50%);
+        translate(0, -50%);
 
     overflow: visible;
 
@@ -357,6 +387,11 @@ body {
     transition:
         color 0.2s ease;
 }
+
+
+/* =====================================================
+   NOTA DEL VALORE ATTUALE
+===================================================== */
 
 .current-note {
 
@@ -613,13 +648,11 @@ body {
 
         width: 56px;
         height: 28px;
-
-        left: -64px;
     }
 
     .current-info {
 
-        left: 73px;
+        left: 76px;
     }
 
     .current-value {
@@ -632,15 +665,20 @@ body {
         width: 165px;
     }
 
-    .note {
+    .history-layer {
+
+        right: 7px;
+
+        width: calc(50% - 40px);
+    }
+
+    .history-item {
 
         font-size: 11px;
 
-        left: calc(50% + 31px);
-
-        width:
-            calc(50% - 38px);
+        line-height: 16px;
     }
+
 }
 
 </style>
@@ -654,7 +692,7 @@ body {
 
 
     <!-- =================================================
-         SCALA SCORRIBILE
+         SCALA
     ================================================= -->
 
     <div
@@ -685,12 +723,12 @@ body {
 
 
     <!-- =================================================
-         MOVIMENTI / PLUSVALENZE
+         STORICO NOTE
     ================================================= -->
 
     <div
-        id="notesLayer"
-        class="notes-layer"
+        id="historyLayer"
+        class="history-layer"
     ></div>
 
 
@@ -840,7 +878,7 @@ body {
 
 
     <!-- =================================================
-         VALORE INIZIALE
+         SCHERMATA INIZIALE
     ================================================= -->
 
     <div
@@ -949,13 +987,13 @@ document.addEventListener(
 ===================================================== */
 
 const START_KEY =
-    "rocket_start_value_v6";
+    "rocket_start_value_v7";
 
 const CURRENT_KEY =
-    "rocket_current_value_v6";
+    "rocket_current_value_v7";
 
-const NOTES_KEY =
-    "rocket_movements_v6";
+const HISTORY_KEY =
+    "rocket_history_v7";
 
 
 /* =====================================================
@@ -982,9 +1020,9 @@ const labels =
         "labels"
     );
 
-const notesLayer =
+const historyLayer =
     document.getElementById(
-        "notesLayer"
+        "historyLayer"
     );
 
 const currentValueElement =
@@ -1052,7 +1090,8 @@ const PIXELS_PER_STEP =
     27;
 
 const PIXELS_PER_EURO =
-    PIXELS_PER_STEP / STEP;
+    PIXELS_PER_STEP /
+    STEP;
 
 
 /* =====================================================
@@ -1085,39 +1124,17 @@ function parseNumber(value) {
             ""
         );
 
-    /*
-       Gestione corretta di numeri italiani
-       e del segno meno.
-    */
+    text =
+        text.replace(
+            /\./g,
+            ""
+        );
 
-    if (
-        text.includes(",")
-    ) {
-
-        text =
-            text.replace(
-                /\./g,
-                ""
-            );
-
-        text =
-            text.replace(
-                ",",
-                "."
-            );
-
-    } else {
-
-        /*
-           Non eliminiamo il meno.
-        */
-
-        text =
-            text.replace(
-                /(?<=\d)\.(?=\d{3}(?:\D|$))/g,
-                ""
-            );
-    }
+    text =
+        text.replace(
+            ",",
+            "."
+        );
 
     const number =
         Number(text);
@@ -1129,7 +1146,7 @@ function parseNumber(value) {
 
 
 /* =====================================================
-   FORMATTAZIONE
+   FORMATTAZIONE VALORE
 ===================================================== */
 
 function formatValue(value) {
@@ -1172,49 +1189,6 @@ function formatValue(value) {
 
 
 /* =====================================================
-   FORMATTAZIONE SENZA + PER I VALORI DI PARTENZA
-===================================================== */
-
-function formatRouteValue(value) {
-
-    const rounded =
-        Math.round(
-            value * 100
-        ) / 100;
-
-    const absolute =
-        Math.abs(rounded)
-            .toLocaleString(
-                "it-IT",
-                {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 2
-                }
-            );
-
-    if (
-        rounded < 0
-    ) {
-
-        return "-" +
-            absolute +
-            " €";
-    }
-
-    if (
-        rounded > 0
-    ) {
-
-        return "+" +
-            absolute +
-            " €";
-    }
-
-    return "0 €";
-}
-
-
-/* =====================================================
    COLORI
 ===================================================== */
 
@@ -1227,6 +1201,10 @@ function getValueColor(value) {
         return "#FFFFFF";
     }
 
+
+    /* ==============================
+       VERDE
+    ============================== */
 
     if (
         value > 0
@@ -1264,9 +1242,12 @@ function getValueColor(value) {
     }
 
 
+    /* ==============================
+       ROSSO
+    ============================== */
+
     const amount =
         Math.abs(value);
-
 
     if (
         amount <= 1000
@@ -1301,31 +1282,7 @@ function getValueColor(value) {
 
 
 /* =====================================================
-   COLORE DELLA VARIAZIONE
-===================================================== */
-
-function getChangeColor(change) {
-
-    if (
-        change > 0
-    ) {
-
-        return "#20DD65";
-    }
-
-    if (
-        change < 0
-    ) {
-
-        return "#F8374C";
-    }
-
-    return "#FFFFFF";
-}
-
-
-/* =====================================================
-   AGGIORNA COLORE RAZZO
+   COLORE RAZZO
 ===================================================== */
 
 function updateColor() {
@@ -1362,9 +1319,11 @@ function updateColor() {
 
 function buildScale() {
 
-    ticks.innerHTML = "";
+    ticks.innerHTML =
+        "";
 
-    labels.innerHTML = "";
+    labels.innerHTML =
+        "";
 
 
     const totalHeight =
@@ -1436,6 +1395,15 @@ function buildScale() {
         );
 
 
+        /*
+           La scala rappresenta
+           sempre valori REALI.
+
+           Quindi:
+
+           valore attuale + posizione
+        */
+
         if (
             relativeValue % 250 === 0
         ) {
@@ -1478,196 +1446,184 @@ function buildScale() {
 
 
 /* =====================================================
-   CREA MOVIMENTO
+   DISEGNA STORICO
 ===================================================== */
 
-function createMovementNote(
-    movement
-) {
+/*
+   IMPORTANTE:
 
-    const note =
-        document.createElement(
-            "div"
-        );
+   Lo storico NON viene più
+   ordinato matematicamente.
 
-    note.className =
-        "note";
+   L'ordine è quello nel quale
+   gli eventi sono stati registrati.
 
+   Esempio:
 
-    /*
-       Il colore della registrazione
-       segue il valore di arrivo.
-    */
+   1000
+   3000
+   500
+   3000
 
-    const destinationColor =
-        getValueColor(
-            movement.to
-        );
+   resta:
 
+   1000
+   3000
+   500
+   3000
 
-    const changeColor =
-        getChangeColor(
-            movement.change
-        );
+   anche se i valori sono
+   numericamente disordinati.
+*/
 
+function drawHistory() {
 
-    note.style.color =
-        destinationColor;
-
-
-    const route =
-        document.createElement(
-            "span"
-        );
-
-    route.className =
-        "note-route";
-
-    route.textContent =
-        formatRouteValue(
-            movement.from
-        ) +
-        " → " +
-        formatRouteValue(
-            movement.to
-        );
+    historyLayer.innerHTML =
+        "";
 
 
-    const change =
-        document.createElement(
-            "span"
-        );
+    history.forEach(
+        (entry, index) => {
 
-    change.className =
-        "note-change";
+            const item =
+                document.createElement(
+                    "div"
+                );
 
-    change.textContent =
-        "(" +
-        formatValue(
-            movement.change
-        ) +
-        ")";
-
-    change.style.color =
-        changeColor;
+            item.className =
+                "history-item";
 
 
-    const text =
-        document.createElement(
-            "span"
-        );
-
-    text.className =
-        "note-text";
-
-    text.textContent =
-        movement.text;
-
-    text.style.color =
-        destinationColor;
-
-
-    note.appendChild(
-        route
-    );
-
-    note.appendChild(
-        change
-    );
-
-    note.appendChild(
-        text
-    );
-
-
-    return note;
-}
-
-
-/* =====================================================
-   DISEGNA MOVIMENTI
-===================================================== */
-
-function drawNotes() {
-
-    notesLayer.innerHTML = "";
-
-
-    /*
-       IMPORTANTE:
-
-       NON ordiniamo per valore.
-
-       L'ordine è esclusivamente
-       quello cronologico dell'array.
-    */
-
-    movements.forEach(
-        (movement, index) => {
-
-            if (
-                !movement ||
-                !Number.isFinite(
-                    movement.from
-                ) ||
-                !Number.isFinite(
-                    movement.to
-                )
-            ) {
-
-                return;
-            }
-
-
-            const note =
-                createMovementNote(
-                    movement
+            const color =
+                getValueColor(
+                    entry.value
                 );
 
 
-            /*
-               Le registrazioni sono
-               semplicemente disposte
-               una sotto l'altra.
+            const valueElement =
+                document.createElement(
+                    "span"
+                );
 
-               Non sono ancorate
-               alla scala.
-            */
+            valueElement.className =
+                "history-value";
 
-            const NOTE_GAP =
-                38;
+            valueElement.textContent =
+                formatValue(
+                    entry.value
+                );
 
-
-            note.style.top =
-                `calc(
-                    50% +
-                    ${
-                        index *
-                        NOTE_GAP
-                    }px
-                )`;
+            valueElement.style.color =
+                color;
 
 
-            /*
-               La prima nota parte
-               leggermente sotto
-               il valore corrente.
-            */
+            const textElement =
+                document.createElement(
+                    "span"
+                );
 
-            note.style.transform =
-                "translateY(20px)";
+            textElement.className =
+                "history-text";
+
+            textElement.textContent =
+                entry.text;
+
+            textElement.style.color =
+                color;
 
 
-            notesLayer.appendChild(
-                note
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+            deleteButton.className =
+                "history-delete";
+
+            deleteButton.textContent =
+                "×";
+
+
+            deleteButton.addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+                    deleteHistoryEntry(
+                        index
+                    );
+
+                }
             );
+
+
+            item.appendChild(
+                valueElement
+            );
+
+            item.appendChild(
+                textElement
+            );
+
+            item.appendChild(
+                deleteButton
+            );
+
+
+            historyLayer.appendChild(
+                item
+            );
+
         }
     );
 }
 
 
 /* =====================================================
-   CENTRA SCALA
+   SALVA STORICO
+===================================================== */
+
+function saveHistory() {
+
+    localStorage.setItem(
+        HISTORY_KEY,
+        JSON.stringify(
+            history
+        )
+    );
+}
+
+
+/* =====================================================
+   ELIMINA EVENTO STORICO
+===================================================== */
+
+function deleteHistoryEntry(index) {
+
+    if (
+        index < 0 ||
+        index >= history.length
+    ) {
+
+        return;
+    }
+
+
+    history.splice(
+        index,
+        1
+    );
+
+
+    saveHistory();
+
+    drawHistory();
+}
+
+
+/* =====================================================
+   CENTRA LA SCALA
 ===================================================== */
 
 function centerTimeline() {
@@ -1709,16 +1665,17 @@ function updateDisplay() {
 
     buildScale();
 
-    drawNotes();
+    drawHistory();
 
 
     /*
-       Non carichiamo più una nota
-       associata al numero.
+       La nota sotto al razzo
+       viene sempre svuotata
+       dopo una variazione.
 
-       La nota viene trasformata
-       in una registrazione quando
-       viene effettuata una variazione.
+       La nota viene inserita
+       nello storico quando
+       premi OK.
     */
 
     currentNote.value =
@@ -1764,25 +1721,29 @@ function setInitialValue() {
         value;
 
 
-    movements = [];
+    history = [];
 
 
     localStorage.setItem(
         START_KEY,
-        String(startValue)
+        String(
+            startValue
+        )
     );
 
 
     localStorage.setItem(
         CURRENT_KEY,
-        String(currentValue)
+        String(
+            currentValue
+        )
     );
 
 
     localStorage.setItem(
-        NOTES_KEY,
+        HISTORY_KEY,
         JSON.stringify(
-            movements
+            history
         )
     );
 
@@ -1819,101 +1780,78 @@ function applyChange() {
 
 
     /*
-       VALORE DI PARTENZA
-
-       Questo è fondamentale:
-
-       il calcolo viene sempre
-       fatto dal valore corrente
-       PRIMA della variazione.
+       Ogni variazione deve avere
+       necessariamente un commento.
     */
 
-    const from =
-        currentValue;
-
-
-    /*
-       VALORE DI ARRIVO
-
-       Sommiamo la variazione
-       al valore precedente.
-    */
-
-    const to =
-        from +
-        change;
-
-
-    /*
-       NOTA INSERITA DALL'UTENTE
-    */
-
-    const text =
+    const comment =
         currentNote.value.trim();
 
 
-    /*
-       Se esiste una nota,
-       creiamo una NUOVA
-       registrazione cronologica.
-
-       Anche se "from" o "to"
-       sono già presenti in altre
-       registrazioni, questa
-       rimane una registrazione
-       completamente separata.
-    */
-
     if (
-        text !== ""
+        comment === ""
     ) {
 
-        movements.push({
+        currentNote.focus();
 
-            id:
-                Date.now() +
-                "_" +
-                Math.random()
-                    .toString(36)
-                    .slice(2),
-
-            from:
-                from,
-
-            to:
-                to,
-
-            change:
-                change,
-
-            text:
-                text
-        });
-
-
-        localStorage.setItem(
-            NOTES_KEY,
-            JSON.stringify(
-                movements
-            )
-        );
+        return;
     }
 
 
     /*
-       Aggiorniamo il valore
-       solo dopo aver salvato
-       la registrazione.
+       Il nuovo valore viene
+       calcolato matematicamente:
+
+       NUOVO =
+       ATTUALE + VARIAZIONE
     */
 
+    const newValue =
+        currentValue +
+        change;
+
+
+    /*
+       Salviamo il valore
+       realmente raggiunto.
+
+       Non salviamo:
+
+       partenza → arrivo
+
+       e non salviamo:
+
+       + / -
+
+       perché quello che interessa
+       nello storico è il valore
+       raggiunto.
+    */
+
+    history.push({
+
+        value:
+            newValue,
+
+        text:
+            comment
+
+    });
+
+
     currentValue =
-        to;
+        newValue;
 
 
     localStorage.setItem(
         CURRENT_KEY,
-        String(currentValue)
+        String(
+            currentValue
+        )
     );
+
+
+    saveHistory();
 
 
     changeInput.value =
@@ -1935,7 +1873,7 @@ function resetApp() {
 
     const confirmed =
         confirm(
-            "Vuoi cancellare il valore iniziale e tutte le registrazioni?"
+            "Vuoi cancellare il valore iniziale e tutto lo storico?"
         );
 
 
@@ -1956,7 +1894,7 @@ function resetApp() {
     );
 
     localStorage.removeItem(
-        NOTES_KEY
+        HISTORY_KEY
     );
 
 
@@ -1966,7 +1904,7 @@ function resetApp() {
     currentValue =
         NaN;
 
-    movements = [];
+    history = [];
 
 
     startInput.value =
@@ -1976,6 +1914,10 @@ function resetApp() {
         "";
 
     currentNote.value =
+        "";
+
+
+    historyLayer.innerHTML =
         "";
 
 
@@ -2015,6 +1957,7 @@ startInput.addEventListener(
 
             setInitialValue();
         }
+
     }
 );
 
@@ -2035,23 +1978,32 @@ changeInput.addEventListener(
 
             applyChange();
         }
+
     }
 );
 
 
 /*
-   NON salviamo più la nota
-   con blur.
+   La nota NON viene più salvata
+   automaticamente al blur.
 
-   Deve essere salvata insieme
-   alla variazione, perché solo
-   in quel momento conosciamo:
-
-   valore di partenza
-   valore di arrivo
-   plus/minus
-   nota
+   Rimane modificabile finché
+   non viene premuto OK.
 */
+
+currentNote.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            applyChange();
+        }
+
+    }
+);
 
 
 resetButton.addEventListener(
@@ -2080,34 +2032,37 @@ let currentValue =
     );
 
 
-let movements = [];
+let history = [];
 
 
 try {
 
-    const saved =
+    history =
         JSON.parse(
             localStorage.getItem(
-                NOTES_KEY
+                HISTORY_KEY
             )
-        );
+        ) || [];
 
+
+    /*
+       Controllo di sicurezza:
+       lo storico deve essere
+       sempre un array.
+    */
 
     if (
-        Array.isArray(saved)
+        !Array.isArray(
+            history
+        )
     ) {
 
-        movements =
-            saved;
-
-    } else {
-
-        movements = [];
+        history = [];
     }
 
 } catch {
 
-    movements = [];
+    history = [];
 }
 
 
@@ -2144,6 +2099,7 @@ if (
     startScreen.classList.remove(
         "hidden"
     );
+
 }
 
 </script>
