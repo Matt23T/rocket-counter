@@ -194,7 +194,7 @@ body {
 
 
 /* =====================================================
-   STORICO A DESTRA
+   STORICO NOTE A DESTRA
 ===================================================== */
 
 .history-layer {
@@ -371,7 +371,7 @@ body {
 
     flex-direction: column;
 
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .current-value {
@@ -386,6 +386,37 @@ body {
 
     transition:
         color 0.2s ease;
+}
+
+
+/* =====================================================
+   NOTA DEL VALORE ATTUALE
+===================================================== */
+
+.current-note {
+
+    width: 180px;
+    height: 27px;
+
+    margin: 0;
+    padding: 0;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #aaa;
+
+    font-size: 13px;
+
+    touch-action: auto;
+}
+
+.current-note::placeholder {
+
+    color: #555;
 }
 
 
@@ -410,27 +441,11 @@ body {
 
     display: flex;
 
-    flex-direction: column;
-
     align-items: center;
 
     gap: 8px;
 
     z-index: 80;
-}
-
-
-/* =====================================================
-   RIQUADRO VARIAZIONE
-===================================================== */
-
-.change-row {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
 }
 
 .change-input {
@@ -485,43 +500,6 @@ body {
 
     transform:
         scale(0.96);
-}
-
-
-/* =====================================================
-   RIQUADRO NOTA
-===================================================== */
-
-.note-input {
-
-    width: 238px;
-    height: 43px;
-
-    padding: 0 12px;
-
-    border:
-        1px solid #333;
-
-    border-radius: 13px;
-
-    outline: none;
-
-    background: #111;
-
-    color: #fff;
-
-    text-align: center;
-
-    font-size: 15px;
-
-    font-weight: 500;
-
-    touch-action: auto;
-}
-
-.note-input::placeholder {
-
-    color: #555;
 }
 
 
@@ -682,6 +660,11 @@ body {
         font-size: 19px;
     }
 
+    .current-note {
+
+        width: 165px;
+    }
+
     .history-layer {
 
         right: 7px;
@@ -694,13 +677,6 @@ body {
         font-size: 11px;
 
         line-height: 16px;
-    }
-
-    .note-input {
-
-        width: 238px;
-
-        font-size: 14px;
     }
 
 }
@@ -747,7 +723,7 @@ body {
 
 
     <!-- =================================================
-         STORICO A DESTRA
+         STORICO NOTE
     ================================================= -->
 
     <div
@@ -843,59 +819,48 @@ body {
                 0 €
             </div>
 
+            <input
+                id="currentNote"
+                class="current-note"
+                type="text"
+                maxlength="100"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                placeholder="Nota..."
+            >
+
         </div>
 
     </div>
 
 
     <!-- =================================================
-         CONTROLLI
+         VARIAZIONE
     ================================================= -->
 
     <div
         class="controls"
     >
 
-        <!-- VARIAZIONE -->
-
-        <div
-            class="change-row"
-        >
-
-            <input
-                id="changeInput"
-                class="change-input"
-                type="text"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
-                spellcheck="false"
-                placeholder="+ / - variazione"
-            >
-
-            <button
-                id="changeButton"
-                class="change-button"
-            >
-                OK
-            </button>
-
-        </div>
-
-
-        <!-- NOTA -->
-
         <input
-            id="noteInput"
-            class="note-input"
+            id="changeInput"
+            class="change-input"
             type="text"
-            maxlength="100"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
-            placeholder="Nota obbligatoria..."
+            placeholder="+ / - variazione"
         >
+
+        <button
+            id="changeButton"
+            class="change-button"
+        >
+            OK
+        </button>
 
     </div>
 
@@ -974,7 +939,6 @@ document.addEventListener(
     }
 );
 
-
 document.addEventListener(
     "gesturechange",
     function(event) {
@@ -987,7 +951,6 @@ document.addEventListener(
     }
 );
 
-
 document.addEventListener(
     "gestureend",
     function(event) {
@@ -999,7 +962,6 @@ document.addEventListener(
         passive: false
     }
 );
-
 
 document.addEventListener(
     "touchmove",
@@ -1068,9 +1030,9 @@ const currentValueElement =
         "currentValue"
     );
 
-const noteInput =
+const currentNote =
     document.getElementById(
-        "noteInput"
+        "currentNote"
     );
 
 const changeInput =
@@ -1436,6 +1398,10 @@ function buildScale() {
         /*
            La scala rappresenta
            sempre valori REALI.
+
+           Quindi:
+
+           valore attuale + posizione
         */
 
         if (
@@ -1483,19 +1449,38 @@ function buildScale() {
    DISEGNA STORICO
 ===================================================== */
 
+/*
+   IMPORTANTE:
+
+   Lo storico NON viene più
+   ordinato matematicamente.
+
+   L'ordine è quello nel quale
+   gli eventi sono stati registrati.
+
+   Esempio:
+
+   1000
+   3000
+   500
+   3000
+
+   resta:
+
+   1000
+   3000
+   500
+   3000
+
+   anche se i valori sono
+   numericamente disordinati.
+*/
+
 function drawHistory() {
 
     historyLayer.innerHTML =
         "";
 
-
-    /*
-       Lo storico rimane SEMPRE
-       in ordine cronologico.
-
-       Non viene ordinato
-       matematicamente.
-    */
 
     history.forEach(
         (entry, index) => {
@@ -1683,6 +1668,20 @@ function updateDisplay() {
     drawHistory();
 
 
+    /*
+       La nota sotto al razzo
+       viene sempre svuotata
+       dopo una variazione.
+
+       La nota viene inserita
+       nello storico quando
+       premi OK.
+    */
+
+    currentNote.value =
+        "";
+
+
     requestAnimationFrame(
         () => {
 
@@ -1764,13 +1763,6 @@ function setInitialValue() {
 
 function applyChange() {
 
-    /*
-       ================================================
-       CONTROLLO 1
-       La variazione è obbligatoria.
-       ================================================
-    */
-
     const change =
         parseNumber(
             changeInput.value
@@ -1788,33 +1780,30 @@ function applyChange() {
 
 
     /*
-       ================================================
-       CONTROLLO 2
-       La nota è obbligatoria.
-       ================================================
+       Ogni variazione deve avere
+       necessariamente un commento.
     */
 
     const comment =
-        noteInput.value.trim();
+        currentNote.value.trim();
 
 
     if (
         comment === ""
     ) {
 
-        noteInput.focus();
+        currentNote.focus();
 
         return;
     }
 
 
     /*
-       ================================================
-       CALCOLO MATEMATICO
+       Il nuovo valore viene
+       calcolato matematicamente:
 
-       NUOVO VALORE =
-       VALORE ATTUALE + VARIAZIONE
-       ================================================
+       NUOVO =
+       ATTUALE + VARIAZIONE
     */
 
     const newValue =
@@ -1823,14 +1812,20 @@ function applyChange() {
 
 
     /*
-       ================================================
-       REGISTRAZIONE EVENTO
+       Salviamo il valore
+       realmente raggiunto.
 
-       Viene salvato il valore
-       raggiunto e la nota.
+       Non salviamo:
 
-       L'ordine rimane cronologico.
-       ================================================
+       partenza → arrivo
+
+       e non salviamo:
+
+       + / -
+
+       perché quello che interessa
+       nello storico è il valore
+       raggiunto.
     */
 
     history.push({
@@ -1844,17 +1839,9 @@ function applyChange() {
     });
 
 
-    /*
-       Aggiorniamo il valore corrente.
-    */
-
     currentValue =
         newValue;
 
-
-    /*
-       Salviamo tutto.
-    */
 
     localStorage.setItem(
         CURRENT_KEY,
@@ -1867,16 +1854,10 @@ function applyChange() {
     saveHistory();
 
 
-    /*
-       Svuotiamo entrambi i campi
-       solo dopo che l'operazione
-       è stata registrata.
-    */
-
     changeInput.value =
         "";
 
-    noteInput.value =
+    currentNote.value =
         "";
 
 
@@ -1932,7 +1913,7 @@ function resetApp() {
     changeInput.value =
         "";
 
-    noteInput.value =
+    currentNote.value =
         "";
 
 
@@ -1987,11 +1968,6 @@ changeButton.addEventListener(
 );
 
 
-/*
-   ENTER nel campo variazione:
-   controlla entrambi i campi.
-*/
-
 changeInput.addEventListener(
     "keydown",
     event => {
@@ -2008,11 +1984,14 @@ changeInput.addEventListener(
 
 
 /*
-   ENTER nel campo nota:
-   controlla entrambi i campi.
+   La nota NON viene più salvata
+   automaticamente al blur.
+
+   Rimane modificabile finché
+   non viene premuto OK.
 */
 
-noteInput.addEventListener(
+currentNote.addEventListener(
     "keydown",
     event => {
 
