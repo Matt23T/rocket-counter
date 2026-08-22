@@ -194,65 +194,110 @@ body {
 
 
 /* =====================================================
-   NOTE
+   STORICO VARIAZIONI A DESTRA
 ===================================================== */
 
-.notes-layer {
+.history-layer {
 
     position: absolute;
 
-    inset: 0;
+    top: 50%;
 
-    pointer-events: none;
+    right: 10px;
+
+    width: calc(50% - 45px);
+
+    max-height: 58vh;
+
+    transform:
+        translateY(-50%);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: none;
 
     z-index: 50;
 
-    overflow: hidden;
+    pointer-events: auto;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+.history-layer::-webkit-scrollbar {
+    display: none;
 }
 
 
 /* =====================================================
-   NOTA SINGOLA
+   SINGOLA VARIAZIONE STORICA
 ===================================================== */
 
-.note {
+.history-item {
 
-    position: absolute;
+    width: 100%;
 
-    left: calc(50% + 31px);
+    margin-bottom: 14px;
 
-    max-width:
-        calc(50% - 42px);
+    padding-bottom: 10px;
 
-    white-space: nowrap;
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.08);
 
-    overflow: hidden;
+    font-size: 12px;
 
-    text-overflow: ellipsis;
+    line-height: 17px;
 
-    font-size: 13px;
-
-    font-weight: 500;
-
-    pointer-events: none;
+    word-break: break-word;
 
     user-select: none;
 
     -webkit-user-select: none;
-
-    z-index: 55;
 }
 
-.note-value {
+.history-value {
 
-    margin-right: 7px;
+    display: inline-block;
+
+    margin-right: 5px;
 
     font-weight: 700;
 }
 
-.note-text {
+.history-text {
 
     opacity: 0.90;
+}
+
+.history-delete {
+
+    float: right;
+
+    width: 19px;
+    height: 19px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #1b1b1b;
+
+    color: #777;
+
+    font-size: 11px;
+
+    line-height: 19px;
+
+    text-align: center;
+}
+
+.history-delete:active {
+
+    transform:
+        scale(0.9);
 }
 
 
@@ -279,14 +324,14 @@ body {
 
     position: absolute;
 
-    left: 8px;
+    right: 8px;
     top: 0;
 
     width: 58px;
     height: 29px;
 
     transform:
-        translateY(-50%);
+        translate(0, -50%);
 
     overflow: visible;
 
@@ -316,7 +361,7 @@ body {
 
     position: absolute;
 
-    left: 76px;
+    right: 76px;
     top: 0;
 
     transform:
@@ -326,7 +371,7 @@ body {
 
     flex-direction: column;
 
-    pointer-events: auto;
+    pointer-events: none;
 }
 
 .current-value {
@@ -341,32 +386,6 @@ body {
 
     transition:
         color 0.2s ease;
-}
-
-.current-note {
-
-    width: 180px;
-    height: 27px;
-
-    margin: 0;
-    padding: 0;
-
-    border: none;
-
-    outline: none;
-
-    background: transparent;
-
-    color: #aaa;
-
-    font-size: 13px;
-
-    touch-action: auto;
-}
-
-.current-note::placeholder {
-
-    color: #555;
 }
 
 
@@ -391,11 +410,22 @@ body {
 
     display: flex;
 
+    flex-direction: column;
+
     align-items: center;
 
     gap: 8px;
 
     z-index: 80;
+}
+
+.change-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
 }
 
 .change-input {
@@ -450,6 +480,41 @@ body {
 
     transform:
         scale(0.96);
+}
+
+
+/* =====================================================
+   CAMPO NOTA
+===================================================== */
+
+.note-input {
+
+    width: 175px;
+    height: 49px;
+
+    padding: 0 12px;
+
+    border:
+        1px solid #333;
+
+    border-radius: 13px;
+
+    outline: none;
+
+    background: #111;
+
+    color: #fff;
+
+    text-align: center;
+
+    font-size: 17px;
+
+    font-weight: 600;
+}
+
+.note-input::placeholder {
+
+    color: #555;
 }
 
 
@@ -602,7 +667,7 @@ body {
 
     .current-info {
 
-        left: 73px;
+        right: 73px;
     }
 
     .current-value {
@@ -610,15 +675,26 @@ body {
         font-size: 19px;
     }
 
-    .current-note {
+    .history-layer {
+
+        right: 7px;
+
+        width: calc(50% - 40px);
+    }
+
+    .history-item {
+
+        font-size: 11px;
+
+        line-height: 16px;
+    }
+
+    .change-input,
+    .note-input {
 
         width: 165px;
     }
 
-    .note {
-
-        font-size: 12px;
-    }
 }
 
 </style>
@@ -663,12 +739,12 @@ body {
 
 
     <!-- =================================================
-         NOTE FISSE
+         STORICO VARIAZIONI
     ================================================= -->
 
     <div
-        id="notesLayer"
-        class="notes-layer"
+        id="historyLayer"
+        class="history-layer"
     ></div>
 
 
@@ -759,48 +835,55 @@ body {
                 0 €
             </div>
 
-            <input
-                id="currentNote"
-                class="current-note"
-                type="text"
-                maxlength="100"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
-                spellcheck="false"
-                placeholder="Nota..."
-            >
-
         </div>
 
     </div>
 
 
     <!-- =================================================
-         VARIAZIONE
+         VARIAZIONE + NOTA
     ================================================= -->
 
     <div
         class="controls"
     >
 
+        <div
+            class="change-row"
+        >
+
+            <input
+                id="changeInput"
+                class="change-input"
+                type="text"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                placeholder="+ / - variazione"
+            >
+
+            <button
+                id="changeButton"
+                class="change-button"
+            >
+                OK
+            </button>
+
+        </div>
+
+
         <input
-            id="changeInput"
-            class="change-input"
+            id="noteInput"
+            class="note-input"
             type="text"
+            maxlength="100"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
-            placeholder="+ / - variazione"
+            placeholder="Nota"
         >
-
-        <button
-            id="changeButton"
-            class="change-button"
-        >
-            OK
-        </button>
 
     </div>
 
@@ -870,7 +953,9 @@ body {
 document.addEventListener(
     "gesturestart",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
@@ -880,7 +965,9 @@ document.addEventListener(
 document.addEventListener(
     "gesturechange",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
@@ -890,7 +977,9 @@ document.addEventListener(
 document.addEventListener(
     "gestureend",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
@@ -904,7 +993,9 @@ document.addEventListener(
         if (
             event.touches.length > 1
         ) {
+
             event.preventDefault();
+
         }
 
     },
@@ -919,13 +1010,13 @@ document.addEventListener(
 ===================================================== */
 
 const START_KEY =
-    "rocket_start_value_v5";
+    "rocket_start_value_v8";
 
 const CURRENT_KEY =
-    "rocket_current_value_v5";
+    "rocket_current_value_v8";
 
-const NOTES_KEY =
-    "rocket_notes_v5";
+const HISTORY_KEY =
+    "rocket_history_v8";
 
 
 /* =====================================================
@@ -952,9 +1043,9 @@ const labels =
         "labels"
     );
 
-const notesLayer =
+const historyLayer =
     document.getElementById(
-        "notesLayer"
+        "historyLayer"
     );
 
 const currentValueElement =
@@ -962,14 +1053,14 @@ const currentValueElement =
         "currentValue"
     );
 
-const currentNote =
-    document.getElementById(
-        "currentNote"
-    );
-
 const changeInput =
     document.getElementById(
         "changeInput"
+    );
+
+const noteInput =
+    document.getElementById(
+        "noteInput"
     );
 
 const changeButton =
@@ -1009,7 +1100,7 @@ const rocket =
 
 
 /* =====================================================
-   SCALA
+   PARAMETRI SCALA
 ===================================================== */
 
 const DISPLAY_RANGE =
@@ -1022,11 +1113,12 @@ const PIXELS_PER_STEP =
     27;
 
 const PIXELS_PER_EURO =
-    PIXELS_PER_STEP / STEP;
+    PIXELS_PER_STEP /
+    STEP;
 
 
 /* =====================================================
-   NUMERI
+   CONVERSIONE NUMERI
 ===================================================== */
 
 function parseNumber(value) {
@@ -1035,23 +1127,28 @@ function parseNumber(value) {
         value === null ||
         value === undefined
     ) {
+
         return NaN;
     }
 
     let text =
         String(value).trim();
 
+
     if (
         text === ""
     ) {
+
         return NaN;
     }
+
 
     text =
         text.replace(
             /\s/g,
             ""
         );
+
 
     if (
         text.includes(",")
@@ -1078,8 +1175,10 @@ function parseNumber(value) {
             );
     }
 
+
     const number =
         Number(text);
+
 
     return Number.isFinite(number)
         ? number
@@ -1088,7 +1187,7 @@ function parseNumber(value) {
 
 
 /* =====================================================
-   FORMATTAZIONE
+   FORMATTAZIONE VALORE
 ===================================================== */
 
 function formatValue(value) {
@@ -1097,6 +1196,7 @@ function formatValue(value) {
         Math.round(
             value * 100
         ) / 100;
+
 
     const absolute =
         Math.abs(rounded)
@@ -1108,6 +1208,7 @@ function formatValue(value) {
                 }
             );
 
+
     if (
         rounded > 0
     ) {
@@ -1117,6 +1218,7 @@ function formatValue(value) {
             " €";
     }
 
+
     if (
         rounded < 0
     ) {
@@ -1125,6 +1227,7 @@ function formatValue(value) {
             absolute +
             " €";
     }
+
 
     return "0 €";
 }
@@ -1139,8 +1242,10 @@ function getValueColor(value) {
     if (
         value === 0
     ) {
+
         return "#FFFFFF";
     }
+
 
     if (
         value > 0
@@ -1149,54 +1254,64 @@ function getValueColor(value) {
         if (
             value <= 1000
         ) {
+
             return "#B8FFD0";
         }
 
         if (
             value <= 2000
         ) {
+
             return "#62F28A";
         }
 
         if (
             value <= 3000
         ) {
+
             return "#20DD65";
         }
 
         if (
             value <= 4000
         ) {
+
             return "#08C951";
         }
 
         return "#00A83F";
     }
 
+
     const amount =
         Math.abs(value);
+
 
     if (
         amount <= 1000
     ) {
+
         return "#FFB9C0";
     }
 
     if (
         amount <= 2000
     ) {
+
         return "#FF6877";
     }
 
     if (
         amount <= 3000
     ) {
+
         return "#F8374C";
     }
 
     if (
         amount <= 4000
     ) {
+
         return "#E91E35";
     }
 
@@ -1215,16 +1330,20 @@ function updateColor() {
             currentValue
         );
 
+
     rocketParts.forEach(
         part => {
 
             part.style.fill =
                 color;
+
         }
     );
 
+
     currentValueElement.style.color =
         color;
+
 
     rocket.style.filter =
         `drop-shadow(
@@ -1245,36 +1364,45 @@ function buildScale() {
     labels.innerHTML =
         "";
 
+
     const totalValueRange =
         DISPLAY_RANGE * 2;
+
 
     const totalHeight =
         totalValueRange *
         PIXELS_PER_EURO;
 
+
     timelineContent.style.height =
         totalHeight + "px";
 
+
     const centerY =
         totalHeight / 2;
+
 
     const minimumValue =
         currentValue -
         DISPLAY_RANGE;
 
+
     const maximumValue =
         currentValue +
         DISPLAY_RANGE;
+
 
     const firstValue =
         Math.ceil(
             minimumValue / STEP
         ) * STEP;
 
+
     const lastValue =
         Math.floor(
             maximumValue / STEP
         ) * STEP;
+
 
     for (
         let scaleValue =
@@ -1291,6 +1419,7 @@ function buildScale() {
             scaleValue -
             currentValue;
 
+
         const y =
             centerY -
             (
@@ -1298,13 +1427,16 @@ function buildScale() {
                 PIXELS_PER_EURO
             );
 
+
         const tick =
             document.createElement(
                 "div"
             );
 
+
         tick.className =
             "tick";
+
 
         if (
             scaleValue % 250 === 0
@@ -1315,6 +1447,7 @@ function buildScale() {
             );
         }
 
+
         if (
             scaleValue === 0
         ) {
@@ -1324,12 +1457,15 @@ function buildScale() {
             );
         }
 
+
         tick.style.top =
             `${y}px`;
+
 
         ticks.appendChild(
             tick
         );
+
 
         if (
             scaleValue % 250 === 0
@@ -1340,21 +1476,26 @@ function buildScale() {
                     "div"
                 );
 
+
             label.className =
                 "scale-label";
 
+
             label.style.top =
                 `${y}px`;
+
 
             label.textContent =
                 formatValue(
                     scaleValue
                 );
 
+
             label.style.color =
                 getValueColor(
                     scaleValue
                 );
+
 
             labels.appendChild(
                 label
@@ -1365,263 +1506,207 @@ function buildScale() {
 
 
 /* =====================================================
-   CREA NOTA
+   CREA ELEMENTO STORICO
 ===================================================== */
 
-function createNote(
-    value,
-    text
+function createHistoryItem(
+    entry,
+    index
 ) {
 
-    const note =
+    const item =
         document.createElement(
             "div"
         );
 
-    note.className =
-        "note";
+
+    item.className =
+        "history-item";
+
 
     const color =
         getValueColor(
-            value
+            entry.value
         );
 
-    note.style.color =
-        color;
 
     const valueElement =
         document.createElement(
             "span"
         );
 
+
     valueElement.className =
-        "note-value";
+        "history-value";
+
 
     valueElement.textContent =
         formatValue(
-            value
+            entry.value
         );
+
 
     valueElement.style.color =
         color;
+
 
     const textElement =
         document.createElement(
             "span"
         );
 
+
     textElement.className =
-        "note-text";
+        "history-text";
+
 
     textElement.textContent =
-        text;
+        entry.note;
+
 
     textElement.style.color =
         color;
 
-    note.appendChild(
+
+    const deleteButton =
+        document.createElement(
+            "button"
+        );
+
+
+    deleteButton.className =
+        "history-delete";
+
+
+    deleteButton.textContent =
+        "×";
+
+
+    deleteButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+            deleteHistoryEntry(
+                index
+            );
+
+        }
+    );
+
+
+    item.appendChild(
         valueElement
     );
 
-    note.appendChild(
+
+    item.appendChild(
         textElement
     );
 
-    return note;
+
+    item.appendChild(
+        deleteButton
+    );
+
+
+    return item;
 }
 
 
 /* =====================================================
-   DISEGNA NOTE
+   DISEGNA STORICO
 ===================================================== */
 
-function drawNotes() {
+function drawHistory() {
 
-    notesLayer.innerHTML =
+    historyLayer.innerHTML =
         "";
 
-    const entries =
-        Object.entries(
-            notes
-        )
-        .map(
-            ([value, text]) => {
 
-                return {
-                    value:
-                        Number(value),
+    /*
+       IMPORTANTE:
 
-                    text:
-                        String(text)
-                };
+       L'ordine è ESCLUSIVAMENTE
+       quello cronologico.
 
-            }
-        )
-        .filter(
-            item =>
-                Number.isFinite(
-                    item.value
-                )
-        );
+       Non viene ordinato per valore.
 
-    entries.sort(
-        (a, b) =>
-            a.value -
-            b.value
-    );
+       Esempio:
 
-    const above =
-        entries
-            .filter(
-                item =>
-                    item.value >
-                    currentValue
-            )
-            .sort(
-                (a, b) =>
-                    a.value -
-                    b.value
-            );
+       1000
+       3000
+       500
+       2500
 
-    const below =
-        entries
-            .filter(
-                item =>
-                    item.value <
-                    currentValue
-            )
-            .sort(
-                (a, b) =>
-                    b.value -
-                    a.value
-            );
+       rimane:
 
-    const NOTE_GAP =
-        34;
+       1000
+       3000
+       500
+       2500
+    */
 
-    above.forEach(
-        (item, index) => {
 
-            const note =
-                createNote(
-                    item.value,
-                    item.text
+    history.forEach(
+        (entry, index) => {
+
+            const item =
+                createHistoryItem(
+                    entry,
+                    index
                 );
 
-            note.style.top =
-                `calc(
-                    50% -
-                    ${
-                        NOTE_GAP *
-                        (index + 1)
-                    }px
-                )`;
 
-            note.style.transform =
-                "translateY(-50%)";
-
-            notesLayer.appendChild(
-                note
+            historyLayer.appendChild(
+                item
             );
-        }
-    );
 
-    below.forEach(
-        (item, index) => {
-
-            const note =
-                createNote(
-                    item.value,
-                    item.text
-                );
-
-            note.style.top =
-                `calc(
-                    50% +
-                    ${
-                        NOTE_GAP *
-                        (index + 1)
-                    }px
-                )`;
-
-            note.style.transform =
-                "translateY(-50%)";
-
-            notesLayer.appendChild(
-                note
-            );
         }
     );
 }
 
 
 /* =====================================================
-   SALVA NOTA
+   SALVA STORICO
 ===================================================== */
 
-function saveCurrentNote() {
-
-    if (
-        !Number.isFinite(
-            currentValue
-        )
-    ) {
-        return;
-    }
-
-    const text =
-        currentNote.value.trim();
-
-    const key =
-        String(
-            currentValue
-        );
-
-    if (
-        text === ""
-    ) {
-
-        delete notes[key];
-
-    } else {
-
-        notes[key] =
-            text;
-    }
+function saveHistory() {
 
     localStorage.setItem(
-        NOTES_KEY,
+        HISTORY_KEY,
         JSON.stringify(
-            notes
+            history
         )
     );
-
-    drawNotes();
 }
 
 
 /* =====================================================
-   CARICA NOTA
+   ELIMINA STORICO
 ===================================================== */
 
-function loadCurrentNote() {
+function deleteHistoryEntry(index) {
 
     if (
-        !Number.isFinite(
-            currentValue
-        )
+        index < 0 ||
+        index >= history.length
     ) {
-
-        currentNote.value =
-            "";
 
         return;
     }
 
-    currentNote.value =
-        notes[
-            String(currentValue)
-        ] || "";
+
+    history.splice(
+        index,
+        1
+    );
+
+
+    saveHistory();
+
+    drawHistory();
 }
 
 
@@ -1635,6 +1720,7 @@ function centerTimeline() {
         timeline.scrollHeight -
         timeline.clientHeight;
 
+
     if (
         maxScroll <= 0
     ) {
@@ -1645,13 +1731,14 @@ function centerTimeline() {
         return;
     }
 
+
     timeline.scrollTop =
         maxScroll / 2;
 }
 
 
 /* =====================================================
-   DISPLAY
+   AGGIORNA DISPLAY
 ===================================================== */
 
 function updateDisplay() {
@@ -1661,13 +1748,13 @@ function updateDisplay() {
             currentValue
         );
 
+
     updateColor();
 
     buildScale();
 
-    drawNotes();
+    drawHistory();
 
-    loadCurrentNote();
 
     requestAnimationFrame(
         () => {
@@ -1690,8 +1777,11 @@ function setInitialValue() {
             startInput.value
         );
 
+
     if (
-        !Number.isFinite(value)
+        !Number.isFinite(
+            value
+        )
     ) {
 
         startInput.focus();
@@ -1699,13 +1789,17 @@ function setInitialValue() {
         return;
     }
 
+
     startValue =
         value;
+
 
     currentValue =
         value;
 
-    notes = {};
+
+    history = [];
+
 
     localStorage.setItem(
         START_KEY,
@@ -1714,6 +1808,7 @@ function setInitialValue() {
         )
     );
 
+
     localStorage.setItem(
         CURRENT_KEY,
         String(
@@ -1721,23 +1816,30 @@ function setInitialValue() {
         )
     );
 
+
     localStorage.setItem(
-        NOTES_KEY,
+        HISTORY_KEY,
         JSON.stringify(
-            notes
+            history
         )
     );
+
+
+    startInput.value =
+        "";
+
 
     startScreen.classList.add(
         "hidden"
     );
+
 
     updateDisplay();
 }
 
 
 /* =====================================================
-   VARIAZIONE
+   APPLICA VARIAZIONE
 ===================================================== */
 
 function applyChange() {
@@ -1746,6 +1848,13 @@ function applyChange() {
         parseNumber(
             changeInput.value
         );
+
+
+    /*
+       PRIMO CONTROLLO:
+
+       la variazione deve esistere.
+    */
 
     if (
         !Number.isFinite(
@@ -1758,11 +1867,68 @@ function applyChange() {
         return;
     }
 
-    saveCurrentNote();
 
-    currentValue =
+    /*
+       SECONDO CONTROLLO:
+
+       la nota deve esistere.
+
+       Non è possibile registrare
+       una variazione senza nota.
+    */
+
+    const note =
+        noteInput.value.trim();
+
+
+    if (
+        note === ""
+    ) {
+
+        noteInput.focus();
+
+        return;
+    }
+
+
+    /*
+       CALCOLO:
+
+       nuovo valore =
+       valore precedente + variazione
+    */
+
+    const newValue =
         currentValue +
         change;
+
+
+    /*
+       Nello storico salviamo
+       ESCLUSIVAMENTE il valore
+       raggiunto e la nota.
+
+       Non salviamo il numero
+       di partenza.
+    */
+
+    history.push({
+
+        value:
+            newValue,
+
+        note:
+            note,
+
+        timestamp:
+            Date.now()
+
+    });
+
+
+    currentValue =
+        newValue;
+
 
     localStorage.setItem(
         CURRENT_KEY,
@@ -1771,10 +1937,32 @@ function applyChange() {
         )
     );
 
+
+    saveHistory();
+
+
+    /*
+       Puliamo entrambi i campi
+       solamente dopo una registrazione
+       valida.
+    */
+
     changeInput.value =
         "";
 
+    noteInput.value =
+        "";
+
+
     updateDisplay();
+
+
+    /*
+       Torniamo automaticamente
+       sul campo variazione.
+    */
+
+    changeInput.focus();
 }
 
 
@@ -1786,8 +1974,9 @@ function resetApp() {
 
     const confirmed =
         confirm(
-            "Vuoi cancellare il valore iniziale e tutte le note?"
+            "Vuoi cancellare il valore iniziale e tutto lo storico?"
         );
+
 
     if (
         !confirmed
@@ -1795,6 +1984,7 @@ function resetApp() {
 
         return;
     }
+
 
     localStorage.removeItem(
         START_KEY
@@ -1805,16 +1995,20 @@ function resetApp() {
     );
 
     localStorage.removeItem(
-        NOTES_KEY
+        HISTORY_KEY
     );
+
 
     startValue =
         NaN;
 
+
     currentValue =
         NaN;
 
-    notes = {};
+
+    history = [];
+
 
     startInput.value =
         "";
@@ -1822,12 +2016,18 @@ function resetApp() {
     changeInput.value =
         "";
 
-    currentNote.value =
+    noteInput.value =
         "";
+
+
+    historyLayer.innerHTML =
+        "";
+
 
     startScreen.classList.remove(
         "hidden"
     );
+
 
     setTimeout(
         () => {
@@ -1849,6 +2049,7 @@ startButton.addEventListener(
     setInitialValue
 );
 
+
 startInput.addEventListener(
     "keydown",
     event => {
@@ -1859,13 +2060,26 @@ startInput.addEventListener(
 
             setInitialValue();
         }
+
     }
 );
+
 
 changeButton.addEventListener(
     "click",
     applyChange
 );
+
+
+/*
+   ENTER nella variazione:
+
+   porta al campo nota,
+   ma NON salva ancora.
+
+   In questo modo entrambi i campi
+   devono essere completati.
+*/
 
 changeInput.addEventListener(
     "keydown",
@@ -1875,17 +2089,28 @@ changeInput.addEventListener(
             event.key === "Enter"
         ) {
 
-            applyChange();
+            event.preventDefault();
+
+            noteInput.focus();
         }
+
     }
 );
 
-currentNote.addEventListener(
-    "blur",
-    saveCurrentNote
-);
 
-currentNote.addEventListener(
+/*
+   ENTER nella nota:
+
+   prova a registrare.
+
+   Se la variazione manca,
+   torna alla variazione.
+
+   Se la nota manca,
+   rimane sulla nota.
+*/
+
+noteInput.addEventListener(
     "keydown",
     event => {
 
@@ -1893,12 +2118,14 @@ currentNote.addEventListener(
             event.key === "Enter"
         ) {
 
-            saveCurrentNote();
+            event.preventDefault();
 
-            currentNote.blur();
+            applyChange();
         }
+
     }
 );
+
 
 resetButton.addEventListener(
     "click",
@@ -1907,7 +2134,7 @@ resetButton.addEventListener(
 
 
 /* =====================================================
-   CARICAMENTO
+   CARICAMENTO DATI
 ===================================================== */
 
 let startValue =
@@ -1917,6 +2144,7 @@ let startValue =
         )
     );
 
+
 let currentValue =
     parseNumber(
         localStorage.getItem(
@@ -1924,20 +2152,86 @@ let currentValue =
         )
     );
 
-let notes = {};
+
+let history = [];
+
 
 try {
 
-    notes =
+    history =
         JSON.parse(
             localStorage.getItem(
-                NOTES_KEY
+                HISTORY_KEY
             )
-        ) || {};
+        ) || [];
+
+
+    if (
+        !Array.isArray(
+            history
+        )
+    ) {
+
+        history = [];
+    }
+
+
+    /*
+       Compatibilità con eventuali
+       dati vecchi non perfettamente
+       formattati.
+    */
+
+    history =
+        history
+            .map(
+                entry => {
+
+                    if (
+                        !entry ||
+                        !Number.isFinite(
+                            Number(
+                                entry.value
+                            )
+                        )
+                    ) {
+
+                        return null;
+                    }
+
+
+                    return {
+
+                        value:
+                            Number(
+                                entry.value
+                            ),
+
+                        note:
+                            String(
+                                entry.note ??
+                                entry.text ??
+                                ""
+                            ),
+
+                        timestamp:
+                            Number(
+                                entry.timestamp
+                            ) ||
+                            Date.now()
+
+                    };
+
+                }
+            )
+            .filter(
+                entry =>
+                    entry !== null
+            );
 
 } catch {
 
-    notes = {};
+    history = [];
 }
 
 
@@ -1961,9 +2255,11 @@ if (
             startValue;
     }
 
+
     startScreen.classList.add(
         "hidden"
     );
+
 
     updateDisplay();
 
@@ -1972,6 +2268,7 @@ if (
     startScreen.classList.remove(
         "hidden"
     );
+
 }
 
 </script>
