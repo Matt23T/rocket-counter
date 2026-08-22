@@ -194,7 +194,7 @@ body {
 
 
 /* =====================================================
-   NOTE / MOVIMENTI
+   NOTE
 ===================================================== */
 
 .notes-layer {
@@ -212,7 +212,7 @@ body {
 
 
 /* =====================================================
-   SINGOLO MOVIMENTO
+   NOTA SINGOLA
 ===================================================== */
 
 .note {
@@ -221,14 +221,16 @@ body {
 
     left: calc(50% + 31px);
 
-    width:
+    max-width:
         calc(50% - 42px);
 
-    min-height: 30px;
+    white-space: nowrap;
 
-    padding: 3px 0;
+    overflow: hidden;
 
-    font-size: 12px;
+    text-overflow: ellipsis;
+
+    font-size: 13px;
 
     font-weight: 500;
 
@@ -239,31 +241,18 @@ body {
     -webkit-user-select: none;
 
     z-index: 55;
-
-    white-space: normal;
 }
 
-.note-route {
+.note-value {
 
-    display: inline;
+    margin-right: 7px;
 
     font-weight: 700;
-
-    margin-right: 5px;
-}
-
-.note-change {
-
-    font-weight: 800;
-
-    margin-right: 5px;
 }
 
 .note-text {
 
-    opacity: 0.92;
-
-    font-weight: 500;
+    opacity: 0.90;
 }
 
 
@@ -290,11 +279,7 @@ body {
 
     position: absolute;
 
-    /*
-       RAZZO A SINISTRA DELLA LINEA
-    */
-
-    left: -66px;
+    left: 8px;
     top: 0;
 
     width: 58px;
@@ -613,8 +598,6 @@ body {
 
         width: 56px;
         height: 28px;
-
-        left: -64px;
     }
 
     .current-info {
@@ -634,12 +617,7 @@ body {
 
     .note {
 
-        font-size: 11px;
-
-        left: calc(50% + 31px);
-
-        width:
-            calc(50% - 38px);
+        font-size: 12px;
     }
 }
 
@@ -685,7 +663,7 @@ body {
 
 
     <!-- =================================================
-         MOVIMENTI / PLUSVALENZE
+         NOTE FISSE
     ================================================= -->
 
     <div
@@ -892,9 +870,7 @@ body {
 document.addEventListener(
     "gesturestart",
     function(event) {
-
         event.preventDefault();
-
     },
     {
         passive: false
@@ -904,9 +880,7 @@ document.addEventListener(
 document.addEventListener(
     "gesturechange",
     function(event) {
-
         event.preventDefault();
-
     },
     {
         passive: false
@@ -916,9 +890,7 @@ document.addEventListener(
 document.addEventListener(
     "gestureend",
     function(event) {
-
         event.preventDefault();
-
     },
     {
         passive: false
@@ -932,9 +904,7 @@ document.addEventListener(
         if (
             event.touches.length > 1
         ) {
-
             event.preventDefault();
-
         }
 
     },
@@ -949,13 +919,13 @@ document.addEventListener(
 ===================================================== */
 
 const START_KEY =
-    "rocket_start_value_v6";
+    "rocket_start_value_v5";
 
 const CURRENT_KEY =
-    "rocket_current_value_v6";
+    "rocket_current_value_v5";
 
 const NOTES_KEY =
-    "rocket_movements_v6";
+    "rocket_notes_v5";
 
 
 /* =====================================================
@@ -1039,7 +1009,7 @@ const rocket =
 
 
 /* =====================================================
-   PARAMETRI SCALA
+   SCALA
 ===================================================== */
 
 const DISPLAY_RANGE =
@@ -1056,7 +1026,7 @@ const PIXELS_PER_EURO =
 
 
 /* =====================================================
-   CONVERSIONE NUMERI
+   NUMERI
 ===================================================== */
 
 function parseNumber(value) {
@@ -1065,7 +1035,6 @@ function parseNumber(value) {
         value === null ||
         value === undefined
     ) {
-
         return NaN;
     }
 
@@ -1075,7 +1044,6 @@ function parseNumber(value) {
     if (
         text === ""
     ) {
-
         return NaN;
     }
 
@@ -1086,8 +1054,15 @@ function parseNumber(value) {
         );
 
     /*
-       Gestione corretta di numeri italiani
-       e del segno meno.
+       Supporta:
+
+       1300
+       +1300
+       -1300
+       1.300
+       -1.300
+       1300,50
+       -1300,50
     */
 
     if (
@@ -1109,13 +1084,16 @@ function parseNumber(value) {
     } else {
 
         /*
-           Non eliminiamo il meno.
+           Il punto viene considerato
+           separatore delle migliaia
+           solo quando ci sono
+           esattamente tre cifre dopo.
         */
 
         text =
             text.replace(
-                /(?<=\d)\.(?=\d{3}(?:\D|$))/g,
-                ""
+                /^([+-]?\d+)\.(\d{3})$/,
+                "$1$2"
             );
     }
 
@@ -1172,49 +1150,6 @@ function formatValue(value) {
 
 
 /* =====================================================
-   FORMATTAZIONE SENZA + PER I VALORI DI PARTENZA
-===================================================== */
-
-function formatRouteValue(value) {
-
-    const rounded =
-        Math.round(
-            value * 100
-        ) / 100;
-
-    const absolute =
-        Math.abs(rounded)
-            .toLocaleString(
-                "it-IT",
-                {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 2
-                }
-            );
-
-    if (
-        rounded < 0
-    ) {
-
-        return "-" +
-            absolute +
-            " €";
-    }
-
-    if (
-        rounded > 0
-    ) {
-
-        return "+" +
-            absolute +
-            " €";
-    }
-
-    return "0 €";
-}
-
-
-/* =====================================================
    COLORI
 ===================================================== */
 
@@ -1223,7 +1158,6 @@ function getValueColor(value) {
     if (
         value === 0
     ) {
-
         return "#FFFFFF";
     }
 
@@ -1235,28 +1169,24 @@ function getValueColor(value) {
         if (
             value <= 1000
         ) {
-
             return "#B8FFD0";
         }
 
         if (
             value <= 2000
         ) {
-
             return "#62F28A";
         }
 
         if (
             value <= 3000
         ) {
-
             return "#20DD65";
         }
 
         if (
             value <= 4000
         ) {
-
             return "#08C951";
         }
 
@@ -1271,28 +1201,24 @@ function getValueColor(value) {
     if (
         amount <= 1000
     ) {
-
         return "#FFB9C0";
     }
 
     if (
         amount <= 2000
     ) {
-
         return "#FF6877";
     }
 
     if (
         amount <= 3000
     ) {
-
         return "#F8374C";
     }
 
     if (
         amount <= 4000
     ) {
-
         return "#E91E35";
     }
 
@@ -1301,31 +1227,7 @@ function getValueColor(value) {
 
 
 /* =====================================================
-   COLORE DELLA VARIAZIONE
-===================================================== */
-
-function getChangeColor(change) {
-
-    if (
-        change > 0
-    ) {
-
-        return "#20DD65";
-    }
-
-    if (
-        change < 0
-    ) {
-
-        return "#F8374C";
-    }
-
-    return "#FFFFFF";
-}
-
-
-/* =====================================================
-   AGGIORNA COLORE RAZZO
+   COLORE RAZZO
 ===================================================== */
 
 function updateColor() {
@@ -1357,20 +1259,71 @@ function updateColor() {
 
 
 /* =====================================================
-   CREA SCALA
+   COSTRUZIONE SCALA
 ===================================================== */
+
+/*
+   QUESTA È LA PARTE MATEMATICA IMPORTANTE.
+
+   Per ogni valore reale della scala:
+
+       differenza =
+           valoreScala - valoreAttuale
+
+   Poi:
+
+       posizione =
+           centro -
+           differenza * pixelPerEuro
+
+   Conseguenza:
+
+       valoreScala > valoreAttuale
+       → posizione più in alto
+
+       valoreScala < valoreAttuale
+       → posizione più in basso
+
+
+   Esempio con valore attuale = 0:
+
+       +750 → sopra
+       +500 → sopra
+       +250 → sopra
+          0 → centro
+       -250 → sotto
+       -500 → sotto
+       -750 → sotto
+
+
+   Esempio con valore attuale = -300:
+
+       -100 → sopra
+       -250 → sopra
+       -300 → centro
+       -400 → sotto
+       -700 → sotto
+
+
+   NON viene utilizzato Math.abs()
+   per determinare la posizione.
+*/
 
 function buildScale() {
 
-    ticks.innerHTML = "";
+    ticks.innerHTML =
+        "";
 
-    labels.innerHTML = "";
+    labels.innerHTML =
+        "";
+
+
+    const totalValueRange =
+        DISPLAY_RANGE * 2;
 
 
     const totalHeight =
-        (
-            DISPLAY_RANGE * 2
-        ) *
+        totalValueRange *
         PIXELS_PER_EURO;
 
 
@@ -1382,18 +1335,84 @@ function buildScale() {
         totalHeight / 2;
 
 
+    /*
+       Costruiamo valori reali
+       intorno al valore attuale.
+
+       Non costruiamo più una posizione
+       partendo dal valore assoluto.
+    */
+
+    const minimumValue =
+        currentValue -
+        DISPLAY_RANGE;
+
+    const maximumValue =
+        currentValue +
+        DISPLAY_RANGE;
+
+
+    /*
+       Arrotondiamo gli estremi
+       ai multipli di 25.
+    */
+
+    const firstValue =
+        Math.ceil(
+            minimumValue / STEP
+        ) * STEP;
+
+
+    const lastValue =
+        Math.floor(
+            maximumValue / STEP
+        ) * STEP;
+
+
     for (
-        let relativeValue = -DISPLAY_RANGE;
+        let scaleValue =
+            firstValue;
 
-        relativeValue <= DISPLAY_RANGE;
+        scaleValue <=
+            lastValue;
 
-        relativeValue += STEP
+        scaleValue +=
+            STEP
     ) {
+
+
+        /*
+           DIFFERENZA NUMERICA REALE.
+
+           Esempio:
+
+           current = -300
+
+           scale = -700
+
+           difference =
+               -700 - (-300)
+               = -400
+
+           y =
+               centro - (-400 * scala)
+               = centro + ...
+
+           quindi -700 è sotto.
+
+           Questo è esattamente ciò
+           che vogliamo.
+        */
+
+        const difference =
+            scaleValue -
+            currentValue;
+
 
         const y =
             centerY -
             (
-                relativeValue *
+                difference *
                 PIXELS_PER_EURO
             );
 
@@ -1408,7 +1427,7 @@ function buildScale() {
 
 
         if (
-            relativeValue % 250 === 0
+            scaleValue % 250 === 0
         ) {
 
             tick.classList.add(
@@ -1418,7 +1437,7 @@ function buildScale() {
 
 
         if (
-            relativeValue === 0
+            scaleValue === 0
         ) {
 
             tick.classList.add(
@@ -1436,8 +1455,12 @@ function buildScale() {
         );
 
 
+        /*
+           Numero ogni 250 €.
+        */
+
         if (
-            relativeValue % 250 === 0
+            scaleValue % 250 === 0
         ) {
 
             const label =
@@ -1448,13 +1471,9 @@ function buildScale() {
             label.className =
                 "scale-label";
 
+
             label.style.top =
                 `${y}px`;
-
-
-            const scaleValue =
-                currentValue +
-                relativeValue;
 
 
             label.textContent =
@@ -1478,11 +1497,12 @@ function buildScale() {
 
 
 /* =====================================================
-   CREA MOVIMENTO
+   CREA NOTA
 ===================================================== */
 
-function createMovementNote(
-    movement
+function createNote(
+    value,
+    text
 ) {
 
     const note =
@@ -1494,89 +1514,54 @@ function createMovementNote(
         "note";
 
 
-    /*
-       Il colore della registrazione
-       segue il valore di arrivo.
-    */
-
-    const destinationColor =
+    const color =
         getValueColor(
-            movement.to
-        );
-
-
-    const changeColor =
-        getChangeColor(
-            movement.change
+            value
         );
 
 
     note.style.color =
-        destinationColor;
+        color;
 
 
-    const route =
+    const valueElement =
         document.createElement(
             "span"
         );
 
-    route.className =
-        "note-route";
+    valueElement.className =
+        "note-value";
 
-    route.textContent =
-        formatRouteValue(
-            movement.from
-        ) +
-        " → " +
-        formatRouteValue(
-            movement.to
-        );
-
-
-    const change =
-        document.createElement(
-            "span"
-        );
-
-    change.className =
-        "note-change";
-
-    change.textContent =
-        "(" +
+    valueElement.textContent =
         formatValue(
-            movement.change
-        ) +
-        ")";
+            value
+        );
 
-    change.style.color =
-        changeColor;
+    valueElement.style.color =
+        color;
 
 
-    const text =
+    const textElement =
         document.createElement(
             "span"
         );
 
-    text.className =
+    textElement.className =
         "note-text";
 
-    text.textContent =
-        movement.text;
+    textElement.textContent =
+        text;
 
-    text.style.color =
-        destinationColor;
+    textElement.style.color =
+        color;
 
 
     note.appendChild(
-        route
+        valueElement
     );
 
     note.appendChild(
-        change
-    );
-
-    note.appendChild(
-        text
+        textElement
     );
 
 
@@ -1585,77 +1570,169 @@ function createMovementNote(
 
 
 /* =====================================================
-   DISEGNA MOVIMENTI
+   DISEGNA NOTE
 ===================================================== */
 
 function drawNotes() {
 
-    notesLayer.innerHTML = "";
+    notesLayer.innerHTML =
+        "";
+
+
+    const entries =
+        Object.entries(
+            notes
+        )
+        .map(
+            ([value, text]) => {
+
+                return {
+                    value:
+                        Number(value),
+
+                    text:
+                        String(text)
+                };
+
+            }
+        )
+        .filter(
+            item =>
+                Number.isFinite(
+                    item.value
+                )
+        );
 
 
     /*
-       IMPORTANTE:
+       ORDINE NUMERICO REALE.
 
-       NON ordiniamo per valore.
+       NON usare Math.abs().
 
-       L'ordine è esclusivamente
-       quello cronologico dell'array.
+       -700 < -300
+
+       quindi:
+
+       -700 è più in basso
+       -300 è più in alto
     */
 
-    movements.forEach(
-        (movement, index) => {
+    entries.sort(
+        (a, b) =>
+            a.value -
+            b.value
+    );
 
-            if (
-                !movement ||
-                !Number.isFinite(
-                    movement.from
-                ) ||
-                !Number.isFinite(
-                    movement.to
-                )
-            ) {
 
-                return;
-            }
+    /*
+       NOTE SOPRA IL RAZZO
 
+       Devono essere valori
+       numericamente MAGGIORI
+       del valore attuale.
+    */
+
+    const above =
+        entries
+            .filter(
+                item =>
+                    item.value >
+                    currentValue
+            )
+            .sort(
+                (a, b) =>
+                    a.value -
+                    b.value
+            );
+
+
+    /*
+       NOTE SOTTO IL RAZZO
+
+       Devono essere valori
+       numericamente MINORI
+       del valore attuale.
+    */
+
+    const below =
+        entries
+            .filter(
+                item =>
+                    item.value <
+                    currentValue
+            )
+            .sort(
+                (a, b) =>
+                    b.value -
+                    a.value
+            );
+
+
+    const NOTE_GAP =
+        34;
+
+
+    /*
+       SOPRA
+    */
+
+    above.forEach(
+        (item, index) => {
 
             const note =
-                createMovementNote(
-                    movement
+                createNote(
+                    item.value,
+                    item.text
                 );
 
 
-            /*
-               Le registrazioni sono
-               semplicemente disposte
-               una sotto l'altra.
+            note.style.top =
+                `calc(
+                    50% -
+                    ${
+                        NOTE_GAP *
+                        (index + 1)
+                    }px
+                )`;
 
-               Non sono ancorate
-               alla scala.
-            */
 
-            const NOTE_GAP =
-                38;
+            note.style.transform =
+                "translateY(-50%)";
+
+
+            notesLayer.appendChild(
+                note
+            );
+        }
+    );
+
+
+    /*
+       SOTTO
+    */
+
+    below.forEach(
+        (item, index) => {
+
+            const note =
+                createNote(
+                    item.value,
+                    item.text
+                );
 
 
             note.style.top =
                 `calc(
                     50% +
                     ${
-                        index *
-                        NOTE_GAP
+                        NOTE_GAP *
+                        (index + 1)
                     }px
                 )`;
 
 
-            /*
-               La prima nota parte
-               leggermente sotto
-               il valore corrente.
-            */
-
             note.style.transform =
-                "translateY(20px)";
+                "translateY(-50%)";
 
 
             notesLayer.appendChild(
@@ -1667,7 +1744,83 @@ function drawNotes() {
 
 
 /* =====================================================
-   CENTRA SCALA
+   SALVA NOTA
+===================================================== */
+
+function saveCurrentNote() {
+
+    if (
+        !Number.isFinite(
+            currentValue
+        )
+    ) {
+        return;
+    }
+
+
+    const text =
+        currentNote.value.trim();
+
+
+    const key =
+        String(
+            currentValue
+        );
+
+
+    if (
+        text === ""
+    ) {
+
+        delete notes[key];
+
+    } else {
+
+        notes[key] =
+            text;
+    }
+
+
+    localStorage.setItem(
+        NOTES_KEY,
+        JSON.stringify(
+            notes
+        )
+    );
+
+
+    drawNotes();
+}
+
+
+/* =====================================================
+   CARICA NOTA
+===================================================== */
+
+function loadCurrentNote() {
+
+    if (
+        !Number.isFinite(
+            currentValue
+        )
+    ) {
+
+        currentNote.value =
+            "";
+
+        return;
+    }
+
+
+    currentNote.value =
+        notes[
+            String(currentValue)
+        ] || "";
+}
+
+
+/* =====================================================
+   CENTRA LA SCALA
 ===================================================== */
 
 function centerTimeline() {
@@ -1694,7 +1847,7 @@ function centerTimeline() {
 
 
 /* =====================================================
-   AGGIORNA DISPLAY
+   DISPLAY
 ===================================================== */
 
 function updateDisplay() {
@@ -1711,18 +1864,7 @@ function updateDisplay() {
 
     drawNotes();
 
-
-    /*
-       Non carichiamo più una nota
-       associata al numero.
-
-       La nota viene trasformata
-       in una registrazione quando
-       viene effettuata una variazione.
-    */
-
-    currentNote.value =
-        "";
+    loadCurrentNote();
 
 
     requestAnimationFrame(
@@ -1748,7 +1890,9 @@ function setInitialValue() {
 
 
     if (
-        !Number.isFinite(value)
+        !Number.isFinite(
+            value
+        )
     ) {
 
         startInput.focus();
@@ -1764,25 +1908,29 @@ function setInitialValue() {
         value;
 
 
-    movements = [];
+    notes = {};
 
 
     localStorage.setItem(
         START_KEY,
-        String(startValue)
+        String(
+            startValue
+        )
     );
 
 
     localStorage.setItem(
         CURRENT_KEY,
-        String(currentValue)
+        String(
+            currentValue
+        )
     );
 
 
     localStorage.setItem(
         NOTES_KEY,
         JSON.stringify(
-            movements
+            notes
         )
     );
 
@@ -1797,7 +1945,7 @@ function setInitialValue() {
 
 
 /* =====================================================
-   APPLICA VARIAZIONE
+   VARIAZIONE
 ===================================================== */
 
 function applyChange() {
@@ -1809,7 +1957,9 @@ function applyChange() {
 
 
     if (
-        !Number.isFinite(change)
+        !Number.isFinite(
+            change
+        )
     ) {
 
         changeInput.focus();
@@ -1819,107 +1969,42 @@ function applyChange() {
 
 
     /*
-       VALORE DI PARTENZA
-
-       Questo è fondamentale:
-
-       il calcolo viene sempre
-       fatto dal valore corrente
-       PRIMA della variazione.
+       Salviamo la nota associata
+       al valore da cui partiamo.
     */
 
-    const from =
-        currentValue;
+    saveCurrentNote();
 
 
     /*
-       VALORE DI ARRIVO
+       REGOLA DELLA VARIAZIONE:
 
-       Sommiamo la variazione
-       al valore precedente.
-    */
+       nuovo =
+           precedente + variazione
 
-    const to =
-        from +
-        change;
+       Esempio:
 
+       -3000 + 1000
+       = -2000
 
-    /*
-       NOTA INSERITA DALL'UTENTE
-    */
-
-    const text =
-        currentNote.value.trim();
-
-
-    /*
-       Se esiste una nota,
-       creiamo una NUOVA
-       registrazione cronologica.
-
-       Anche se "from" o "to"
-       sono già presenti in altre
-       registrazioni, questa
-       rimane una registrazione
-       completamente separata.
-    */
-
-    if (
-        text !== ""
-    ) {
-
-        movements.push({
-
-            id:
-                Date.now() +
-                "_" +
-                Math.random()
-                    .toString(36)
-                    .slice(2),
-
-            from:
-                from,
-
-            to:
-                to,
-
-            change:
-                change,
-
-            text:
-                text
-        });
-
-
-        localStorage.setItem(
-            NOTES_KEY,
-            JSON.stringify(
-                movements
-            )
-        );
-    }
-
-
-    /*
-       Aggiorniamo il valore
-       solo dopo aver salvato
-       la registrazione.
+       -2000 + (-500)
+       = -2500
     */
 
     currentValue =
-        to;
+        currentValue +
+        change;
 
 
     localStorage.setItem(
         CURRENT_KEY,
-        String(currentValue)
+        String(
+            currentValue
+        )
     );
 
 
     changeInput.value =
-        "";
-
-    currentNote.value =
         "";
 
 
@@ -1935,7 +2020,7 @@ function resetApp() {
 
     const confirmed =
         confirm(
-            "Vuoi cancellare il valore iniziale e tutte le registrazioni?"
+            "Vuoi cancellare il valore iniziale e tutte le note?"
         );
 
 
@@ -1966,7 +2051,7 @@ function resetApp() {
     currentValue =
         NaN;
 
-    movements = [];
+    notes = {};
 
 
     startInput.value =
@@ -2039,19 +2124,26 @@ changeInput.addEventListener(
 );
 
 
-/*
-   NON salviamo più la nota
-   con blur.
+currentNote.addEventListener(
+    "blur",
+    saveCurrentNote
+);
 
-   Deve essere salvata insieme
-   alla variazione, perché solo
-   in quel momento conosciamo:
 
-   valore di partenza
-   valore di arrivo
-   plus/minus
-   nota
-*/
+currentNote.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            saveCurrentNote();
+
+            currentNote.blur();
+        }
+    }
+);
 
 
 resetButton.addEventListener(
@@ -2061,7 +2153,7 @@ resetButton.addEventListener(
 
 
 /* =====================================================
-   CARICAMENTO DATI
+   CARICAMENTO
 ===================================================== */
 
 let startValue =
@@ -2080,34 +2172,21 @@ let currentValue =
     );
 
 
-let movements = [];
+let notes = {};
 
 
 try {
 
-    const saved =
+    notes =
         JSON.parse(
             localStorage.getItem(
                 NOTES_KEY
             )
-        );
-
-
-    if (
-        Array.isArray(saved)
-    ) {
-
-        movements =
-            saved;
-
-    } else {
-
-        movements = [];
-    }
+        ) || {};
 
 } catch {
 
-    movements = [];
+    notes = {};
 }
 
 
