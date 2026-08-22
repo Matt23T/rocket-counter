@@ -1,24 +1,16 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-
 <meta charset="UTF-8">
 
 <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 >
-
-<meta name="theme-color" content="#000000">
 
 <title>Rocket</title>
 
 <style>
-
-/* =====================================================
-   BASE
-===================================================== */
-
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -28,9 +20,9 @@ html,
 body {
     margin: 0;
     padding: 0;
-
     width: 100%;
     height: 100%;
+    overflow: hidden;
 
     background: #000;
     color: #fff;
@@ -41,20 +33,24 @@ body {
         "SF Pro Display",
         Arial,
         sans-serif;
-
-    overflow: hidden;
-
-    overscroll-behavior: none;
 }
 
 body {
     position: fixed;
-
-    width: 100%;
-    height: 100%;
-
-    touch-action: pan-y;
+    inset: 0;
+    touch-action: manipulation;
 }
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+
+/* =====================================================
+   APP
+===================================================== */
 
 .app {
     position: relative;
@@ -69,50 +65,53 @@ body {
 
 
 /* =====================================================
-   SCALA
-   SOLO VISIVA
+   SCALA CENTRALE
 ===================================================== */
 
-.timeline {
+.scale {
     position: absolute;
 
     inset: 0;
 
+    pointer-events: none;
+
     overflow: hidden;
 
-    pointer-events: none;
-
-    z-index: 10;
+    z-index: 5;
 }
-
-.timeline-content {
-    position: absolute;
-
-    width: 100%;
-    height: 2200px;
-
-    left: 0;
-
-    pointer-events: none;
-}
-
-
-/* =====================================================
-   LINEA CENTRALE
-===================================================== */
 
 .center-line {
     position: absolute;
 
-    top: 0;
     left: 50%;
+    top: 0;
 
     width: 1px;
     height: 100%;
 
     transform: translateX(-50%);
 
-    background: rgba(255,255,255,0.20);
+    background: rgba(255,255,255,0.22);
+}
+
+
+/* =====================================================
+   NUMERI DELLA SCALA
+===================================================== */
+
+.scale-number {
+    position: absolute;
+
+    left: calc(50% - 18px);
+
+    transform: translate(-100%, -50%);
+
+    font-size: 10px;
+    line-height: 12px;
+
+    white-space: nowrap;
+
+    opacity: .78;
 
     pointer-events: none;
 }
@@ -122,261 +121,37 @@ body {
    TACCHETTE
 ===================================================== */
 
-.tick {
+.scale-tick {
     position: absolute;
 
     left: 50%;
 
-    width: 6px;
+    width: 7px;
     height: 1px;
 
     transform: translateX(-50%);
 
-    background: rgba(255,255,255,0.18);
+    background: rgba(255,255,255,.18);
 }
 
-.tick.major {
+.scale-tick.major {
     width: 11px;
 
-    background: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,.35);
 }
 
-.tick.zero {
+.scale-tick.zero {
     width: 17px;
 
-    background: rgba(255,255,255,0.75);
+    background: rgba(255,255,255,.65);
 }
 
 
 /* =====================================================
-   NUMERI PICCOLI DELLA SCALA
+   INDICATORE CENTRALE
 ===================================================== */
 
-.scale-label {
-    position: absolute;
-
-    left: calc(50% - 25px);
-
-    transform: translate(-100%, -50%);
-
-    white-space: nowrap;
-
-    font-size: 10px;
-
-    font-weight: 500;
-
-    opacity: 0.75;
-
-    pointer-events: none;
-}
-
-
-/* =====================================================
-   OBIETTIVI
-===================================================== */
-
-.goals-layer {
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 40;
-
-    pointer-events: none;
-
-    overflow: hidden;
-}
-
-.goal {
-    position: absolute;
-
-    right: calc(50% + 31px);
-
-    max-width: calc(50% - 42px);
-
-    transform: translateY(-50%);
-
-    white-space: nowrap;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    padding: 5px 7px;
-
-    border-radius: 8px;
-
-    background: rgba(15,15,15,0.88);
-
-    border: 1px solid rgba(255,255,255,0.10);
-
-    font-size: 12px;
-
-    pointer-events: auto;
-}
-
-.goal-name {
-    margin-left: 4px;
-}
-
-.goal-delete {
-    margin-left: 6px;
-
-    border: none;
-
-    background: transparent;
-
-    color: #777;
-
-    font-size: 11px;
-
-    padding: 0;
-}
-
-.goal-add {
-    position: absolute;
-
-    left: 12px;
-
-    top:
-        calc(
-            12px +
-            env(safe-area-inset-top)
-        );
-
-    width: 38px;
-    height: 38px;
-
-    border: none;
-
-    border-radius: 11px;
-
-    background: #181818;
-
-    color: #fff;
-
-    font-size: 24px;
-
-    line-height: 38px;
-
-    z-index: 90;
-}
-
-
-/* =====================================================
-   STORICO NOTE A DESTRA
-===================================================== */
-
-.history-layer {
-    position: absolute;
-
-    top: 70px;
-
-    right: 8px;
-
-    bottom: 100px;
-
-    width: calc(50% - 22px);
-
-    z-index: 45;
-
-    overflow-y: auto;
-
-    overflow-x: hidden;
-
-    scrollbar-width: none;
-
-    pointer-events: auto;
-}
-
-.history-layer::-webkit-scrollbar {
-    display: none;
-}
-
-.history-item {
-    position: relative;
-
-    width: 100%;
-
-    margin-bottom: 9px;
-
-    padding: 7px 8px;
-
-    border-radius: 9px;
-
-    background: rgba(12,12,12,0.92);
-
-    border: 1px solid rgba(255,255,255,0.08);
-}
-
-.history-route {
-    font-size: 11px;
-
-    font-weight: 700;
-
-    white-space: nowrap;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-}
-
-.history-delta {
-    margin-top: 2px;
-
-    font-size: 11px;
-
-    font-weight: 700;
-}
-
-.history-note {
-    width: 100%;
-
-    margin-top: 3px;
-
-    padding: 0;
-
-    border: none;
-
-    outline: none;
-
-    background: transparent;
-
-    color: inherit;
-
-    font-family: inherit;
-
-    font-size: 12px;
-
-    resize: none;
-}
-
-.history-actions {
-    position: absolute;
-
-    top: 5px;
-
-    right: 5px;
-}
-
-.history-delete {
-    border: none;
-
-    background: transparent;
-
-    color: #666;
-
-    font-size: 12px;
-
-    padding: 2px 4px;
-}
-
-
-/* =====================================================
-   INDICATORE FISSO
-===================================================== */
-
-.fixed-indicator {
+.indicator {
     position: absolute;
 
     left: 50%;
@@ -385,7 +160,7 @@ body {
     width: 0;
     height: 0;
 
-    z-index: 70;
+    z-index: 50;
 
     pointer-events: none;
 }
@@ -399,76 +174,65 @@ body {
 .rocket {
     position: absolute;
 
-    left: -68px;
-
+    left: -72px;
     top: 0;
 
     width: 58px;
-    height: 29px;
+    height: 30px;
 
     transform: translateY(-50%);
 
     overflow: visible;
 
-    transition: filter 0.2s ease;
-
     pointer-events: none;
+
+    transition:
+        filter .2s ease;
 }
 
 .rocket-part {
-    fill: #fff;
-
-    transition: fill 0.2s ease;
-}
-
-.rocket-window {
-    fill: #000;
+    transition:
+        fill .2s ease;
 }
 
 
 /* =====================================================
-   VALORE GRANDE
+   VALORE ATTUALE
    A DESTRA DELLA LINEA
 ===================================================== */
 
-.current-info {
+.current {
     position: absolute;
 
-    left: 8px;
-
+    left: 9px;
     top: 0;
 
     transform: translateY(-50%);
 
     display: flex;
-
     flex-direction: column;
 
     pointer-events: auto;
 }
 
 .current-value {
-    font-size: 20px;
-
+    font-size: 21px;
     line-height: 25px;
 
-    font-weight: 700;
+    font-weight: 750;
 
     white-space: nowrap;
 }
 
 .current-note {
-    width: 180px;
-
+    width: 190px;
     height: 27px;
 
+    padding: 0;
     margin: 0;
 
-    padding: 0;
-
-    border: none;
-
-    outline: none;
+    border: 0;
+    outline: 0;
 
     background: transparent;
 
@@ -483,6 +247,204 @@ body {
 
 
 /* =====================================================
+   STORICO
+   TUTTE LE NOTE RESTANO DISPONIBILI
+===================================================== */
+
+.history {
+    position: absolute;
+
+    top:
+        calc(
+            62px +
+            env(safe-area-inset-top)
+        );
+
+    right: 8px;
+
+    width: calc(50% - 20px);
+
+    bottom:
+        calc(
+            85px +
+            env(safe-area-inset-bottom)
+        );
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: none;
+
+    z-index: 40;
+}
+
+.history::-webkit-scrollbar {
+    display: none;
+}
+
+.history-item {
+    position: relative;
+
+    width: 100%;
+
+    margin-bottom: 9px;
+
+    padding: 7px 8px;
+
+    border-radius: 9px;
+
+    background: rgba(12,12,12,.94);
+
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.history-route {
+    font-size: 11px;
+
+    font-weight: 700;
+
+    line-height: 14px;
+}
+
+.history-delta {
+    margin-top: 2px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.history-note {
+    display: block;
+
+    width: 100%;
+
+    margin-top: 3px;
+
+    padding: 0;
+
+    border: 0;
+    outline: 0;
+
+    resize: none;
+
+    overflow: hidden;
+
+    background: transparent;
+
+    font-size: 12px;
+
+    line-height: 15px;
+}
+
+.delete-history {
+    position: absolute;
+
+    top: 4px;
+    right: 4px;
+
+    width: 22px;
+    height: 22px;
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #666;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   OBIETTIVI
+===================================================== */
+
+.goals {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 35;
+
+    pointer-events: none;
+
+    overflow: hidden;
+}
+
+.goal {
+    position: absolute;
+
+    right: calc(50% + 34px);
+
+    max-width: calc(50% - 45px);
+
+    transform: translateY(-50%);
+
+    padding: 5px 7px;
+
+    border-radius: 8px;
+
+    background: rgba(10,10,10,.92);
+
+    border: 1px solid rgba(255,255,255,.10);
+
+    font-size: 11px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    pointer-events: auto;
+}
+
+.goal-delete {
+    margin-left: 6px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #666;
+
+    padding: 0;
+
+    font-size: 11px;
+}
+
+.add-goal {
+    position: absolute;
+
+    left: 12px;
+
+    top:
+        calc(
+            12px +
+            env(safe-area-inset-top)
+        );
+
+    width: 38px;
+    height: 38px;
+
+    border: 0;
+
+    border-radius: 11px;
+
+    background: #181818;
+
+    color: #fff;
+
+    font-size: 24px;
+
+    z-index: 80;
+}
+
+
+/* =====================================================
    CONTROLLI
 ===================================================== */
 
@@ -493,7 +455,7 @@ body {
 
     bottom:
         calc(
-            16px +
+            14px +
             env(safe-area-inset-bottom)
         );
 
@@ -501,17 +463,14 @@ body {
 
     display: flex;
 
-    align-items: center;
-
     gap: 8px;
 
     z-index: 80;
 }
 
 .change-input {
-    width: 175px;
-
-    height: 49px;
+    width: 170px;
+    height: 48px;
 
     padding: 0 12px;
 
@@ -525,13 +484,10 @@ body {
 
     color: #fff;
 
-    text-align: center;
-
     font-size: 17px;
 
-    font-weight: 600;
+    text-align: center;
 
-    /* TASTIERA NORMALE */
     -webkit-appearance: none;
     appearance: none;
 }
@@ -542,18 +498,15 @@ body {
 
 .change-button {
     width: 55px;
+    height: 48px;
 
-    height: 49px;
-
-    border: none;
+    border: 0;
 
     border-radius: 13px;
 
     background: #fff;
 
     color: #000;
-
-    font-size: 15px;
 
     font-weight: 700;
 }
@@ -563,8 +516,10 @@ body {
    RESET
 ===================================================== */
 
-.reset-button {
+.reset {
     position: absolute;
+
+    right: 12px;
 
     top:
         calc(
@@ -572,13 +527,11 @@ body {
             env(safe-area-inset-top)
         );
 
-    right: 12px;
-
     height: 37px;
 
     padding: 0 13px;
 
-    border: none;
+    border: 0;
 
     border-radius: 11px;
 
@@ -588,7 +541,7 @@ body {
 
     font-size: 13px;
 
-    z-index: 90;
+    z-index: 80;
 }
 
 
@@ -607,11 +560,8 @@ body {
 
     flex-direction: column;
 
-    justify-content: center;
-
     align-items: center;
-
-    padding: 30px;
+    justify-content: center;
 
     background: #000;
 }
@@ -621,25 +571,20 @@ body {
 
     font-size: 30px;
 
-    font-weight: 700;
+    font-weight: 750;
 }
 
 .start-subtitle {
-    margin-bottom: 23px;
+    margin-bottom: 22px;
 
     color: #777;
 
     font-size: 14px;
-
-    text-align: center;
 }
 
 .start-input {
     width: 220px;
-
     height: 54px;
-
-    padding: 0 10px;
 
     border: 1px solid #444;
 
@@ -651,33 +596,24 @@ body {
 
     color: #fff;
 
-    text-align: center;
-
     font-size: 21px;
 
-    font-weight: 600;
-}
-
-.start-input::placeholder {
-    color: #555;
+    text-align: center;
 }
 
 .start-button {
     width: 220px;
-
     height: 49px;
 
     margin-top: 15px;
 
-    border: none;
+    border: 0;
 
     border-radius: 14px;
 
     background: #fff;
 
     color: #000;
-
-    font-size: 16px;
 
     font-weight: 700;
 }
@@ -695,78 +631,50 @@ body {
 <div class="app">
 
 
-    <!-- =================================================
-         SCALA
-    ================================================== -->
+    <!-- SCALA -->
 
-    <div
-        id="timeline"
-        class="timeline"
-    >
+    <div class="scale">
 
-        <div
-            id="timelineContent"
-            class="timeline-content"
-        >
+        <div class="center-line"></div>
 
-            <div
-                class="center-line"
-            ></div>
-
-            <div
-                id="ticks"
-            ></div>
-
-            <div
-                id="labels"
-            ></div>
-
-        </div>
+        <div id="scaleNumbers"></div>
+        <div id="scaleTicks"></div>
 
     </div>
 
 
-    <!-- =================================================
-         OBIETTIVI
-    ================================================== -->
+    <!-- OBIETTIVI -->
 
     <div
-        id="goalsLayer"
-        class="goals-layer"
+        id="goals"
+        class="goals"
     ></div>
 
     <button
-        id="goalAdd"
-        class="goal-add"
-    >
-        +
-    </button>
+        id="addGoal"
+        class="add-goal"
+    >+</button>
 
 
-    <!-- =================================================
-         STORICO NOTE
-    ================================================== -->
+    <!-- STORICO -->
 
     <div
-        id="historyLayer"
-        class="history-layer"
+        id="history"
+        class="history"
     ></div>
 
 
-    <!-- =================================================
-         RAZZO
-    ================================================== -->
+    <!-- RAZZO + VALORE -->
 
     <div
-        id="fixedIndicator"
-        class="fixed-indicator"
+        id="indicator"
+        class="indicator"
     >
 
         <svg
             id="rocket"
             class="rocket"
             viewBox="0 0 100 50"
-            xmlns="http://www.w3.org/2000/svg"
         >
 
             <path
@@ -793,7 +701,7 @@ body {
                 cx="68"
                 cy="25"
                 r="5"
-                class="rocket-window"
+                fill="#000"
             />
 
             <path
@@ -829,28 +737,22 @@ body {
         </svg>
 
 
-        <!-- VALORE A DESTRA DELLA LINEA -->
-
-        <div
-            class="current-info"
-        >
+        <div class="current">
 
             <div
                 id="currentValue"
                 class="current-value"
-            >
-                0 €
-            </div>
+            ></div>
 
             <input
                 id="currentNote"
                 class="current-note"
                 type="text"
+                placeholder="Nota..."
                 autocomplete="off"
                 autocorrect="off"
                 autocapitalize="off"
                 spellcheck="false"
-                placeholder="Nota per questa variazione..."
             >
 
         </div>
@@ -858,24 +760,20 @@ body {
     </div>
 
 
-    <!-- =================================================
-         VARIAZIONE
-    ================================================== -->
+    <!-- VARIAZIONE -->
 
-    <div
-        class="controls"
-    >
+    <div class="controls">
 
         <input
             id="changeInput"
             class="change-input"
             type="text"
             inputmode="text"
+            placeholder="+ / - variazione"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
-            placeholder="+ / - variazione"
         >
 
         <button
@@ -888,36 +786,28 @@ body {
     </div>
 
 
-    <!-- =================================================
-         RESET
-    ================================================== -->
+    <!-- RESET -->
 
     <button
-        id="resetButton"
-        class="reset-button"
+        id="reset"
+        class="reset"
     >
         Reset
     </button>
 
 
-    <!-- =================================================
-         VALORE INIZIALE
-    ================================================== -->
+    <!-- VALORE INIZIALE -->
 
     <div
         id="startScreen"
         class="start-screen"
     >
 
-        <div
-            class="start-title"
-        >
+        <div class="start-title">
             Rocket
         </div>
 
-        <div
-            class="start-subtitle"
-        >
+        <div class="start-subtitle">
             Inserisci il valore iniziale
         </div>
 
@@ -926,11 +816,11 @@ body {
             class="start-input"
             type="text"
             inputmode="text"
+            placeholder="Valore iniziale"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
-            placeholder="Valore iniziale"
         >
 
         <button
@@ -948,87 +838,17 @@ body {
 <script>
 
 /* =====================================================
-   BLOCCO ZOOM
-===================================================== */
-
-document.addEventListener(
-    "gesturestart",
-    function(event) {
-        event.preventDefault();
-    },
-    { passive: false }
-);
-
-document.addEventListener(
-    "gesturechange",
-    function(event) {
-        event.preventDefault();
-    },
-    { passive: false }
-);
-
-document.addEventListener(
-    "gestureend",
-    function(event) {
-        event.preventDefault();
-    },
-    { passive: false }
-);
-
-document.addEventListener(
-    "touchmove",
-    function(event) {
-
-        if (event.touches.length > 1) {
-            event.preventDefault();
-        }
-
-    },
-    { passive: false }
-);
-
-
-/* =====================================================
-   STORAGE
-===================================================== */
-
-const START_KEY =
-    "rocket_start_v6";
-
-const CURRENT_KEY =
-    "rocket_current_v6";
-
-const HISTORY_KEY =
-    "rocket_history_v6";
-
-const GOALS_KEY =
-    "rocket_goals_v6";
-
-
-/* =====================================================
    ELEMENTI
 ===================================================== */
 
-const timeline =
-    document.getElementById("timeline");
+const startScreen =
+    document.getElementById("startScreen");
 
-const timelineContent =
-    document.getElementById("timelineContent");
+const startInput =
+    document.getElementById("startInput");
 
-const ticks =
-    document.getElementById("ticks");
-
-const labels =
-    document.getElementById("labels");
-
-const goalsLayer =
-    document.getElementById("goalsLayer");
-
-const goalAdd =
-    document.getElementById("goalAdd");
-
-const historyLayer =
-    document.getElementById("historyLayer");
+const startButton =
+    document.getElementById("startButton");
 
 const currentValueElement =
     document.getElementById("currentValue");
@@ -1043,16 +863,22 @@ const changeButton =
     document.getElementById("changeButton");
 
 const resetButton =
-    document.getElementById("resetButton");
+    document.getElementById("reset");
 
-const startScreen =
-    document.getElementById("startScreen");
+const scaleNumbers =
+    document.getElementById("scaleNumbers");
 
-const startInput =
-    document.getElementById("startInput");
+const scaleTicks =
+    document.getElementById("scaleTicks");
 
-const startButton =
-    document.getElementById("startButton");
+const historyElement =
+    document.getElementById("history");
+
+const goalsElement =
+    document.getElementById("goals");
+
+const addGoalButton =
+    document.getElementById("addGoal");
 
 const rocketParts =
     document.querySelectorAll(".rocket-part");
@@ -1062,17 +888,33 @@ const rocket =
 
 
 /* =====================================================
-   DATI
+   STORAGE
+===================================================== */
+
+const STORAGE = {
+    start: "rocket_start_final",
+    current: "rocket_current_final",
+    history: "rocket_history_final",
+    goals: "rocket_goals_final"
+};
+
+
+/* =====================================================
+   STATO
 ===================================================== */
 
 let startValue =
-    parseNumber(
-        localStorage.getItem(START_KEY)
+    readNumber(
+        localStorage.getItem(
+            STORAGE.start
+        )
     );
 
 let currentValue =
-    parseNumber(
-        localStorage.getItem(CURRENT_KEY)
+    readNumber(
+        localStorage.getItem(
+            STORAGE.current
+        )
     );
 
 let history = [];
@@ -1081,50 +923,59 @@ let goals = [];
 
 
 try {
-
     history =
         JSON.parse(
-            localStorage.getItem(HISTORY_KEY)
+            localStorage.getItem(
+                STORAGE.history
+            )
         ) || [];
-
 } catch {
-
     history = [];
 }
 
 
 try {
-
     goals =
         JSON.parse(
-            localStorage.getItem(GOALS_KEY)
+            localStorage.getItem(
+                STORAGE.goals
+            )
         ) || [];
-
 } catch {
-
     goals = [];
 }
 
 
 /* =====================================================
-   PARAMETRI SCALA
+   PARAMETRI VISIVI
 ===================================================== */
 
-const DISPLAY_RANGE = 1100;
+/*
+   25 € = una tacca.
 
-const STEP = 25;
+   1000 € = 40 tacche.
 
-const PIXELS_PER_STEP = 27;
+   Lo spazio visibile è quindi
+   sempre da current - 1000
+   a current + 1000.
+*/
+
+const VISIBLE_RANGE = 1000;
+
+const TICK_STEP = 25;
+
+const PIXELS_PER_25 =
+    28;
 
 const PIXELS_PER_EURO =
-    PIXELS_PER_STEP / STEP;
+    PIXELS_PER_25 / TICK_STEP;
 
 
 /* =====================================================
-   PARSE NUMERI
+   NUMERI
 ===================================================== */
 
-function parseNumber(value) {
+function readNumber(value) {
 
     if (
         value === null ||
@@ -1144,7 +995,15 @@ function parseNumber(value) {
         text.replace(/\s/g, "");
 
     /*
-       Mantiene + e -.
+       Supporto:
+
+       1300
+       +1300
+       -1300
+       1.300
+       -1.300
+       1300,50
+       -1300,50
     */
 
     if (
@@ -1152,45 +1011,56 @@ function parseNumber(value) {
     ) {
 
         text =
-            text.replace(/\./g, "");
+            text.replace(
+                /\./g,
+                ""
+            );
 
         text =
-            text.replace(",", ".");
+            text.replace(
+                ",",
+                "."
+            );
 
     } else {
 
         /*
-           Non rimuoviamo il segno.
+           Se il punto è usato
+           come separatore delle migliaia.
         */
 
         text =
-            text.replace(/(\d)\.(\d{3})(?!\d)/g, "$1$2");
+            text.replace(
+                /^([+-]?\d+)\.(\d{3})$/,
+                "$1$2"
+            );
     }
 
-    const result =
+    const number =
         Number(text);
 
-    return Number.isFinite(result)
-        ? result
+    return Number.isFinite(number)
+        ? number
         : NaN;
 }
 
 
 /* =====================================================
-   FORMATTAZIONE
+   FORMATTA VALORE
 ===================================================== */
 
 function formatValue(value) {
 
     const rounded =
-        Math.round(value * 100) / 100;
+        Math.round(
+            value * 100
+        ) / 100;
 
     const absolute =
         Math.abs(rounded)
             .toLocaleString(
                 "it-IT",
                 {
-                    minimumFractionDigits: 0,
                     maximumFractionDigits: 2
                 }
             );
@@ -1208,100 +1078,105 @@ function formatValue(value) {
 
 
 /* =====================================================
-   COLORI
+   COLORE
 ===================================================== */
 
-function getValueColor(value) {
+function getColor(value) {
 
     if (value === 0) {
         return "#FFFFFF";
     }
 
+
+    /*
+       VERDE
+
+       Ogni 250 € cambia nettamente.
+    */
+
     if (value > 0) {
 
-        if (value <= 250) {
-            return "#D8FFE4";
-        }
+        if (value <= 250)
+            return "#D9FFE5";
 
-        if (value <= 500) {
-            return "#B8FFD0";
-        }
+        if (value <= 500)
+            return "#A8FFBF";
 
-        if (value <= 750) {
-            return "#8FFFAF";
-        }
+        if (value <= 750)
+            return "#70F995";
 
-        if (value <= 1000) {
-            return "#62F28A";
-        }
+        if (value <= 1000)
+            return "#38EA6A";
 
-        if (value <= 2000) {
-            return "#20DD65";
-        }
+        if (value <= 2000)
+            return "#19D957";
 
-        if (value <= 3000) {
-            return "#12D75A";
-        }
+        if (value <= 3000)
+            return "#0DCC4B";
 
-        if (value <= 4000) {
-            return "#08C951";
-        }
+        if (value <= 4000)
+            return "#08BB42";
 
-        return "#00A83F";
+        return "#00A83B";
     }
+
+
+    /*
+       ROSSO
+    */
 
     const amount =
         Math.abs(value);
 
-    if (amount <= 250) {
-        return "#FFDDE1";
-    }
+    if (amount <= 250)
+        return "#FFDDE2";
 
-    if (amount <= 500) {
-        return "#FFC3C9";
-    }
+    if (amount <= 500)
+        return "#FFB9C2";
 
-    if (amount <= 750) {
-        return "#FF9DA7";
-    }
+    if (amount <= 750)
+        return "#FF8A98";
 
-    if (amount <= 1000) {
-        return "#FF6877";
-    }
+    if (amount <= 1000)
+        return "#FF596B";
 
-    if (amount <= 2000) {
-        return "#F8374C";
-    }
+    if (amount <= 2000)
+        return "#F52F45";
 
-    if (amount <= 3000) {
-        return "#EF2940";
-    }
+    if (amount <= 3000)
+        return "#E91E38";
 
-    if (amount <= 4000) {
-        return "#E91E35";
-    }
+    if (amount <= 4000)
+        return "#DA1730";
 
     return "#C90020";
 }
 
 
 /* =====================================================
-   COLORE RAZZO
+   AGGIORNA COLORE
 ===================================================== */
 
 function updateColor() {
 
     const color =
-        getValueColor(currentValue);
+        getColor(
+            currentValue
+        );
 
-    rocketParts.forEach(
-        part => {
-            part.style.fill = color;
-        }
-    );
 
     currentValueElement.style.color =
         color;
+
+
+    rocketParts.forEach(
+        part => {
+
+            part.style.fill =
+                color;
+        }
+    );
+
 
     rocket.style.filter =
         `drop-shadow(0 0 7px ${color})`;
@@ -1309,97 +1184,125 @@ function updateColor() {
 
 
 /* =====================================================
-   COSTRUZIONE SCALA
-   BLOCCATA: SOLO RIFERIMENTO VISIVO
+   SCALA
 ===================================================== */
 
-function buildScale() {
+function drawScale() {
 
-    ticks.innerHTML = "";
+    scaleNumbers.innerHTML =
+        "";
 
-    labels.innerHTML = "";
+    scaleTicks.innerHTML =
+        "";
 
-    const totalHeight =
-        DISPLAY_RANGE * 2 *
-        PIXELS_PER_EURO;
 
-    timelineContent.style.height =
-        totalHeight + "px";
+    /*
+       ATTENZIONE:
 
-    const centerY =
-        totalHeight / 2;
+       Qui la posizione è calcolata
+       direttamente dalla differenza
+       numerica.
 
+       Se value > currentValue:
+           sale.
+
+       Se value < currentValue:
+           scende.
+
+       Nessun valore assoluto.
+       Nessuna logica speciale
+       per i negativi.
+    */
 
     for (
-        let relative = -DISPLAY_RANGE;
-        relative <= DISPLAY_RANGE;
-        relative += STEP
+        let difference =
+            -VISIBLE_RANGE;
+
+        difference <=
+            VISIBLE_RANGE;
+
+        difference +=
+            TICK_STEP
     ) {
 
+        const value =
+            currentValue +
+            difference;
+
+
         const y =
-            centerY -
-            relative *
+            window.innerHeight / 2
+            -
+            difference *
             PIXELS_PER_EURO;
 
 
         const tick =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         tick.className =
-            "tick";
+            "scale-tick";
 
 
         if (
-            relative % 250 === 0
+            value % 250 === 0
         ) {
-            tick.classList.add("major");
+            tick.classList.add(
+                "major"
+            );
         }
 
 
         if (
-            relative === 0
+            value === 0
         ) {
-            tick.classList.add("zero");
+            tick.classList.add(
+                "zero"
+            );
         }
 
 
         tick.style.top =
-            `${y}px`;
+            y + "px";
 
 
-        ticks.appendChild(
+        scaleTicks.appendChild(
             tick
         );
 
 
         if (
-            relative % 250 === 0
+            value % 250 === 0
         ) {
 
             const label =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             label.className =
-                "scale-label";
+                "scale-number";
+
 
             label.style.top =
-                `${y}px`;
-
-
-            const value =
-                currentValue +
-                relative;
+                y + "px";
 
 
             label.textContent =
-                formatValue(value);
+                formatValue(
+                    value
+                );
 
 
             label.style.color =
-                getValueColor(value);
+                getColor(
+                    value
+                );
 
 
-            labels.appendChild(
+            scaleNumbers.appendChild(
                 label
             );
         }
@@ -1411,22 +1314,45 @@ function buildScale() {
    STORICO
 ===================================================== */
 
+function saveHistory() {
+
+    localStorage.setItem(
+        STORAGE.history,
+        JSON.stringify(history)
+    );
+}
+
+
 function drawHistory() {
 
-    historyLayer.innerHTML = "";
+    historyElement.innerHTML =
+        "";
+
+
+    /*
+       IMPORTANTE:
+
+       L'ordine è quello cronologico
+       in cui sono state effettuate
+       le variazioni.
+
+       Non ordiniamo mai per valore.
+    */
 
     history.forEach(
         entry => {
 
             const item =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             item.className =
                 "history-item";
 
 
             const color =
-                getValueColor(
+                getColor(
                     entry.to
                 );
 
@@ -1436,7 +1362,9 @@ function drawHistory() {
 
 
             const route =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             route.className =
                 "history-route";
@@ -1449,7 +1377,9 @@ function drawHistory() {
 
 
             const delta =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             delta.className =
                 "history-delta";
@@ -1462,12 +1392,15 @@ function drawHistory() {
 
 
             const note =
-                document.createElement("textarea");
+                document.createElement(
+                    "textarea"
+                );
 
             note.className =
                 "history-note";
 
-            note.rows = 1;
+            note.rows =
+                1;
 
             note.value =
                 entry.note || "";
@@ -1484,22 +1417,21 @@ function drawHistory() {
                         note.value;
 
                     saveHistory();
+
+                    autoSize(
+                        note
+                    );
                 }
             );
 
 
-            const actions =
-                document.createElement("div");
-
-            actions.className =
-                "history-actions";
-
-
             const deleteButton =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
 
             deleteButton.className =
-                "history-delete";
+                "delete-history";
 
             deleteButton.textContent =
                 "×";
@@ -1509,22 +1441,12 @@ function drawHistory() {
                 "click",
                 () => {
 
-                    if (
-                        !confirm(
-                            "Eliminare questa operazione?"
-                        )
-                    ) {
-                        return;
-                    }
-
-
                     history =
                         history.filter(
                             item =>
                                 item.id !==
                                 entry.id
                         );
-
 
                     saveHistory();
 
@@ -1533,22 +1455,30 @@ function drawHistory() {
             );
 
 
-            actions.appendChild(
+            item.appendChild(
+                route
+            );
+
+            item.appendChild(
+                delta
+            );
+
+            item.appendChild(
+                note
+            );
+
+            item.appendChild(
                 deleteButton
             );
 
 
-            item.appendChild(route);
-
-            item.appendChild(delta);
-
-            item.appendChild(note);
-
-            item.appendChild(actions);
-
-
-            historyLayer.appendChild(
+            historyElement.appendChild(
                 item
+            );
+
+
+            autoSize(
+                note
             );
         }
     );
@@ -1556,15 +1486,17 @@ function drawHistory() {
 
 
 /* =====================================================
-   SALVA STORICO
+   AUTO SIZE NOTE
 ===================================================== */
 
-function saveHistory() {
+function autoSize(element) {
 
-    localStorage.setItem(
-        HISTORY_KEY,
-        JSON.stringify(history)
-    );
+    element.style.height =
+        "auto";
+
+    element.style.height =
+        element.scrollHeight +
+        "px";
 }
 
 
@@ -1572,10 +1504,34 @@ function saveHistory() {
    OBIETTIVI
 ===================================================== */
 
-function isGoalReached(goal) {
+function saveGoals() {
 
-    if (goal.target >= 0) {
+    localStorage.setItem(
+        STORAGE.goals,
+        JSON.stringify(goals)
+    );
+}
 
+
+function goalReached(goal) {
+
+    /*
+       Per un obiettivo positivo:
+
+       current >= target
+
+       Per un obiettivo negativo:
+
+       current <= target
+
+       Esempio:
+       obiettivo -3000
+       raggiunto a -3000, -3500, -4000...
+    */
+
+    if (
+        goal.target >= 0
+    ) {
         return currentValue >=
             goal.target;
     }
@@ -1585,96 +1541,94 @@ function isGoalReached(goal) {
 }
 
 
-/* =====================================================
-   DISEGNA OBIETTIVI
-===================================================== */
-
 function drawGoals() {
 
-    goalsLayer.innerHTML = "";
+    goalsElement.innerHTML =
+        "";
 
 
     goals.forEach(
         goal => {
+
+            /*
+               DIFFERENZA NUMERICA.
+
+               Nessun valore assoluto
+               per stabilire sopra/sotto.
+            */
 
             const difference =
                 goal.target -
                 currentValue;
 
 
+            /*
+               Se l'obiettivo è fuori
+               dalla finestra ±1000
+               non viene mostrato.
+            */
+
             if (
-                Math.abs(difference) >
-                DISPLAY_RANGE
+                difference <
+                    -VISIBLE_RANGE ||
+                difference >
+                    VISIBLE_RANGE
             ) {
                 return;
             }
 
 
-            const goalElement =
-                document.createElement("div");
+            const y =
+                window.innerHeight / 2
+                -
+                difference *
+                PIXELS_PER_EURO;
 
-            goalElement.className =
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+            element.className =
                 "goal";
+
+            element.style.top =
+                y + "px";
 
 
             const reached =
-                isGoalReached(goal);
+                goalReached(
+                    goal
+                );
 
 
             const color =
                 reached
                     ? "#65E88A"
-                    : getValueColor(
+                    : getColor(
                         goal.target
                     );
 
 
-            goalElement.style.color =
+            element.style.color =
                 color;
 
 
-            /*
-               Più alto = sopra.
-               Più basso = sotto.
-
-               La matematica tiene conto
-               del segno del numero.
-            */
-
-            const y =
-                50 -
-                (
-                    difference /
-                    DISPLAY_RANGE
-                ) *
-                50;
-
-
-            goalElement.style.top =
-                `${y}%`;
-
-
-            const check =
-                document.createElement("span");
-
-            check.textContent =
-                reached
-                    ? "☑"
-                    : "○";
-
-
-            const name =
-                document.createElement("span");
-
-            name.className =
-                "goal-name";
-
-            name.textContent =
-                `${formatValue(goal.target)} — ${goal.name}`;
+            element.innerHTML =
+                `
+                <span>
+                    ${reached ? "☑" : "○"}
+                    ${escapeHtml(goal.name)}
+                    — ${formatValue(goal.target)}
+                </span>
+                `;
 
 
             const deleteButton =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
 
             deleteButton.className =
                 "goal-delete";
@@ -1694,7 +1648,6 @@ function drawGoals() {
                                 goal.id
                         );
 
-
                     saveGoals();
 
                     drawGoals();
@@ -1702,21 +1655,13 @@ function drawGoals() {
             );
 
 
-            goalElement.appendChild(
-                check
-            );
-
-            goalElement.appendChild(
-                name
-            );
-
-            goalElement.appendChild(
+            element.appendChild(
                 deleteButton
             );
 
 
-            goalsLayer.appendChild(
-                goalElement
+            goalsElement.appendChild(
+                element
             );
         }
     );
@@ -1724,15 +1669,32 @@ function drawGoals() {
 
 
 /* =====================================================
-   SALVA OBIETTIVI
+   ESCAPE HTML
 ===================================================== */
 
-function saveGoals() {
+function escapeHtml(text) {
 
-    localStorage.setItem(
-        GOALS_KEY,
-        JSON.stringify(goals)
-    );
+    return String(text)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
@@ -1744,7 +1706,7 @@ function addGoal() {
 
     const targetText =
         prompt(
-            "A quale cifra vuoi arrivare?\n\nEsempio: +5000 oppure -3000"
+            "Inserisci la cifra dell'obiettivo:"
         );
 
 
@@ -1756,7 +1718,7 @@ function addGoal() {
 
 
     const target =
-        parseNumber(
+        readNumber(
             targetText
         );
 
@@ -1766,7 +1728,7 @@ function addGoal() {
     ) {
 
         alert(
-            "Inserisci una cifra valida."
+            "Cifra non valida."
         );
 
         return;
@@ -1775,7 +1737,7 @@ function addGoal() {
 
     const name =
         prompt(
-            "Come vuoi chiamare questo obiettivo?"
+            "Inserisci il nome dell'obiettivo:"
         );
 
 
@@ -1808,30 +1770,19 @@ function addGoal() {
 
 
 /* =====================================================
-   NOTA CORRENTE
-===================================================== */
-
-function clearCurrentNote() {
-
-    currentNote.value =
-        "";
-}
-
-
-/* =====================================================
-   APPLICA VARIAZIONE
+   OPERAZIONE
 ===================================================== */
 
 function applyChange() {
 
-    const change =
-        parseNumber(
+    const delta =
+        readNumber(
             changeInput.value
         );
 
 
     if (
-        !Number.isFinite(change)
+        !Number.isFinite(delta)
     ) {
 
         changeInput.focus();
@@ -1840,26 +1791,27 @@ function applyChange() {
     }
 
 
+    /*
+       QUESTA È LA REGOLA FONDAMENTALE:
+
+       nuovo valore =
+       vecchio valore + variazione
+
+       Non sostituiamo mai il valore.
+    */
+
     const from =
         currentValue;
 
 
     const to =
-        currentValue +
-        change;
+        from +
+        delta;
 
 
-    const noteText =
+    const note =
         currentNote.value.trim();
 
-
-    /*
-       OGNI OPERAZIONE È NUOVA.
-
-       Anche se torno allo stesso numero,
-       non viene eliminata né sovrascritta
-       l'operazione precedente.
-    */
 
     history.push({
 
@@ -1874,10 +1826,10 @@ function applyChange() {
             to,
 
         delta:
-            change,
+            delta,
 
         note:
-            noteText,
+            note,
 
         date:
             Date.now()
@@ -1889,7 +1841,7 @@ function applyChange() {
 
 
     localStorage.setItem(
-        CURRENT_KEY,
+        STORAGE.current,
         String(currentValue)
     );
 
@@ -1900,117 +1852,11 @@ function applyChange() {
     changeInput.value =
         "";
 
-    clearCurrentNote();
-
-
-    updateDisplay();
-}
-
-
-/* =====================================================
-   RESET
-===================================================== */
-
-function resetApp() {
-
-    const confirmed =
-        confirm(
-            "Vuoi cancellare il valore iniziale, lo storico e tutti gli obiettivi?"
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    localStorage.removeItem(
-        START_KEY
-    );
-
-    localStorage.removeItem(
-        CURRENT_KEY
-    );
-
-    localStorage.removeItem(
-        HISTORY_KEY
-    );
-
-    localStorage.removeItem(
-        GOALS_KEY
-    );
-
-
-    startValue =
-        NaN;
-
-    currentValue =
-        NaN;
-
-    history = [];
-
-    goals = [];
-
-
-    startInput.value =
-        "";
-
-    changeInput.value =
-        "";
-
     currentNote.value =
         "";
 
 
-    historyLayer.innerHTML =
-        "";
-
-    goalsLayer.innerHTML =
-        "";
-
-
-    startScreen.classList.remove(
-        "hidden"
-    );
-
-
-    setTimeout(
-        () => {
-            startInput.focus();
-        },
-        100
-    );
-}
-
-
-/* =====================================================
-   AGGIORNA SCHERMATA
-===================================================== */
-
-function updateDisplay() {
-
-    currentValueElement.textContent =
-        formatValue(
-            currentValue
-        );
-
-
-    updateColor();
-
-    buildScale();
-
-    drawGoals();
-
-    drawHistory();
-
-
-    /*
-       IL RAZZO RESTA FISSO
-       AL CENTRO DELLO SCHERMO.
-
-       La scala non viene fatta scorrere
-       automaticamente.
-    */
+    updateScreen();
 }
 
 
@@ -2021,7 +1867,7 @@ function updateDisplay() {
 function setInitialValue() {
 
     const value =
-        parseNumber(
+        readNumber(
             startInput.value
         );
 
@@ -2042,21 +1888,21 @@ function setInitialValue() {
     currentValue =
         value;
 
+
     history = [];
 
     goals = [];
 
 
     localStorage.setItem(
-        START_KEY,
+        STORAGE.start,
         String(startValue)
     );
 
     localStorage.setItem(
-        CURRENT_KEY,
+        STORAGE.current,
         String(currentValue)
     );
-
 
     saveHistory();
 
@@ -2068,7 +1914,113 @@ function setInitialValue() {
     );
 
 
-    updateDisplay();
+    updateScreen();
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetApp() {
+
+    const confirmReset =
+        confirm(
+            "Vuoi ripartire dall'inizio?"
+        );
+
+
+    if (!confirmReset) {
+        return;
+    }
+
+
+    localStorage.removeItem(
+        STORAGE.start
+    );
+
+    localStorage.removeItem(
+        STORAGE.current
+    );
+
+    localStorage.removeItem(
+        STORAGE.history
+    );
+
+    localStorage.removeItem(
+        STORAGE.goals
+    );
+
+
+    startValue =
+        NaN;
+
+    currentValue =
+        NaN;
+
+    history = [];
+
+    goals = [];
+
+
+    historyElement.innerHTML =
+        "";
+
+    goalsElement.innerHTML =
+        "";
+
+    currentNote.value =
+        "";
+
+    changeInput.value =
+        "";
+
+    startInput.value =
+        "";
+
+
+    startScreen.classList.remove(
+        "hidden"
+    );
+
+
+    setTimeout(
+        () => {
+            startInput.focus();
+        },
+        100
+    );
+}
+
+
+/* =====================================================
+   AGGIORNA TUTTO
+===================================================== */
+
+function updateScreen() {
+
+    /*
+       Il razzo NON viene spostato.
+
+       È fisso al centro.
+
+       La scala viene ridisegnata
+       intorno al valore attuale.
+    */
+
+    currentValueElement.textContent =
+        formatValue(
+            currentValue
+        );
+
+
+    updateColor();
+
+    drawScale();
+
+    drawGoals();
+
+    drawHistory();
 }
 
 
@@ -2114,7 +2066,7 @@ changeInput.addEventListener(
 );
 
 
-goalAdd.addEventListener(
+addGoalButton.addEventListener(
     "click",
     addGoal
 );
@@ -2123,6 +2075,48 @@ goalAdd.addEventListener(
 resetButton.addEventListener(
     "click",
     resetApp
+);
+
+
+/* =====================================================
+   BLOCCO ZOOM IPHONE
+===================================================== */
+
+document.addEventListener(
+    "gesturestart",
+    event => {
+        event.preventDefault();
+    },
+    { passive: false }
+);
+
+document.addEventListener(
+    "gesturechange",
+    event => {
+        event.preventDefault();
+    },
+    { passive: false }
+);
+
+document.addEventListener(
+    "gestureend",
+    event => {
+        event.preventDefault();
+    },
+    { passive: false }
+);
+
+document.addEventListener(
+    "touchmove",
+    event => {
+
+        if (
+            event.touches.length > 1
+        ) {
+            event.preventDefault();
+        }
+    },
+    { passive: false }
 );
 
 
@@ -2151,7 +2145,7 @@ if (
     );
 
 
-    updateDisplay();
+    updateScreen();
 
 } else {
 
