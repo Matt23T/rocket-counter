@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
 
 <meta charset="UTF-8">
@@ -15,6 +14,10 @@
 <title>Rocket</title>
 
 <style>
+
+/* =====================================================
+   BASE
+===================================================== */
 
 * {
     box-sizing: border-box;
@@ -46,6 +49,7 @@ body {
 
 body {
     position: fixed;
+
     width: 100%;
     height: 100%;
 
@@ -59,41 +63,37 @@ body {
     height: 100dvh;
 
     overflow: hidden;
+
     background: #000;
 }
 
 
 /* =====================================================
    SCALA
+   SOLO VISIVA
 ===================================================== */
 
 .timeline {
     position: absolute;
+
     inset: 0;
 
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
 
-    scrollbar-width: none;
-
-    -webkit-overflow-scrolling: touch;
-
-    overscroll-behavior-y: contain;
-
-    touch-action: pan-y;
+    pointer-events: none;
 
     z-index: 10;
 }
 
-.timeline::-webkit-scrollbar {
-    display: none;
-}
-
 .timeline-content {
-    position: relative;
+    position: absolute;
 
     width: 100%;
     height: 2200px;
+
+    left: 0;
+
+    pointer-events: none;
 }
 
 
@@ -112,7 +112,7 @@ body {
 
     transform: translateX(-50%);
 
-    background: rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.20);
 
     pointer-events: none;
 }
@@ -132,24 +132,24 @@ body {
 
     transform: translateX(-50%);
 
-    background: rgba(255,255,255,0.20);
-
-    pointer-events: none;
+    background: rgba(255,255,255,0.18);
 }
 
 .tick.major {
     width: 11px;
-    background: rgba(255,255,255,0.38);
+
+    background: rgba(255,255,255,0.35);
 }
 
 .tick.zero {
     width: 17px;
+
     background: rgba(255,255,255,0.75);
 }
 
 
 /* =====================================================
-   NUMERI SCALA
+   NUMERI PICCOLI DELLA SCALA
 ===================================================== */
 
 .scale-label {
@@ -162,6 +162,7 @@ body {
     white-space: nowrap;
 
     font-size: 10px;
+
     font-weight: 500;
 
     opacity: 0.75;
@@ -171,7 +172,7 @@ body {
 
 
 /* =====================================================
-   OBIETTIVI A SINISTRA
+   OBIETTIVI
 ===================================================== */
 
 .goals-layer {
@@ -201,10 +202,6 @@ body {
 
     text-overflow: ellipsis;
 
-    font-size: 12px;
-
-    pointer-events: auto;
-
     padding: 5px 7px;
 
     border-radius: 8px;
@@ -212,6 +209,10 @@ body {
     background: rgba(15,15,15,0.88);
 
     border: 1px solid rgba(255,255,255,0.10);
+
+    font-size: 12px;
+
+    pointer-events: auto;
 }
 
 .goal-name {
@@ -237,10 +238,11 @@ body {
 
     left: 12px;
 
-    top: calc(
-        12px +
-        env(safe-area-inset-top)
-    );
+    top:
+        calc(
+            12px +
+            env(safe-area-inset-top)
+        );
 
     width: 38px;
     height: 38px;
@@ -262,14 +264,16 @@ body {
 
 
 /* =====================================================
-   STORICO A DESTRA
+   STORICO NOTE A DESTRA
 ===================================================== */
 
 .history-layer {
     position: absolute;
 
     top: 70px;
+
     right: 8px;
+
     bottom: 100px;
 
     width: calc(50% - 22px);
@@ -277,6 +281,7 @@ body {
     z-index: 45;
 
     overflow-y: auto;
+
     overflow-x: hidden;
 
     scrollbar-width: none;
@@ -332,6 +337,7 @@ body {
     padding: 0;
 
     border: none;
+
     outline: none;
 
     background: transparent;
@@ -349,6 +355,7 @@ body {
     position: absolute;
 
     top: 5px;
+
     right: 5px;
 }
 
@@ -366,7 +373,7 @@ body {
 
 
 /* =====================================================
-   RAZZO
+   INDICATORE FISSO
 ===================================================== */
 
 .fixed-indicator {
@@ -383,13 +390,15 @@ body {
     pointer-events: none;
 }
 
+
+/* =====================================================
+   RAZZO
+   SEMPRE A SINISTRA DELLA LINEA
+===================================================== */
+
 .rocket {
     position: absolute;
 
-    /*
-       IL RAZZO È SEMPRE
-       A SINISTRA DELLA LINEA
-    */
     left: -68px;
 
     top: 0;
@@ -402,6 +411,8 @@ body {
     overflow: visible;
 
     transition: filter 0.2s ease;
+
+    pointer-events: none;
 }
 
 .rocket-part {
@@ -416,16 +427,13 @@ body {
 
 
 /* =====================================================
-   VALORE ATTUALE
+   VALORE GRANDE
+   A DESTRA DELLA LINEA
 ===================================================== */
 
 .current-info {
     position: absolute;
 
-    /*
-       IL VALORE RESTA
-       A DESTRA DEL RAZZO
-    */
     left: 8px;
 
     top: 0;
@@ -451,12 +459,15 @@ body {
 
 .current-note {
     width: 180px;
+
     height: 27px;
 
     margin: 0;
+
     padding: 0;
 
     border: none;
+
     outline: none;
 
     background: transparent;
@@ -499,6 +510,7 @@ body {
 
 .change-input {
     width: 175px;
+
     height: 49px;
 
     padding: 0 12px;
@@ -518,6 +530,10 @@ body {
     font-size: 17px;
 
     font-weight: 600;
+
+    /* TASTIERA NORMALE */
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .change-input::placeholder {
@@ -526,6 +542,7 @@ body {
 
 .change-button {
     width: 55px;
+
     height: 49px;
 
     border: none;
@@ -619,6 +636,7 @@ body {
 
 .start-input {
     width: 220px;
+
     height: 54px;
 
     padding: 0 10px;
@@ -646,6 +664,7 @@ body {
 
 .start-button {
     width: 220px;
+
     height: 49px;
 
     margin-top: 15px;
@@ -668,7 +687,6 @@ body {
 }
 
 </style>
-
 </head>
 
 
@@ -677,7 +695,9 @@ body {
 <div class="app">
 
 
-    <!-- SCALA -->
+    <!-- =================================================
+         SCALA
+    ================================================== -->
 
     <div
         id="timeline"
@@ -706,7 +726,9 @@ body {
     </div>
 
 
-    <!-- OBIETTIVI -->
+    <!-- =================================================
+         OBIETTIVI
+    ================================================== -->
 
     <div
         id="goalsLayer"
@@ -721,7 +743,9 @@ body {
     </button>
 
 
-    <!-- STORICO OPERAZIONI -->
+    <!-- =================================================
+         STORICO NOTE
+    ================================================== -->
 
     <div
         id="historyLayer"
@@ -729,7 +753,9 @@ body {
     ></div>
 
 
-    <!-- RAZZO CENTRALE -->
+    <!-- =================================================
+         RAZZO
+    ================================================== -->
 
     <div
         id="fixedIndicator"
@@ -803,6 +829,8 @@ body {
         </svg>
 
 
+        <!-- VALORE A DESTRA DELLA LINEA -->
+
         <div
             class="current-info"
         >
@@ -830,7 +858,9 @@ body {
     </div>
 
 
-    <!-- VARIAZIONE -->
+    <!-- =================================================
+         VARIAZIONE
+    ================================================== -->
 
     <div
         class="controls"
@@ -840,6 +870,7 @@ body {
             id="changeInput"
             class="change-input"
             type="text"
+            inputmode="text"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
@@ -857,7 +888,9 @@ body {
     </div>
 
 
-    <!-- RESET -->
+    <!-- =================================================
+         RESET
+    ================================================== -->
 
     <button
         id="resetButton"
@@ -867,7 +900,9 @@ body {
     </button>
 
 
-    <!-- VALORE INIZIALE -->
+    <!-- =================================================
+         VALORE INIZIALE
+    ================================================== -->
 
     <div
         id="startScreen"
@@ -890,6 +925,7 @@ body {
             id="startInput"
             class="start-input"
             type="text"
+            inputmode="text"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
@@ -1107,6 +1143,10 @@ function parseNumber(value) {
     text =
         text.replace(/\s/g, "");
 
+    /*
+       Mantiene + e -.
+    */
+
     if (
         text.includes(",")
     ) {
@@ -1119,8 +1159,12 @@ function parseNumber(value) {
 
     } else {
 
+        /*
+           Non rimuoviamo il segno.
+        */
+
         text =
-            text.replace(/\./g, "");
+            text.replace(/(\d)\.(\d{3})(?!\d)/g, "$1$2");
     }
 
     const result =
@@ -1266,11 +1310,13 @@ function updateColor() {
 
 /* =====================================================
    COSTRUZIONE SCALA
+   BLOCCATA: SOLO RIFERIMENTO VISIVO
 ===================================================== */
 
 function buildScale() {
 
     ticks.innerHTML = "";
+
     labels.innerHTML = "";
 
     const totalHeight =
@@ -1283,6 +1329,7 @@ function buildScale() {
     const centerY =
         totalHeight / 2;
 
+
     for (
         let relative = -DISPLAY_RANGE;
         relative <= DISPLAY_RANGE;
@@ -1294,10 +1341,13 @@ function buildScale() {
             relative *
             PIXELS_PER_EURO;
 
+
         const tick =
             document.createElement("div");
 
-        tick.className = "tick";
+        tick.className =
+            "tick";
+
 
         if (
             relative % 250 === 0
@@ -1305,16 +1355,21 @@ function buildScale() {
             tick.classList.add("major");
         }
 
+
         if (
             relative === 0
         ) {
             tick.classList.add("zero");
         }
 
+
         tick.style.top =
             `${y}px`;
 
-        ticks.appendChild(tick);
+
+        ticks.appendChild(
+            tick
+        );
 
 
         if (
@@ -1330,17 +1385,23 @@ function buildScale() {
             label.style.top =
                 `${y}px`;
 
+
             const value =
                 currentValue +
                 relative;
 
+
             label.textContent =
                 formatValue(value);
+
 
             label.style.color =
                 getValueColor(value);
 
-            labels.appendChild(label);
+
+            labels.appendChild(
+                label
+            );
         }
     }
 }
@@ -1368,6 +1429,7 @@ function drawHistory() {
                 getValueColor(
                     entry.to
                 );
+
 
             item.style.borderColor =
                 color + "55";
@@ -1455,12 +1517,14 @@ function drawHistory() {
                         return;
                     }
 
+
                     history =
                         history.filter(
                             item =>
                                 item.id !==
                                 entry.id
                         );
+
 
                     saveHistory();
 
@@ -1475,11 +1539,17 @@ function drawHistory() {
 
 
             item.appendChild(route);
+
             item.appendChild(delta);
+
             item.appendChild(note);
+
             item.appendChild(actions);
 
-            historyLayer.appendChild(item);
+
+            historyLayer.appendChild(
+                item
+            );
         }
     );
 }
@@ -1506,10 +1576,12 @@ function isGoalReached(goal) {
 
     if (goal.target >= 0) {
 
-        return currentValue >= goal.target;
+        return currentValue >=
+            goal.target;
     }
 
-    return currentValue <= goal.target;
+    return currentValue <=
+        goal.target;
 }
 
 
@@ -1520,6 +1592,7 @@ function isGoalReached(goal) {
 function drawGoals() {
 
     goalsLayer.innerHTML = "";
+
 
     goals.forEach(
         goal => {
@@ -1561,11 +1634,11 @@ function drawGoals() {
 
 
             /*
-               Cible supérieure :
-               elle apparaît au-dessus.
+               Più alto = sopra.
+               Più basso = sotto.
 
-               Cible inférieure :
-               elle apparaît en dessous.
+               La matematica tiene conto
+               del segno del numero.
             */
 
             const y =
@@ -1621,6 +1694,7 @@ function drawGoals() {
                                 goal.id
                         );
 
+
                     saveGoals();
 
                     drawGoals();
@@ -1628,9 +1702,18 @@ function drawGoals() {
             );
 
 
-            goalElement.appendChild(check);
-            goalElement.appendChild(name);
-            goalElement.appendChild(deleteButton);
+            goalElement.appendChild(
+                check
+            );
+
+            goalElement.appendChild(
+                name
+            );
+
+            goalElement.appendChild(
+                deleteButton
+            );
+
 
             goalsLayer.appendChild(
                 goalElement
@@ -1673,7 +1756,9 @@ function addGoal() {
 
 
     const target =
-        parseNumber(targetText);
+        parseNumber(
+            targetText
+        );
 
 
     if (
@@ -1728,7 +1813,8 @@ function addGoal() {
 
 function clearCurrentNote() {
 
-    currentNote.value = "";
+    currentNote.value =
+        "";
 }
 
 
@@ -1768,10 +1854,11 @@ function applyChange() {
 
 
     /*
-       OGNI OPERAZIONE È INDIPENDENTE.
+       OGNI OPERAZIONE È NUOVA.
 
-       Anche se torno allo stesso valore,
-       viene creata una nuova voce.
+       Anche se torno allo stesso numero,
+       non viene eliminata né sovrascritta
+       l'operazione precedente.
     */
 
     history.push({
@@ -1918,27 +2005,12 @@ function updateDisplay() {
 
 
     /*
-       IL RAZZO NON SI MUOVE.
+       IL RAZZO RESTA FISSO
+       AL CENTRO DELLO SCHERMO.
 
-       È sempre al centro dello schermo.
-       Si sposta soltanto la scala sotto
-       quando l'utente effettua lo scroll.
+       La scala non viene fatta scorrere
+       automaticamente.
     */
-
-    requestAnimationFrame(
-        () => {
-
-            const maxScroll =
-                timeline.scrollHeight -
-                timeline.clientHeight;
-
-            timeline.scrollTop =
-                Math.max(
-                    0,
-                    maxScroll / 2
-                );
-        }
-    );
 }
 
 
@@ -1984,6 +2056,7 @@ function setInitialValue() {
         CURRENT_KEY,
         String(currentValue)
     );
+
 
     saveHistory();
 
@@ -2068,7 +2141,6 @@ if (
             currentValue
         )
     ) {
-
         currentValue =
             startValue;
     }
@@ -2091,5 +2163,4 @@ if (
 </script>
 
 </body>
-
 </html>
