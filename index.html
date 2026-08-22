@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
+
 <meta charset="UTF-8">
 
 <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover"
 >
+
+<meta name="theme-color" content="#000000">
 
 <title>Rocket</title>
 
 <style>
+
+/* =====================================================
+   BASE
+===================================================== */
+
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -20,9 +29,9 @@ html,
 body {
     margin: 0;
     padding: 0;
+
     width: 100%;
     height: 100%;
-    overflow: hidden;
 
     background: #000;
     color: #fff;
@@ -33,24 +42,20 @@ body {
         "SF Pro Display",
         Arial,
         sans-serif;
+
+    overflow: hidden;
+
+    overscroll-behavior: none;
 }
 
 body {
     position: fixed;
-    inset: 0;
-    touch-action: manipulation;
+
+    width: 100%;
+    height: 100%;
+
+    touch-action: pan-y;
 }
-
-button,
-input,
-textarea {
-    font: inherit;
-}
-
-
-/* =====================================================
-   APP
-===================================================== */
 
 .app {
     position: relative;
@@ -58,60 +63,68 @@ textarea {
     width: 100%;
     height: 100dvh;
 
-    overflow: hidden;
-
     background: #000;
+
+    overflow: hidden;
 }
 
 
 /* =====================================================
-   SCALA CENTRALE
+   SCALA
 ===================================================== */
 
-.scale {
+.timeline {
+
     position: absolute;
 
     inset: 0;
 
-    pointer-events: none;
+    overflow-y: auto;
+    overflow-x: hidden;
 
-    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
 
-    z-index: 5;
+    scrollbar-width: none;
+
+    overscroll-behavior-y: contain;
+
+    z-index: 10;
+
+    touch-action: pan-y;
 }
 
+.timeline::-webkit-scrollbar {
+    display: none;
+}
+
+.timeline-content {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 2400px;
+}
+
+
+/* =====================================================
+   LINEA CENTRALE
+===================================================== */
+
 .center-line {
+
     position: absolute;
 
-    left: 50%;
     top: 0;
+    left: 50%;
 
     width: 1px;
     height: 100%;
 
     transform: translateX(-50%);
 
-    background: rgba(255,255,255,0.22);
-}
-
-
-/* =====================================================
-   NUMERI DELLA SCALA
-===================================================== */
-
-.scale-number {
-    position: absolute;
-
-    left: calc(50% - 18px);
-
-    transform: translate(-100%, -50%);
-
-    font-size: 10px;
-    line-height: 12px;
-
-    white-space: nowrap;
-
-    opacity: .78;
+    background:
+        rgba(255,255,255,0.18);
 
     pointer-events: none;
 }
@@ -121,37 +134,134 @@ textarea {
    TACCHETTE
 ===================================================== */
 
-.scale-tick {
+.tick {
+
     position: absolute;
 
     left: 50%;
 
-    width: 7px;
+    width: 6px;
     height: 1px;
 
     transform: translateX(-50%);
 
-    background: rgba(255,255,255,.18);
+    background:
+        rgba(255,255,255,0.20);
+
+    pointer-events: none;
 }
 
-.scale-tick.major {
+.tick.major {
+
     width: 11px;
 
-    background: rgba(255,255,255,.35);
+    background:
+        rgba(255,255,255,0.35);
 }
 
-.scale-tick.zero {
+.tick.zero {
+
     width: 17px;
 
-    background: rgba(255,255,255,.65);
+    background:
+        rgba(255,255,255,0.75);
 }
 
 
 /* =====================================================
-   INDICATORE CENTRALE
+   NUMERI DELLA SCALA
 ===================================================== */
 
-.indicator {
+.scale-label {
+
+    position: absolute;
+
+    left: calc(50% - 25px);
+
+    transform:
+        translate(-100%, -50%);
+
+    white-space: nowrap;
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+    opacity: 0.65;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   NOTE
+===================================================== */
+
+.notes-layer {
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: 50;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   NOTA SINGOLA
+===================================================== */
+
+.note {
+
+    position: absolute;
+
+    left: calc(50% + 31px);
+
+    max-width:
+        calc(50% - 42px);
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    pointer-events: none;
+
+    user-select: none;
+
+    -webkit-user-select: none;
+
+    z-index: 55;
+}
+
+.note-value {
+
+    margin-right: 7px;
+
+    font-weight: 700;
+}
+
+.note-text {
+
+    opacity: 0.90;
+}
+
+
+/* =====================================================
+   RAZZO CENTRALE
+===================================================== */
+
+.fixed-indicator {
+
     position: absolute;
 
     left: 50%;
@@ -160,287 +270,103 @@ textarea {
     width: 0;
     height: 0;
 
-    z-index: 50;
+    z-index: 70;
 
     pointer-events: none;
 }
 
-
-/* =====================================================
-   RAZZO
-   SEMPRE A SINISTRA DELLA LINEA
-===================================================== */
-
 .rocket {
+
     position: absolute;
 
-    left: -72px;
+    left: 8px;
     top: 0;
 
     width: 58px;
-    height: 30px;
+    height: 29px;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
     overflow: visible;
 
-    pointer-events: none;
-
     transition:
-        filter .2s ease;
+        filter 0.2s ease;
 }
 
 .rocket-part {
+
+    fill: #fff;
+
     transition:
-        fill .2s ease;
+        fill 0.2s ease;
+}
+
+.rocket-window {
+
+    fill: #000;
 }
 
 
 /* =====================================================
    VALORE ATTUALE
-   A DESTRA DELLA LINEA
 ===================================================== */
 
-.current {
+.current-info {
+
     position: absolute;
 
-    left: 9px;
+    left: 76px;
     top: 0;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
     display: flex;
+
     flex-direction: column;
 
     pointer-events: auto;
 }
 
 .current-value {
-    font-size: 21px;
+
+    font-size: 20px;
+
     line-height: 25px;
 
-    font-weight: 750;
+    font-weight: 700;
 
     white-space: nowrap;
+
+    transition:
+        color 0.2s ease;
 }
 
 .current-note {
-    width: 190px;
+
+    width: 180px;
     height: 27px;
 
-    padding: 0;
     margin: 0;
+    padding: 0;
 
-    border: 0;
-    outline: 0;
+    border: none;
+
+    outline: none;
 
     background: transparent;
 
     color: #aaa;
 
     font-size: 13px;
+
+    touch-action: auto;
 }
 
 .current-note::placeholder {
+
     color: #555;
-}
-
-
-/* =====================================================
-   STORICO
-   TUTTE LE NOTE RESTANO DISPONIBILI
-===================================================== */
-
-.history {
-    position: absolute;
-
-    top:
-        calc(
-            62px +
-            env(safe-area-inset-top)
-        );
-
-    right: 8px;
-
-    width: calc(50% - 20px);
-
-    bottom:
-        calc(
-            85px +
-            env(safe-area-inset-bottom)
-        );
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    scrollbar-width: none;
-
-    z-index: 40;
-}
-
-.history::-webkit-scrollbar {
-    display: none;
-}
-
-.history-item {
-    position: relative;
-
-    width: 100%;
-
-    margin-bottom: 9px;
-
-    padding: 7px 8px;
-
-    border-radius: 9px;
-
-    background: rgba(12,12,12,.94);
-
-    border: 1px solid rgba(255,255,255,.08);
-}
-
-.history-route {
-    font-size: 11px;
-
-    font-weight: 700;
-
-    line-height: 14px;
-}
-
-.history-delta {
-    margin-top: 2px;
-
-    font-size: 11px;
-
-    font-weight: 700;
-}
-
-.history-note {
-    display: block;
-
-    width: 100%;
-
-    margin-top: 3px;
-
-    padding: 0;
-
-    border: 0;
-    outline: 0;
-
-    resize: none;
-
-    overflow: hidden;
-
-    background: transparent;
-
-    font-size: 12px;
-
-    line-height: 15px;
-}
-
-.delete-history {
-    position: absolute;
-
-    top: 4px;
-    right: 4px;
-
-    width: 22px;
-    height: 22px;
-
-    padding: 0;
-
-    border: 0;
-
-    background: transparent;
-
-    color: #666;
-
-    font-size: 14px;
-}
-
-
-/* =====================================================
-   OBIETTIVI
-===================================================== */
-
-.goals {
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 35;
-
-    pointer-events: none;
-
-    overflow: hidden;
-}
-
-.goal {
-    position: absolute;
-
-    right: calc(50% + 34px);
-
-    max-width: calc(50% - 45px);
-
-    transform: translateY(-50%);
-
-    padding: 5px 7px;
-
-    border-radius: 8px;
-
-    background: rgba(10,10,10,.92);
-
-    border: 1px solid rgba(255,255,255,.10);
-
-    font-size: 11px;
-
-    white-space: nowrap;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    pointer-events: auto;
-}
-
-.goal-delete {
-    margin-left: 6px;
-
-    border: 0;
-
-    background: transparent;
-
-    color: #666;
-
-    padding: 0;
-
-    font-size: 11px;
-}
-
-.add-goal {
-    position: absolute;
-
-    left: 12px;
-
-    top:
-        calc(
-            12px +
-            env(safe-area-inset-top)
-        );
-
-    width: 38px;
-    height: 38px;
-
-    border: 0;
-
-    border-radius: 11px;
-
-    background: #181818;
-
-    color: #fff;
-
-    font-size: 24px;
-
-    z-index: 80;
 }
 
 
@@ -449,19 +375,23 @@ textarea {
 ===================================================== */
 
 .controls {
+
     position: absolute;
 
     left: 50%;
 
     bottom:
         calc(
-            14px +
+            16px +
             env(safe-area-inset-bottom)
         );
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     display: flex;
+
+    align-items: center;
 
     gap: 8px;
 
@@ -469,12 +399,14 @@ textarea {
 }
 
 .change-input {
-    width: 170px;
-    height: 48px;
+
+    width: 175px;
+    height: 49px;
 
     padding: 0 12px;
 
-    border: 1px solid #333;
+    border:
+        1px solid #333;
 
     border-radius: 13px;
 
@@ -484,23 +416,24 @@ textarea {
 
     color: #fff;
 
-    font-size: 17px;
-
     text-align: center;
 
-    -webkit-appearance: none;
-    appearance: none;
+    font-size: 17px;
+
+    font-weight: 600;
 }
 
 .change-input::placeholder {
+
     color: #555;
 }
 
 .change-button {
-    width: 55px;
-    height: 48px;
 
-    border: 0;
+    width: 55px;
+    height: 49px;
+
+    border: none;
 
     border-radius: 13px;
 
@@ -508,7 +441,15 @@ textarea {
 
     color: #000;
 
+    font-size: 15px;
+
     font-weight: 700;
+}
+
+.change-button:active {
+
+    transform:
+        scale(0.96);
 }
 
 
@@ -516,10 +457,9 @@ textarea {
    RESET
 ===================================================== */
 
-.reset {
-    position: absolute;
+.reset-button {
 
-    right: 12px;
+    position: absolute;
 
     top:
         calc(
@@ -527,11 +467,13 @@ textarea {
             env(safe-area-inset-top)
         );
 
+    right: 12px;
+
     height: 37px;
 
     padding: 0 13px;
 
-    border: 0;
+    border: none;
 
     border-radius: 11px;
 
@@ -541,7 +483,7 @@ textarea {
 
     font-size: 13px;
 
-    z-index: 80;
+    z-index: 90;
 }
 
 
@@ -550,6 +492,7 @@ textarea {
 ===================================================== */
 
 .start-screen {
+
     position: absolute;
 
     inset: 0;
@@ -560,33 +503,44 @@ textarea {
 
     flex-direction: column;
 
-    align-items: center;
     justify-content: center;
+
+    align-items: center;
+
+    padding: 30px;
 
     background: #000;
 }
 
 .start-title {
+
     margin-bottom: 8px;
 
     font-size: 30px;
 
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .start-subtitle {
-    margin-bottom: 22px;
+
+    margin-bottom: 23px;
 
     color: #777;
 
     font-size: 14px;
+
+    text-align: center;
 }
 
 .start-input {
+
     width: 220px;
     height: 54px;
 
-    border: 1px solid #444;
+    padding: 0 10px;
+
+    border:
+        1px solid #444;
 
     border-radius: 14px;
 
@@ -596,18 +550,26 @@ textarea {
 
     color: #fff;
 
+    text-align: center;
+
     font-size: 21px;
 
-    text-align: center;
+    font-weight: 600;
+}
+
+.start-input::placeholder {
+
+    color: #555;
 }
 
 .start-button {
+
     width: 220px;
     height: 49px;
 
     margin-top: 15px;
 
-    border: 0;
+    border: none;
 
     border-radius: 14px;
 
@@ -615,14 +577,52 @@ textarea {
 
     color: #000;
 
+    font-size: 16px;
+
     font-weight: 700;
 }
 
 .hidden {
+
     display: none !important;
 }
 
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+    .rocket {
+
+        width: 56px;
+        height: 28px;
+    }
+
+    .current-info {
+
+        left: 73px;
+    }
+
+    .current-value {
+
+        font-size: 19px;
+    }
+
+    .current-note {
+
+        width: 165px;
+    }
+
+    .note {
+
+        font-size: 12px;
+    }
+}
+
 </style>
+
 </head>
 
 
@@ -631,50 +631,61 @@ textarea {
 <div class="app">
 
 
-    <!-- SCALA -->
+    <!-- =================================================
+         SCALA SCORRIBILE
+    ================================================= -->
 
-    <div class="scale">
+    <div
+        id="timeline"
+        class="timeline"
+    >
 
-        <div class="center-line"></div>
+        <div
+            id="timelineContent"
+            class="timeline-content"
+        >
 
-        <div id="scaleNumbers"></div>
-        <div id="scaleTicks"></div>
+            <div
+                class="center-line"
+            ></div>
+
+            <div
+                id="ticks"
+            ></div>
+
+            <div
+                id="labels"
+            ></div>
+
+        </div>
 
     </div>
 
 
-    <!-- OBIETTIVI -->
+    <!-- =================================================
+         NOTE FISSE
+    ================================================= -->
 
     <div
-        id="goals"
-        class="goals"
-    ></div>
-
-    <button
-        id="addGoal"
-        class="add-goal"
-    >+</button>
-
-
-    <!-- STORICO -->
-
-    <div
-        id="history"
-        class="history"
+        id="notesLayer"
+        class="notes-layer"
     ></div>
 
 
-    <!-- RAZZO + VALORE -->
+    <!-- =================================================
+         RAZZO
+    ================================================= -->
 
     <div
-        id="indicator"
-        class="indicator"
+        id="fixedIndicator"
+        class="fixed-indicator"
     >
 
         <svg
             id="rocket"
             class="rocket"
             viewBox="0 0 100 50"
+            xmlns="http://www.w3.org/2000/svg"
         >
 
             <path
@@ -701,7 +712,7 @@ textarea {
                 cx="68"
                 cy="25"
                 r="5"
-                fill="#000"
+                class="rocket-window"
             />
 
             <path
@@ -737,22 +748,27 @@ textarea {
         </svg>
 
 
-        <div class="current">
+        <div
+            class="current-info"
+        >
 
             <div
                 id="currentValue"
                 class="current-value"
-            ></div>
+            >
+                0 €
+            </div>
 
             <input
                 id="currentNote"
                 class="current-note"
                 type="text"
-                placeholder="Nota..."
+                maxlength="100"
                 autocomplete="off"
                 autocorrect="off"
                 autocapitalize="off"
                 spellcheck="false"
+                placeholder="Nota..."
             >
 
         </div>
@@ -760,20 +776,23 @@ textarea {
     </div>
 
 
-    <!-- VARIAZIONE -->
+    <!-- =================================================
+         VARIAZIONE
+    ================================================= -->
 
-    <div class="controls">
+    <div
+        class="controls"
+    >
 
         <input
             id="changeInput"
             class="change-input"
             type="text"
-            inputmode="text"
-            placeholder="+ / - variazione"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
+            placeholder="+ / - variazione"
         >
 
         <button
@@ -786,28 +805,36 @@ textarea {
     </div>
 
 
-    <!-- RESET -->
+    <!-- =================================================
+         RESET
+    ================================================= -->
 
     <button
-        id="reset"
-        class="reset"
+        id="resetButton"
+        class="reset-button"
     >
         Reset
     </button>
 
 
-    <!-- VALORE INIZIALE -->
+    <!-- =================================================
+         VALORE INIZIALE
+    ================================================= -->
 
     <div
         id="startScreen"
         class="start-screen"
     >
 
-        <div class="start-title">
+        <div
+            class="start-title"
+        >
             Rocket
         </div>
 
-        <div class="start-subtitle">
+        <div
+            class="start-subtitle"
+        >
             Inserisci il valore iniziale
         </div>
 
@@ -815,12 +842,11 @@ textarea {
             id="startInput"
             class="start-input"
             type="text"
-            inputmode="text"
-            placeholder="Valore iniziale"
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
             spellcheck="false"
+            placeholder="Valore iniziale"
         >
 
         <button
@@ -838,144 +864,172 @@ textarea {
 <script>
 
 /* =====================================================
-   ELEMENTI
+   BLOCCO ZOOM
 ===================================================== */
 
-const startScreen =
-    document.getElementById("startScreen");
+document.addEventListener(
+    "gesturestart",
+    function(event) {
+        event.preventDefault();
+    },
+    {
+        passive: false
+    }
+);
 
-const startInput =
-    document.getElementById("startInput");
+document.addEventListener(
+    "gesturechange",
+    function(event) {
+        event.preventDefault();
+    },
+    {
+        passive: false
+    }
+);
 
-const startButton =
-    document.getElementById("startButton");
+document.addEventListener(
+    "gestureend",
+    function(event) {
+        event.preventDefault();
+    },
+    {
+        passive: false
+    }
+);
 
-const currentValueElement =
-    document.getElementById("currentValue");
+document.addEventListener(
+    "touchmove",
+    function(event) {
 
-const currentNote =
-    document.getElementById("currentNote");
+        if (
+            event.touches.length > 1
+        ) {
+            event.preventDefault();
+        }
 
-const changeInput =
-    document.getElementById("changeInput");
-
-const changeButton =
-    document.getElementById("changeButton");
-
-const resetButton =
-    document.getElementById("reset");
-
-const scaleNumbers =
-    document.getElementById("scaleNumbers");
-
-const scaleTicks =
-    document.getElementById("scaleTicks");
-
-const historyElement =
-    document.getElementById("history");
-
-const goalsElement =
-    document.getElementById("goals");
-
-const addGoalButton =
-    document.getElementById("addGoal");
-
-const rocketParts =
-    document.querySelectorAll(".rocket-part");
-
-const rocket =
-    document.getElementById("rocket");
+    },
+    {
+        passive: false
+    }
+);
 
 
 /* =====================================================
    STORAGE
 ===================================================== */
 
-const STORAGE = {
-    start: "rocket_start_final",
-    current: "rocket_current_final",
-    history: "rocket_history_final",
-    goals: "rocket_goals_final"
-};
+const START_KEY =
+    "rocket_start_value_v5";
+
+const CURRENT_KEY =
+    "rocket_current_value_v5";
+
+const NOTES_KEY =
+    "rocket_notes_v5";
 
 
 /* =====================================================
-   STATO
+   ELEMENTI
 ===================================================== */
 
-let startValue =
-    readNumber(
-        localStorage.getItem(
-            STORAGE.start
-        )
+const timeline =
+    document.getElementById(
+        "timeline"
     );
 
-let currentValue =
-    readNumber(
-        localStorage.getItem(
-            STORAGE.current
-        )
+const timelineContent =
+    document.getElementById(
+        "timelineContent"
     );
 
-let history = [];
+const ticks =
+    document.getElementById(
+        "ticks"
+    );
 
-let goals = [];
+const labels =
+    document.getElementById(
+        "labels"
+    );
 
+const notesLayer =
+    document.getElementById(
+        "notesLayer"
+    );
 
-try {
-    history =
-        JSON.parse(
-            localStorage.getItem(
-                STORAGE.history
-            )
-        ) || [];
-} catch {
-    history = [];
-}
+const currentValueElement =
+    document.getElementById(
+        "currentValue"
+    );
 
+const currentNote =
+    document.getElementById(
+        "currentNote"
+    );
 
-try {
-    goals =
-        JSON.parse(
-            localStorage.getItem(
-                STORAGE.goals
-            )
-        ) || [];
-} catch {
-    goals = [];
-}
+const changeInput =
+    document.getElementById(
+        "changeInput"
+    );
+
+const changeButton =
+    document.getElementById(
+        "changeButton"
+    );
+
+const resetButton =
+    document.getElementById(
+        "resetButton"
+    );
+
+const startScreen =
+    document.getElementById(
+        "startScreen"
+    );
+
+const startInput =
+    document.getElementById(
+        "startInput"
+    );
+
+const startButton =
+    document.getElementById(
+        "startButton"
+    );
+
+const rocketParts =
+    document.querySelectorAll(
+        ".rocket-part"
+    );
+
+const rocket =
+    document.getElementById(
+        "rocket"
+    );
 
 
 /* =====================================================
-   PARAMETRI VISIVI
+   SCALA
 ===================================================== */
 
-/*
-   25 € = una tacca.
+const DISPLAY_RANGE =
+    1100;
 
-   1000 € = 40 tacche.
+const STEP =
+    25;
 
-   Lo spazio visibile è quindi
-   sempre da current - 1000
-   a current + 1000.
-*/
-
-const VISIBLE_RANGE = 1000;
-
-const TICK_STEP = 25;
-
-const PIXELS_PER_25 =
-    28;
+const PIXELS_PER_STEP =
+    27;
 
 const PIXELS_PER_EURO =
-    PIXELS_PER_25 / TICK_STEP;
+    PIXELS_PER_STEP / STEP;
 
 
 /* =====================================================
    NUMERI
 ===================================================== */
 
-function readNumber(value) {
+function parseNumber(value) {
 
     if (
         value === null ||
@@ -987,15 +1041,20 @@ function readNumber(value) {
     let text =
         String(value).trim();
 
-    if (!text) {
+    if (
+        text === ""
+    ) {
         return NaN;
     }
 
     text =
-        text.replace(/\s/g, "");
+        text.replace(
+            /\s/g,
+            ""
+        );
 
     /*
-       Supporto:
+       Supporta:
 
        1300
        +1300
@@ -1025,8 +1084,10 @@ function readNumber(value) {
     } else {
 
         /*
-           Se il punto è usato
-           come separatore delle migliaia.
+           Il punto viene considerato
+           separatore delle migliaia
+           solo quando ci sono
+           esattamente tre cifre dopo.
         */
 
         text =
@@ -1046,7 +1107,7 @@ function readNumber(value) {
 
 
 /* =====================================================
-   FORMATTA VALORE
+   FORMATTAZIONE
 ===================================================== */
 
 function formatValue(value) {
@@ -1061,16 +1122,27 @@ function formatValue(value) {
             .toLocaleString(
                 "it-IT",
                 {
+                    minimumFractionDigits: 0,
                     maximumFractionDigits: 2
                 }
             );
 
-    if (rounded > 0) {
-        return "+" + absolute + " €";
+    if (
+        rounded > 0
+    ) {
+
+        return "+" +
+            absolute +
+            " €";
     }
 
-    if (rounded < 0) {
-        return "-" + absolute + " €";
+    if (
+        rounded < 0
+    ) {
+
+        return "-" +
+            absolute +
+            " €";
     }
 
     return "0 €";
@@ -1078,95 +1150,92 @@ function formatValue(value) {
 
 
 /* =====================================================
-   COLORE
+   COLORI
 ===================================================== */
 
-function getColor(value) {
+function getValueColor(value) {
 
-    if (value === 0) {
+    if (
+        value === 0
+    ) {
         return "#FFFFFF";
     }
 
 
-    /*
-       VERDE
+    if (
+        value > 0
+    ) {
 
-       Ogni 250 € cambia nettamente.
-    */
+        if (
+            value <= 1000
+        ) {
+            return "#B8FFD0";
+        }
 
-    if (value > 0) {
+        if (
+            value <= 2000
+        ) {
+            return "#62F28A";
+        }
 
-        if (value <= 250)
-            return "#D9FFE5";
+        if (
+            value <= 3000
+        ) {
+            return "#20DD65";
+        }
 
-        if (value <= 500)
-            return "#A8FFBF";
+        if (
+            value <= 4000
+        ) {
+            return "#08C951";
+        }
 
-        if (value <= 750)
-            return "#70F995";
-
-        if (value <= 1000)
-            return "#38EA6A";
-
-        if (value <= 2000)
-            return "#19D957";
-
-        if (value <= 3000)
-            return "#0DCC4B";
-
-        if (value <= 4000)
-            return "#08BB42";
-
-        return "#00A83B";
+        return "#00A83F";
     }
 
-
-    /*
-       ROSSO
-    */
 
     const amount =
         Math.abs(value);
 
-    if (amount <= 250)
-        return "#FFDDE2";
 
-    if (amount <= 500)
-        return "#FFB9C2";
+    if (
+        amount <= 1000
+    ) {
+        return "#FFB9C0";
+    }
 
-    if (amount <= 750)
-        return "#FF8A98";
+    if (
+        amount <= 2000
+    ) {
+        return "#FF6877";
+    }
 
-    if (amount <= 1000)
-        return "#FF596B";
+    if (
+        amount <= 3000
+    ) {
+        return "#F8374C";
+    }
 
-    if (amount <= 2000)
-        return "#F52F45";
-
-    if (amount <= 3000)
-        return "#E91E38";
-
-    if (amount <= 4000)
-        return "#DA1730";
+    if (
+        amount <= 4000
+    ) {
+        return "#E91E35";
+    }
 
     return "#C90020";
 }
 
 
 /* =====================================================
-   AGGIORNA COLORE
+   COLORE RAZZO
 ===================================================== */
 
 function updateColor() {
 
     const color =
-        getColor(
+        getValueColor(
             currentValue
         );
-
-
-    currentValueElement.style.color =
-        color;
 
 
     rocketParts.forEach(
@@ -1178,63 +1247,174 @@ function updateColor() {
     );
 
 
+    currentValueElement.style.color =
+        color;
+
+
     rocket.style.filter =
-        `drop-shadow(0 0 7px ${color})`;
+        `drop-shadow(
+            0 0 7px ${color}
+        )`;
 }
 
 
 /* =====================================================
-   SCALA
+   COSTRUZIONE SCALA
 ===================================================== */
 
-function drawScale() {
+/*
+   QUESTA È LA PARTE MATEMATICA IMPORTANTE.
 
-    scaleNumbers.innerHTML =
+   Per ogni valore reale della scala:
+
+       differenza =
+           valoreScala - valoreAttuale
+
+   Poi:
+
+       posizione =
+           centro -
+           differenza * pixelPerEuro
+
+   Conseguenza:
+
+       valoreScala > valoreAttuale
+       → posizione più in alto
+
+       valoreScala < valoreAttuale
+       → posizione più in basso
+
+
+   Esempio con valore attuale = 0:
+
+       +750 → sopra
+       +500 → sopra
+       +250 → sopra
+          0 → centro
+       -250 → sotto
+       -500 → sotto
+       -750 → sotto
+
+
+   Esempio con valore attuale = -300:
+
+       -100 → sopra
+       -250 → sopra
+       -300 → centro
+       -400 → sotto
+       -700 → sotto
+
+
+   NON viene utilizzato Math.abs()
+   per determinare la posizione.
+*/
+
+function buildScale() {
+
+    ticks.innerHTML =
         "";
 
-    scaleTicks.innerHTML =
+    labels.innerHTML =
         "";
+
+
+    const totalValueRange =
+        DISPLAY_RANGE * 2;
+
+
+    const totalHeight =
+        totalValueRange *
+        PIXELS_PER_EURO;
+
+
+    timelineContent.style.height =
+        totalHeight + "px";
+
+
+    const centerY =
+        totalHeight / 2;
 
 
     /*
-       ATTENZIONE:
+       Costruiamo valori reali
+       intorno al valore attuale.
 
-       Qui la posizione è calcolata
-       direttamente dalla differenza
-       numerica.
-
-       Se value > currentValue:
-           sale.
-
-       Se value < currentValue:
-           scende.
-
-       Nessun valore assoluto.
-       Nessuna logica speciale
-       per i negativi.
+       Non costruiamo più una posizione
+       partendo dal valore assoluto.
     */
 
+    const minimumValue =
+        currentValue -
+        DISPLAY_RANGE;
+
+    const maximumValue =
+        currentValue +
+        DISPLAY_RANGE;
+
+
+    /*
+       Arrotondiamo gli estremi
+       ai multipli di 25.
+    */
+
+    const firstValue =
+        Math.ceil(
+            minimumValue / STEP
+        ) * STEP;
+
+
+    const lastValue =
+        Math.floor(
+            maximumValue / STEP
+        ) * STEP;
+
+
     for (
-        let difference =
-            -VISIBLE_RANGE;
+        let scaleValue =
+            firstValue;
 
-        difference <=
-            VISIBLE_RANGE;
+        scaleValue <=
+            lastValue;
 
-        difference +=
-            TICK_STEP
+        scaleValue +=
+            STEP
     ) {
 
-        const value =
-            currentValue +
-            difference;
+
+        /*
+           DIFFERENZA NUMERICA REALE.
+
+           Esempio:
+
+           current = -300
+
+           scale = -700
+
+           difference =
+               -700 - (-300)
+               = -400
+
+           y =
+               centro - (-400 * scala)
+               = centro + ...
+
+           quindi -700 è sotto.
+
+           Questo è esattamente ciò
+           che vogliamo.
+        */
+
+        const difference =
+            scaleValue -
+            currentValue;
 
 
         const y =
-            window.innerHeight / 2
-            -
-            difference *
-            PIXELS_PER_EURO;
+            centerY -
+            (
+                difference *
+                PIXELS_PER_EURO
+            );
 
 
         const tick =
@@ -1243,12 +1423,13 @@ function drawScale() {
             );
 
         tick.className =
-            "scale-tick";
+            "tick";
 
 
         if (
-            value % 250 === 0
+            scaleValue % 250 === 0
         ) {
+
             tick.classList.add(
                 "major"
             );
@@ -1256,8 +1437,9 @@ function drawScale() {
 
 
         if (
-            value === 0
+            scaleValue === 0
         ) {
+
             tick.classList.add(
                 "zero"
             );
@@ -1265,16 +1447,20 @@ function drawScale() {
 
 
         tick.style.top =
-            y + "px";
+            `${y}px`;
 
 
-        scaleTicks.appendChild(
+        ticks.appendChild(
             tick
         );
 
 
+        /*
+           Numero ogni 250 €.
+        */
+
         if (
-            value % 250 === 0
+            scaleValue % 250 === 0
         ) {
 
             const label =
@@ -1283,26 +1469,26 @@ function drawScale() {
                 );
 
             label.className =
-                "scale-number";
+                "scale-label";
 
 
             label.style.top =
-                y + "px";
+                `${y}px`;
 
 
             label.textContent =
                 formatValue(
-                    value
+                    scaleValue
                 );
 
 
             label.style.color =
-                getColor(
-                    value
+                getValueColor(
+                    scaleValue
                 );
 
 
-            scaleNumbers.appendChild(
+            labels.appendChild(
                 label
             );
         }
@@ -1311,552 +1497,383 @@ function drawScale() {
 
 
 /* =====================================================
-   STORICO
+   CREA NOTA
 ===================================================== */
 
-function saveHistory() {
-
-    localStorage.setItem(
-        STORAGE.history,
-        JSON.stringify(history)
-    );
-}
-
-
-function drawHistory() {
-
-    historyElement.innerHTML =
-        "";
-
-
-    /*
-       IMPORTANTE:
-
-       L'ordine è quello cronologico
-       in cui sono state effettuate
-       le variazioni.
-
-       Non ordiniamo mai per valore.
-    */
-
-    history.forEach(
-        entry => {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-            item.className =
-                "history-item";
-
-
-            const color =
-                getColor(
-                    entry.to
-                );
-
-
-            item.style.borderColor =
-                color + "55";
-
-
-            const route =
-                document.createElement(
-                    "div"
-                );
-
-            route.className =
-                "history-route";
-
-            route.style.color =
-                color;
-
-            route.textContent =
-                `${formatValue(entry.from)} → ${formatValue(entry.to)}`;
-
-
-            const delta =
-                document.createElement(
-                    "div"
-                );
-
-            delta.className =
-                "history-delta";
-
-            delta.style.color =
-                color;
-
-            delta.textContent =
-                `(${entry.delta >= 0 ? "+" : ""}${entry.delta.toLocaleString("it-IT")} €)`;
-
-
-            const note =
-                document.createElement(
-                    "textarea"
-                );
-
-            note.className =
-                "history-note";
-
-            note.rows =
-                1;
-
-            note.value =
-                entry.note || "";
-
-            note.style.color =
-                color;
-
-
-            note.addEventListener(
-                "input",
-                () => {
-
-                    entry.note =
-                        note.value;
-
-                    saveHistory();
-
-                    autoSize(
-                        note
-                    );
-                }
-            );
-
-
-            const deleteButton =
-                document.createElement(
-                    "button"
-                );
-
-            deleteButton.className =
-                "delete-history";
-
-            deleteButton.textContent =
-                "×";
-
-
-            deleteButton.addEventListener(
-                "click",
-                () => {
-
-                    history =
-                        history.filter(
-                            item =>
-                                item.id !==
-                                entry.id
-                        );
-
-                    saveHistory();
-
-                    drawHistory();
-                }
-            );
-
-
-            item.appendChild(
-                route
-            );
-
-            item.appendChild(
-                delta
-            );
-
-            item.appendChild(
-                note
-            );
-
-            item.appendChild(
-                deleteButton
-            );
-
-
-            historyElement.appendChild(
-                item
-            );
-
-
-            autoSize(
-                note
-            );
-        }
-    );
-}
-
-
-/* =====================================================
-   AUTO SIZE NOTE
-===================================================== */
-
-function autoSize(element) {
-
-    element.style.height =
-        "auto";
-
-    element.style.height =
-        element.scrollHeight +
-        "px";
-}
-
-
-/* =====================================================
-   OBIETTIVI
-===================================================== */
-
-function saveGoals() {
-
-    localStorage.setItem(
-        STORAGE.goals,
-        JSON.stringify(goals)
-    );
-}
-
-
-function goalReached(goal) {
-
-    /*
-       Per un obiettivo positivo:
-
-       current >= target
-
-       Per un obiettivo negativo:
-
-       current <= target
-
-       Esempio:
-       obiettivo -3000
-       raggiunto a -3000, -3500, -4000...
-    */
-
-    if (
-        goal.target >= 0
-    ) {
-        return currentValue >=
-            goal.target;
-    }
-
-    return currentValue <=
-        goal.target;
-}
-
-
-function drawGoals() {
-
-    goalsElement.innerHTML =
-        "";
-
-
-    goals.forEach(
-        goal => {
-
-            /*
-               DIFFERENZA NUMERICA.
-
-               Nessun valore assoluto
-               per stabilire sopra/sotto.
-            */
-
-            const difference =
-                goal.target -
-                currentValue;
-
-
-            /*
-               Se l'obiettivo è fuori
-               dalla finestra ±1000
-               non viene mostrato.
-            */
-
-            if (
-                difference <
-                    -VISIBLE_RANGE ||
-                difference >
-                    VISIBLE_RANGE
-            ) {
-                return;
-            }
-
-
-            const y =
-                window.innerHeight / 2
-                -
-                difference *
-                PIXELS_PER_EURO;
-
-
-            const element =
-                document.createElement(
-                    "div"
-                );
-
-            element.className =
-                "goal";
-
-            element.style.top =
-                y + "px";
-
-
-            const reached =
-                goalReached(
-                    goal
-                );
-
-
-            const color =
-                reached
-                    ? "#65E88A"
-                    : getColor(
-                        goal.target
-                    );
-
-
-            element.style.color =
-                color;
-
-
-            element.innerHTML =
-                `
-                <span>
-                    ${reached ? "☑" : "○"}
-                    ${escapeHtml(goal.name)}
-                    — ${formatValue(goal.target)}
-                </span>
-                `;
-
-
-            const deleteButton =
-                document.createElement(
-                    "button"
-                );
-
-            deleteButton.className =
-                "goal-delete";
-
-            deleteButton.textContent =
-                "×";
-
-
-            deleteButton.addEventListener(
-                "click",
-                () => {
-
-                    goals =
-                        goals.filter(
-                            item =>
-                                item.id !==
-                                goal.id
-                        );
-
-                    saveGoals();
-
-                    drawGoals();
-                }
-            );
-
-
-            element.appendChild(
-                deleteButton
-            );
-
-
-            goalsElement.appendChild(
-                element
-            );
-        }
-    );
-}
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHtml(text) {
-
-    return String(text)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-}
-
-
-/* =====================================================
-   AGGIUNGI OBIETTIVO
-===================================================== */
-
-function addGoal() {
-
-    const targetText =
-        prompt(
-            "Inserisci la cifra dell'obiettivo:"
-        );
-
-
-    if (
-        targetText === null
-    ) {
-        return;
-    }
-
-
-    const target =
-        readNumber(
-            targetText
-        );
-
-
-    if (
-        !Number.isFinite(target)
-    ) {
-
-        alert(
-            "Cifra non valida."
-        );
-
-        return;
-    }
-
-
-    const name =
-        prompt(
-            "Inserisci il nome dell'obiettivo:"
-        );
-
-
-    if (
-        name === null ||
-        name.trim() === ""
-    ) {
-        return;
-    }
-
-
-    goals.push({
-
-        id:
-            Date.now() +
-            Math.random(),
-
-        target:
-            target,
-
-        name:
-            name.trim()
-    });
-
-
-    saveGoals();
-
-    drawGoals();
-}
-
-
-/* =====================================================
-   OPERAZIONE
-===================================================== */
-
-function applyChange() {
-
-    const delta =
-        readNumber(
-            changeInput.value
-        );
-
-
-    if (
-        !Number.isFinite(delta)
-    ) {
-
-        changeInput.focus();
-
-        return;
-    }
-
-
-    /*
-       QUESTA È LA REGOLA FONDAMENTALE:
-
-       nuovo valore =
-       vecchio valore + variazione
-
-       Non sostituiamo mai il valore.
-    */
-
-    const from =
-        currentValue;
-
-
-    const to =
-        from +
-        delta;
-
+function createNote(
+    value,
+    text
+) {
 
     const note =
+        document.createElement(
+            "div"
+        );
+
+    note.className =
+        "note";
+
+
+    const color =
+        getValueColor(
+            value
+        );
+
+
+    note.style.color =
+        color;
+
+
+    const valueElement =
+        document.createElement(
+            "span"
+        );
+
+    valueElement.className =
+        "note-value";
+
+    valueElement.textContent =
+        formatValue(
+            value
+        );
+
+    valueElement.style.color =
+        color;
+
+
+    const textElement =
+        document.createElement(
+            "span"
+        );
+
+    textElement.className =
+        "note-text";
+
+    textElement.textContent =
+        text;
+
+    textElement.style.color =
+        color;
+
+
+    note.appendChild(
+        valueElement
+    );
+
+    note.appendChild(
+        textElement
+    );
+
+
+    return note;
+}
+
+
+/* =====================================================
+   DISEGNA NOTE
+===================================================== */
+
+function drawNotes() {
+
+    notesLayer.innerHTML =
+        "";
+
+
+    const entries =
+        Object.entries(
+            notes
+        )
+        .map(
+            ([value, text]) => {
+
+                return {
+                    value:
+                        Number(value),
+
+                    text:
+                        String(text)
+                };
+
+            }
+        )
+        .filter(
+            item =>
+                Number.isFinite(
+                    item.value
+                )
+        );
+
+
+    /*
+       ORDINE NUMERICO REALE.
+
+       NON usare Math.abs().
+
+       -700 < -300
+
+       quindi:
+
+       -700 è più in basso
+       -300 è più in alto
+    */
+
+    entries.sort(
+        (a, b) =>
+            a.value -
+            b.value
+    );
+
+
+    /*
+       NOTE SOPRA IL RAZZO
+
+       Devono essere valori
+       numericamente MAGGIORI
+       del valore attuale.
+    */
+
+    const above =
+        entries
+            .filter(
+                item =>
+                    item.value >
+                    currentValue
+            )
+            .sort(
+                (a, b) =>
+                    a.value -
+                    b.value
+            );
+
+
+    /*
+       NOTE SOTTO IL RAZZO
+
+       Devono essere valori
+       numericamente MINORI
+       del valore attuale.
+    */
+
+    const below =
+        entries
+            .filter(
+                item =>
+                    item.value <
+                    currentValue
+            )
+            .sort(
+                (a, b) =>
+                    b.value -
+                    a.value
+            );
+
+
+    const NOTE_GAP =
+        34;
+
+
+    /*
+       SOPRA
+    */
+
+    above.forEach(
+        (item, index) => {
+
+            const note =
+                createNote(
+                    item.value,
+                    item.text
+                );
+
+
+            note.style.top =
+                `calc(
+                    50% -
+                    ${
+                        NOTE_GAP *
+                        (index + 1)
+                    }px
+                )`;
+
+
+            note.style.transform =
+                "translateY(-50%)";
+
+
+            notesLayer.appendChild(
+                note
+            );
+        }
+    );
+
+
+    /*
+       SOTTO
+    */
+
+    below.forEach(
+        (item, index) => {
+
+            const note =
+                createNote(
+                    item.value,
+                    item.text
+                );
+
+
+            note.style.top =
+                `calc(
+                    50% +
+                    ${
+                        NOTE_GAP *
+                        (index + 1)
+                    }px
+                )`;
+
+
+            note.style.transform =
+                "translateY(-50%)";
+
+
+            notesLayer.appendChild(
+                note
+            );
+        }
+    );
+}
+
+
+/* =====================================================
+   SALVA NOTA
+===================================================== */
+
+function saveCurrentNote() {
+
+    if (
+        !Number.isFinite(
+            currentValue
+        )
+    ) {
+        return;
+    }
+
+
+    const text =
         currentNote.value.trim();
 
 
-    history.push({
-
-        id:
-            Date.now() +
-            Math.random(),
-
-        from:
-            from,
-
-        to:
-            to,
-
-        delta:
-            delta,
-
-        note:
-            note,
-
-        date:
-            Date.now()
-    });
+    const key =
+        String(
+            currentValue
+        );
 
 
-    currentValue =
-        to;
+    if (
+        text === ""
+    ) {
+
+        delete notes[key];
+
+    } else {
+
+        notes[key] =
+            text;
+    }
 
 
     localStorage.setItem(
-        STORAGE.current,
-        String(currentValue)
+        NOTES_KEY,
+        JSON.stringify(
+            notes
+        )
     );
 
 
-    saveHistory();
+    drawNotes();
+}
 
 
-    changeInput.value =
-        "";
+/* =====================================================
+   CARICA NOTA
+===================================================== */
+
+function loadCurrentNote() {
+
+    if (
+        !Number.isFinite(
+            currentValue
+        )
+    ) {
+
+        currentNote.value =
+            "";
+
+        return;
+    }
+
 
     currentNote.value =
-        "";
+        notes[
+            String(currentValue)
+        ] || "";
+}
 
 
-    updateScreen();
+/* =====================================================
+   CENTRA LA SCALA
+===================================================== */
+
+function centerTimeline() {
+
+    const maxScroll =
+        timeline.scrollHeight -
+        timeline.clientHeight;
+
+
+    if (
+        maxScroll <= 0
+    ) {
+
+        timeline.scrollTop =
+            0;
+
+        return;
+    }
+
+
+    timeline.scrollTop =
+        maxScroll / 2;
+}
+
+
+/* =====================================================
+   DISPLAY
+===================================================== */
+
+function updateDisplay() {
+
+    currentValueElement.textContent =
+        formatValue(
+            currentValue
+        );
+
+
+    updateColor();
+
+    buildScale();
+
+    drawNotes();
+
+    loadCurrentNote();
+
+
+    requestAnimationFrame(
+        () => {
+
+            centerTimeline();
+
+        }
+    );
 }
 
 
@@ -1867,13 +1884,15 @@ function applyChange() {
 function setInitialValue() {
 
     const value =
-        readNumber(
+        parseNumber(
             startInput.value
         );
 
 
     if (
-        !Number.isFinite(value)
+        !Number.isFinite(
+            value
+        )
     ) {
 
         startInput.focus();
@@ -1889,24 +1908,31 @@ function setInitialValue() {
         value;
 
 
-    history = [];
-
-    goals = [];
+    notes = {};
 
 
     localStorage.setItem(
-        STORAGE.start,
-        String(startValue)
+        START_KEY,
+        String(
+            startValue
+        )
     );
+
 
     localStorage.setItem(
-        STORAGE.current,
-        String(currentValue)
+        CURRENT_KEY,
+        String(
+            currentValue
+        )
     );
 
-    saveHistory();
 
-    saveGoals();
+    localStorage.setItem(
+        NOTES_KEY,
+        JSON.stringify(
+            notes
+        )
+    );
 
 
     startScreen.classList.add(
@@ -1914,7 +1940,75 @@ function setInitialValue() {
     );
 
 
-    updateScreen();
+    updateDisplay();
+}
+
+
+/* =====================================================
+   VARIAZIONE
+===================================================== */
+
+function applyChange() {
+
+    const change =
+        parseNumber(
+            changeInput.value
+        );
+
+
+    if (
+        !Number.isFinite(
+            change
+        )
+    ) {
+
+        changeInput.focus();
+
+        return;
+    }
+
+
+    /*
+       Salviamo la nota associata
+       al valore da cui partiamo.
+    */
+
+    saveCurrentNote();
+
+
+    /*
+       REGOLA DELLA VARIAZIONE:
+
+       nuovo =
+           precedente + variazione
+
+       Esempio:
+
+       -3000 + 1000
+       = -2000
+
+       -2000 + (-500)
+       = -2500
+    */
+
+    currentValue =
+        currentValue +
+        change;
+
+
+    localStorage.setItem(
+        CURRENT_KEY,
+        String(
+            currentValue
+        )
+    );
+
+
+    changeInput.value =
+        "";
+
+
+    updateDisplay();
 }
 
 
@@ -1924,31 +2018,30 @@ function setInitialValue() {
 
 function resetApp() {
 
-    const confirmReset =
+    const confirmed =
         confirm(
-            "Vuoi ripartire dall'inizio?"
+            "Vuoi cancellare il valore iniziale e tutte le note?"
         );
 
 
-    if (!confirmReset) {
+    if (
+        !confirmed
+    ) {
+
         return;
     }
 
 
     localStorage.removeItem(
-        STORAGE.start
+        START_KEY
     );
 
     localStorage.removeItem(
-        STORAGE.current
+        CURRENT_KEY
     );
 
     localStorage.removeItem(
-        STORAGE.history
-    );
-
-    localStorage.removeItem(
-        STORAGE.goals
+        NOTES_KEY
     );
 
 
@@ -1958,24 +2051,16 @@ function resetApp() {
     currentValue =
         NaN;
 
-    history = [];
-
-    goals = [];
+    notes = {};
 
 
-    historyElement.innerHTML =
-        "";
-
-    goalsElement.innerHTML =
-        "";
-
-    currentNote.value =
+    startInput.value =
         "";
 
     changeInput.value =
         "";
 
-    startInput.value =
+    currentNote.value =
         "";
 
 
@@ -1986,41 +2071,12 @@ function resetApp() {
 
     setTimeout(
         () => {
+
             startInput.focus();
+
         },
         100
     );
-}
-
-
-/* =====================================================
-   AGGIORNA TUTTO
-===================================================== */
-
-function updateScreen() {
-
-    /*
-       Il razzo NON viene spostato.
-
-       È fisso al centro.
-
-       La scala viene ridisegnata
-       intorno al valore attuale.
-    */
-
-    currentValueElement.textContent =
-        formatValue(
-            currentValue
-        );
-
-
-    updateColor();
-
-    drawScale();
-
-    drawGoals();
-
-    drawHistory();
 }
 
 
@@ -2041,6 +2097,7 @@ startInput.addEventListener(
         if (
             event.key === "Enter"
         ) {
+
             setInitialValue();
         }
     }
@@ -2060,15 +2117,32 @@ changeInput.addEventListener(
         if (
             event.key === "Enter"
         ) {
+
             applyChange();
         }
     }
 );
 
 
-addGoalButton.addEventListener(
-    "click",
-    addGoal
+currentNote.addEventListener(
+    "blur",
+    saveCurrentNote
+);
+
+
+currentNote.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            saveCurrentNote();
+
+            currentNote.blur();
+        }
+    }
 );
 
 
@@ -2079,45 +2153,41 @@ resetButton.addEventListener(
 
 
 /* =====================================================
-   BLOCCO ZOOM IPHONE
+   CARICAMENTO
 ===================================================== */
 
-document.addEventListener(
-    "gesturestart",
-    event => {
-        event.preventDefault();
-    },
-    { passive: false }
-);
+let startValue =
+    parseNumber(
+        localStorage.getItem(
+            START_KEY
+        )
+    );
 
-document.addEventListener(
-    "gesturechange",
-    event => {
-        event.preventDefault();
-    },
-    { passive: false }
-);
 
-document.addEventListener(
-    "gestureend",
-    event => {
-        event.preventDefault();
-    },
-    { passive: false }
-);
+let currentValue =
+    parseNumber(
+        localStorage.getItem(
+            CURRENT_KEY
+        )
+    );
 
-document.addEventListener(
-    "touchmove",
-    event => {
 
-        if (
-            event.touches.length > 1
-        ) {
-            event.preventDefault();
-        }
-    },
-    { passive: false }
-);
+let notes = {};
+
+
+try {
+
+    notes =
+        JSON.parse(
+            localStorage.getItem(
+                NOTES_KEY
+            )
+        ) || {};
+
+} catch {
+
+    notes = {};
+}
 
 
 /* =====================================================
@@ -2135,6 +2205,7 @@ if (
             currentValue
         )
     ) {
+
         currentValue =
             startValue;
     }
@@ -2145,7 +2216,7 @@ if (
     );
 
 
-    updateScreen();
+    updateDisplay();
 
 } else {
 
@@ -2157,4 +2228,5 @@ if (
 </script>
 
 </body>
+
 </html>
