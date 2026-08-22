@@ -194,7 +194,7 @@ body {
 
 
 /* =====================================================
-   NOTE
+   NOTE / PLUSVALENZE
 ===================================================== */
 
 .notes-layer {
@@ -212,7 +212,7 @@ body {
 
 
 /* =====================================================
-   NOTA SINGOLA
+   SINGOLA PLUSVALENZA
 ===================================================== */
 
 .note {
@@ -221,20 +221,14 @@ body {
 
     left: calc(50% + 31px);
 
-    max-width:
+    width:
         calc(50% - 42px);
 
-    white-space: nowrap;
+    min-height: 32px;
 
-    overflow: hidden;
+    padding-right: 4px;
 
-    text-overflow: ellipsis;
-
-    font-size: 13px;
-
-    font-weight: 500;
-
-    pointer-events: none;
+    pointer-events: auto;
 
     user-select: none;
 
@@ -243,16 +237,105 @@ body {
     z-index: 55;
 }
 
-.note-value {
+.note-main {
 
-    margin-right: 7px;
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    width: 100%;
+}
+
+.note-arrow {
+
+    font-size: 11px;
+
+    opacity: 0.65;
+
+    flex-shrink: 0;
+}
+
+.note-movement {
+
+    font-size: 12px;
 
     font-weight: 700;
+
+    white-space: nowrap;
+
+    flex-shrink: 0;
+}
+
+.note-difference {
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    flex-shrink: 0;
 }
 
 .note-text {
 
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
     opacity: 0.90;
+}
+
+.note-actions {
+
+    display: flex;
+
+    gap: 5px;
+
+    margin-top: 3px;
+
+    margin-left: 0;
+
+    opacity: 0;
+
+    transition: opacity 0.15s ease;
+}
+
+.note:hover .note-actions {
+
+    opacity: 1;
+}
+
+.note-edit,
+.note-delete {
+
+    border: none;
+
+    background: #181818;
+
+    color: #aaa;
+
+    border-radius: 6px;
+
+    padding: 3px 7px;
+
+    font-size: 10px;
+}
+
+.note-edit:active,
+.note-delete:active {
+
+    transform: scale(0.95);
 }
 
 
@@ -589,6 +672,111 @@ body {
 
 
 /* =====================================================
+   MODIFICA NOTA
+===================================================== */
+
+.edit-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 200;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background:
+        rgba(0,0,0,0.75);
+
+    padding: 25px;
+}
+
+.edit-box {
+
+    width: 100%;
+    max-width: 340px;
+
+    padding: 20px;
+
+    border-radius: 17px;
+
+    background: #111;
+
+    border: 1px solid #333;
+}
+
+.edit-title {
+
+    margin-bottom: 12px;
+
+    font-size: 17px;
+
+    font-weight: 700;
+}
+
+.edit-input {
+
+    width: 100%;
+
+    height: 45px;
+
+    padding: 0 12px;
+
+    border: 1px solid #333;
+
+    border-radius: 10px;
+
+    background: #000;
+
+    color: #fff;
+
+    outline: none;
+
+    font-size: 15px;
+}
+
+.edit-buttons {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 12px;
+}
+
+.edit-buttons button {
+
+    flex: 1;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    font-weight: 700;
+}
+
+.edit-save {
+
+    background: #fff;
+
+    color: #000;
+}
+
+.edit-cancel {
+
+    background: #222;
+
+    color: #aaa;
+}
+
+
+/* =====================================================
    MOBILE
 ===================================================== */
 
@@ -663,7 +851,7 @@ body {
 
 
     <!-- =================================================
-         NOTE FISSE
+         NOTE / PLUSVALENZE
     ================================================= -->
 
     <div
@@ -818,7 +1006,7 @@ body {
 
 
     <!-- =================================================
-         VALORE INIZIALE
+         SCHERMATA INIZIALE
     ================================================= -->
 
     <div
@@ -858,6 +1046,61 @@ body {
 
     </div>
 
+
+    <!-- =================================================
+         MODIFICA NOTA
+    ================================================= -->
+
+    <div
+        id="editOverlay"
+        class="edit-overlay hidden"
+    >
+
+        <div
+            class="edit-box"
+        >
+
+            <div
+                class="edit-title"
+            >
+                Modifica nota
+            </div>
+
+            <input
+                id="editInput"
+                class="edit-input"
+                type="text"
+                maxlength="100"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+            >
+
+            <div
+                class="edit-buttons"
+            >
+
+                <button
+                    id="editCancel"
+                    class="edit-cancel"
+                >
+                    Annulla
+                </button>
+
+                <button
+                    id="editSave"
+                    class="edit-save"
+                >
+                    Salva
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 
@@ -870,32 +1113,41 @@ body {
 document.addEventListener(
     "gesturestart",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
     }
 );
+
 
 document.addEventListener(
     "gesturechange",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
     }
 );
 
+
 document.addEventListener(
     "gestureend",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
     }
 );
+
 
 document.addEventListener(
     "touchmove",
@@ -904,7 +1156,9 @@ document.addEventListener(
         if (
             event.touches.length > 1
         ) {
+
             event.preventDefault();
+
         }
 
     },
@@ -919,13 +1173,13 @@ document.addEventListener(
 ===================================================== */
 
 const START_KEY =
-    "rocket_start_value_v5";
+    "rocket_start_value_v6";
 
 const CURRENT_KEY =
-    "rocket_current_value_v5";
+    "rocket_current_value_v6";
 
 const NOTES_KEY =
-    "rocket_notes_v5";
+    "rocket_notes_v6";
 
 
 /* =====================================================
@@ -1007,9 +1261,29 @@ const rocket =
         "rocket"
     );
 
+const editOverlay =
+    document.getElementById(
+        "editOverlay"
+    );
+
+const editInput =
+    document.getElementById(
+        "editInput"
+    );
+
+const editSave =
+    document.getElementById(
+        "editSave"
+    );
+
+const editCancel =
+    document.getElementById(
+        "editCancel"
+    );
+
 
 /* =====================================================
-   SCALA
+   PARAMETRI SCALA
 ===================================================== */
 
 const DISPLAY_RANGE =
@@ -1026,7 +1300,7 @@ const PIXELS_PER_EURO =
 
 
 /* =====================================================
-   NUMERI
+   CONVERSIONE NUMERI
 ===================================================== */
 
 function parseNumber(value) {
@@ -1035,6 +1309,7 @@ function parseNumber(value) {
         value === null ||
         value === undefined
     ) {
+
         return NaN;
     }
 
@@ -1044,6 +1319,7 @@ function parseNumber(value) {
     if (
         text === ""
     ) {
+
         return NaN;
     }
 
@@ -1053,49 +1329,17 @@ function parseNumber(value) {
             ""
         );
 
-    /*
-       Supporta:
+    text =
+        text.replace(
+            /\./g,
+            ""
+        );
 
-       1300
-       +1300
-       -1300
-       1.300
-       -1.300
-       1300,50
-       -1300,50
-    */
-
-    if (
-        text.includes(",")
-    ) {
-
-        text =
-            text.replace(
-                /\./g,
-                ""
-            );
-
-        text =
-            text.replace(
-                ",",
-                "."
-            );
-
-    } else {
-
-        /*
-           Il punto viene considerato
-           separatore delle migliaia
-           solo quando ci sono
-           esattamente tre cifre dopo.
-        */
-
-        text =
-            text.replace(
-                /^([+-]?\d+)\.(\d{3})$/,
-                "$1$2"
-            );
-    }
+    text =
+        text.replace(
+            ",",
+            "."
+        );
 
     const number =
         Number(text);
@@ -1150,7 +1394,7 @@ function formatValue(value) {
 
 
 /* =====================================================
-   COLORI
+   COLORE
 ===================================================== */
 
 function getValueColor(value) {
@@ -1158,6 +1402,7 @@ function getValueColor(value) {
     if (
         value === 0
     ) {
+
         return "#FFFFFF";
     }
 
@@ -1169,24 +1414,28 @@ function getValueColor(value) {
         if (
             value <= 1000
         ) {
+
             return "#B8FFD0";
         }
 
         if (
             value <= 2000
         ) {
+
             return "#62F28A";
         }
 
         if (
             value <= 3000
         ) {
+
             return "#20DD65";
         }
 
         if (
             value <= 4000
         ) {
+
             return "#08C951";
         }
 
@@ -1201,24 +1450,28 @@ function getValueColor(value) {
     if (
         amount <= 1000
     ) {
+
         return "#FFB9C0";
     }
 
     if (
         amount <= 2000
     ) {
+
         return "#FF6877";
     }
 
     if (
         amount <= 3000
     ) {
+
         return "#F8374C";
     }
 
     if (
         amount <= 4000
     ) {
+
         return "#E91E35";
     }
 
@@ -1243,6 +1496,7 @@ function updateColor() {
 
             part.style.fill =
                 color;
+
         }
     );
 
@@ -1262,68 +1516,17 @@ function updateColor() {
    COSTRUZIONE SCALA
 ===================================================== */
 
-/*
-   QUESTA È LA PARTE MATEMATICA IMPORTANTE.
-
-   Per ogni valore reale della scala:
-
-       differenza =
-           valoreScala - valoreAttuale
-
-   Poi:
-
-       posizione =
-           centro -
-           differenza * pixelPerEuro
-
-   Conseguenza:
-
-       valoreScala > valoreAttuale
-       → posizione più in alto
-
-       valoreScala < valoreAttuale
-       → posizione più in basso
-
-
-   Esempio con valore attuale = 0:
-
-       +750 → sopra
-       +500 → sopra
-       +250 → sopra
-          0 → centro
-       -250 → sotto
-       -500 → sotto
-       -750 → sotto
-
-
-   Esempio con valore attuale = -300:
-
-       -100 → sopra
-       -250 → sopra
-       -300 → centro
-       -400 → sotto
-       -700 → sotto
-
-
-   NON viene utilizzato Math.abs()
-   per determinare la posizione.
-*/
-
 function buildScale() {
 
-    ticks.innerHTML =
-        "";
+    ticks.innerHTML = "";
 
-    labels.innerHTML =
-        "";
-
-
-    const totalValueRange =
-        DISPLAY_RANGE * 2;
+    labels.innerHTML = "";
 
 
     const totalHeight =
-        totalValueRange *
+        (
+            DISPLAY_RANGE * 2
+        ) *
         PIXELS_PER_EURO;
 
 
@@ -1335,84 +1538,18 @@ function buildScale() {
         totalHeight / 2;
 
 
-    /*
-       Costruiamo valori reali
-       intorno al valore attuale.
-
-       Non costruiamo più una posizione
-       partendo dal valore assoluto.
-    */
-
-    const minimumValue =
-        currentValue -
-        DISPLAY_RANGE;
-
-    const maximumValue =
-        currentValue +
-        DISPLAY_RANGE;
-
-
-    /*
-       Arrotondiamo gli estremi
-       ai multipli di 25.
-    */
-
-    const firstValue =
-        Math.ceil(
-            minimumValue / STEP
-        ) * STEP;
-
-
-    const lastValue =
-        Math.floor(
-            maximumValue / STEP
-        ) * STEP;
-
-
     for (
-        let scaleValue =
-            firstValue;
+        let relativeValue = -DISPLAY_RANGE;
 
-        scaleValue <=
-            lastValue;
+        relativeValue <= DISPLAY_RANGE;
 
-        scaleValue +=
-            STEP
+        relativeValue += STEP
     ) {
-
-
-        /*
-           DIFFERENZA NUMERICA REALE.
-
-           Esempio:
-
-           current = -300
-
-           scale = -700
-
-           difference =
-               -700 - (-300)
-               = -400
-
-           y =
-               centro - (-400 * scala)
-               = centro + ...
-
-           quindi -700 è sotto.
-
-           Questo è esattamente ciò
-           che vogliamo.
-        */
-
-        const difference =
-            scaleValue -
-            currentValue;
-
 
         const y =
             centerY -
             (
-                difference *
+                relativeValue *
                 PIXELS_PER_EURO
             );
 
@@ -1427,7 +1564,7 @@ function buildScale() {
 
 
         if (
-            scaleValue % 250 === 0
+            relativeValue % 250 === 0
         ) {
 
             tick.classList.add(
@@ -1437,7 +1574,7 @@ function buildScale() {
 
 
         if (
-            scaleValue === 0
+            relativeValue === 0
         ) {
 
             tick.classList.add(
@@ -1455,12 +1592,8 @@ function buildScale() {
         );
 
 
-        /*
-           Numero ogni 250 €.
-        */
-
         if (
-            scaleValue % 250 === 0
+            relativeValue % 250 === 0
         ) {
 
             const label =
@@ -1471,9 +1604,13 @@ function buildScale() {
             label.className =
                 "scale-label";
 
-
             label.style.top =
                 `${y}px`;
+
+
+            const scaleValue =
+                currentValue +
+                relativeValue;
 
 
             label.textContent =
@@ -1497,12 +1634,12 @@ function buildScale() {
 
 
 /* =====================================================
-   CREA NOTA
+   CREA PLUSVALENZA
 ===================================================== */
 
 function createNote(
-    value,
-    text
+    item,
+    index
 ) {
 
     const note =
@@ -1516,7 +1653,7 @@ function createNote(
 
     const color =
         getValueColor(
-            value
+            item.to
         );
 
 
@@ -1524,44 +1661,185 @@ function createNote(
         color;
 
 
-    const valueElement =
+    /*
+       RIGA PRINCIPALE
+    */
+
+    const main =
+        document.createElement(
+            "div"
+        );
+
+    main.className =
+        "note-main";
+
+
+    const arrow =
         document.createElement(
             "span"
         );
 
-    valueElement.className =
-        "note-value";
+    arrow.className =
+        "note-arrow";
 
-    valueElement.textContent =
-        formatValue(
-            value
+    arrow.textContent =
+        "→";
+
+
+    const movement =
+        document.createElement(
+            "span"
         );
 
-    valueElement.style.color =
+    movement.className =
+        "note-movement";
+
+    movement.textContent =
+        formatValue(
+            item.to
+        );
+
+    movement.style.color =
         color;
 
 
-    const textElement =
+    /*
+       PLUSVALENZA / MINUSVALENZA
+    */
+
+    const difference =
         document.createElement(
             "span"
         );
 
-    textElement.className =
+    difference.className =
+        "note-difference";
+
+    difference.textContent =
+        "(" +
+        formatSignedDifference(
+            item.change
+        ) +
+        ")";
+
+    difference.style.color =
+        getValueColor(
+            item.change
+        );
+
+
+    const text =
+        document.createElement(
+            "span"
+        );
+
+    text.className =
         "note-text";
 
-    textElement.textContent =
-        text;
+    text.textContent =
+        item.text;
 
-    textElement.style.color =
+    text.style.color =
         color;
+
+
+    main.appendChild(
+        arrow
+    );
+
+    main.appendChild(
+        movement
+    );
+
+    main.appendChild(
+        difference
+    );
+
+    main.appendChild(
+        text
+    );
 
 
     note.appendChild(
-        valueElement
+        main
+    );
+
+
+    /*
+       AZIONI
+    */
+
+    const actions =
+        document.createElement(
+            "div"
+        );
+
+    actions.className =
+        "note-actions";
+
+
+    const editButton =
+        document.createElement(
+            "button"
+        );
+
+    editButton.className =
+        "note-edit";
+
+    editButton.textContent =
+        "Modifica";
+
+
+    const deleteButton =
+        document.createElement(
+            "button"
+        );
+
+    deleteButton.className =
+        "note-delete";
+
+    deleteButton.textContent =
+        "Elimina";
+
+
+    editButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+            openEditNote(
+                item.id
+            );
+
+        }
+    );
+
+
+    deleteButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+            deleteNote(
+                item.id
+            );
+
+        }
+    );
+
+
+    actions.appendChild(
+        editButton
+    );
+
+    actions.appendChild(
+        deleteButton
     );
 
     note.appendChild(
-        textElement
+        actions
     );
 
 
@@ -1570,181 +1848,99 @@ function createNote(
 
 
 /* =====================================================
-   DISEGNA NOTE
+   FORMATTA VARIAZIONE
+===================================================== */
+
+function formatSignedDifference(
+    value
+) {
+
+    if (
+        value > 0
+    ) {
+
+        return "+" +
+            Math.abs(value)
+                .toLocaleString(
+                    "it-IT"
+                ) +
+            " €";
+    }
+
+
+    if (
+        value < 0
+    ) {
+
+        return "-" +
+            Math.abs(value)
+                .toLocaleString(
+                    "it-IT"
+                ) +
+            " €";
+    }
+
+
+    return "0 €";
+}
+
+
+/* =====================================================
+   DISEGNA NOTE CRONOLOGICHE
 ===================================================== */
 
 function drawNotes() {
 
-    notesLayer.innerHTML =
-        "";
-
-
-    const entries =
-        Object.entries(
-            notes
-        )
-        .map(
-            ([value, text]) => {
-
-                return {
-                    value:
-                        Number(value),
-
-                    text:
-                        String(text)
-                };
-
-            }
-        )
-        .filter(
-            item =>
-                Number.isFinite(
-                    item.value
-                )
-        );
+    notesLayer.innerHTML = "";
 
 
     /*
-       ORDINE NUMERICO REALE.
+       NON viene più fatto nessun
+       ordinamento numerico.
 
-       NON usare Math.abs().
-
-       -700 < -300
-
-       quindi:
-
-       -700 è più in basso
-       -300 è più in alto
+       L'ordine dell'array è l'ordine
+       cronologico in cui le note
+       sono state create.
     */
 
-    entries.sort(
-        (a, b) =>
-            a.value -
-            b.value
-    );
-
-
-    /*
-       NOTE SOPRA IL RAZZO
-
-       Devono essere valori
-       numericamente MAGGIORI
-       del valore attuale.
-    */
-
-    const above =
-        entries
-            .filter(
-                item =>
-                    item.value >
-                    currentValue
-            )
-            .sort(
-                (a, b) =>
-                    a.value -
-                    b.value
-            );
-
-
-    /*
-       NOTE SOTTO IL RAZZO
-
-       Devono essere valori
-       numericamente MINORI
-       del valore attuale.
-    */
-
-    const below =
-        entries
-            .filter(
-                item =>
-                    item.value <
-                    currentValue
-            )
-            .sort(
-                (a, b) =>
-                    b.value -
-                    a.value
-            );
-
-
-    const NOTE_GAP =
-        34;
-
-
-    /*
-       SOPRA
-    */
-
-    above.forEach(
+    notes.forEach(
         (item, index) => {
 
             const note =
                 createNote(
-                    item.value,
-                    item.text
+                    item,
+                    index
                 );
 
 
+            /*
+               Le note sono semplicemente
+               disposte una sotto l'altra
+               sul lato destro.
+
+               Non vengono più ancorate
+               alla scala.
+            */
+
             note.style.top =
-                `calc(
-                    50% -
-                    ${
-                        NOTE_GAP *
-                        (index + 1)
-                    }px
-                )`;
-
-
-            note.style.transform =
-                "translateY(-50%)";
+                (
+                    18 +
+                    index * 43
+                ) +
+                "px";
 
 
             notesLayer.appendChild(
                 note
             );
-        }
-    );
 
-
-    /*
-       SOTTO
-    */
-
-    below.forEach(
-        (item, index) => {
-
-            const note =
-                createNote(
-                    item.value,
-                    item.text
-                );
-
-
-            note.style.top =
-                `calc(
-                    50% +
-                    ${
-                        NOTE_GAP *
-                        (index + 1)
-                    }px
-                )`;
-
-
-            note.style.transform =
-                "translateY(-50%)";
-
-
-            notesLayer.appendChild(
-                note
-            );
         }
     );
 }
 
 
 /* =====================================================
-   SALVA NOTA
+   SALVA NOTA COME PLUSVALENZA
 ===================================================== */
 
 function saveCurrentNote() {
@@ -1754,6 +1950,7 @@ function saveCurrentNote() {
             currentValue
         )
     ) {
+
         return;
     }
 
@@ -1762,23 +1959,227 @@ function saveCurrentNote() {
         currentNote.value.trim();
 
 
-    const key =
-        String(
-            currentValue
+    /*
+       La nota inserita sul valore
+       corrente viene utilizzata come
+       descrizione del movimento che
+       avverrà con la prossima variazione.
+
+       Se non c'è testo non viene
+       creata nessuna plusvalenza.
+    */
+
+    return text;
+}
+
+
+/* =====================================================
+   CREA MOVIMENTO
+===================================================== */
+
+function createMovement(
+    from,
+    to,
+    text
+) {
+
+    if (
+        text === ""
+    ) {
+
+        return;
+    }
+
+
+    const change =
+        to - from;
+
+
+    const movement = {
+
+        id:
+            Date.now() +
+            "_" +
+            Math.random()
+                .toString(36)
+                .slice(2),
+
+        from:
+            from,
+
+        to:
+            to,
+
+        change:
+            change,
+
+        text:
+            text,
+
+        createdAt:
+            Date.now()
+    };
+
+
+    notes.push(
+        movement
+    );
+
+
+    localStorage.setItem(
+        NOTES_KEY,
+        JSON.stringify(
+            notes
+        )
+    );
+}
+
+
+/* =====================================================
+   MODIFICA NOTA
+===================================================== */
+
+let editingNoteId =
+    null;
+
+
+function openEditNote(
+    id
+) {
+
+    const item =
+        notes.find(
+            note =>
+                note.id === id
         );
+
+
+    if (
+        !item
+    ) {
+
+        return;
+    }
+
+
+    editingNoteId =
+        id;
+
+
+    editInput.value =
+        item.text;
+
+
+    editOverlay.classList.remove(
+        "hidden"
+    );
+
+
+    setTimeout(
+        () => {
+
+            editInput.focus();
+
+        },
+        100
+    );
+}
+
+
+/* =====================================================
+   SALVA MODIFICA
+===================================================== */
+
+function saveEditedNote() {
+
+    if (
+        !editingNoteId
+    ) {
+
+        return;
+    }
+
+
+    const item =
+        notes.find(
+            note =>
+                note.id ===
+                editingNoteId
+        );
+
+
+    if (
+        !item
+    ) {
+
+        return;
+    }
+
+
+    const text =
+        editInput.value.trim();
 
 
     if (
         text === ""
     ) {
 
-        delete notes[key];
-
-    } else {
-
-        notes[key] =
-            text;
+        return;
     }
+
+
+    item.text =
+        text;
+
+
+    localStorage.setItem(
+        NOTES_KEY,
+        JSON.stringify(
+            notes
+        )
+    );
+
+
+    editOverlay.classList.add(
+        "hidden"
+    );
+
+
+    editingNoteId =
+        null;
+
+
+    drawNotes();
+}
+
+
+/* =====================================================
+   ELIMINA NOTA
+===================================================== */
+
+function deleteNote(
+    id
+) {
+
+    const confirmed =
+        confirm(
+            "Vuoi eliminare questa nota?"
+        );
+
+
+    if (
+        !confirmed
+    ) {
+
+        return;
+    }
+
+
+    notes =
+        notes.filter(
+            item =>
+                item.id !== id
+        );
 
 
     localStorage.setItem(
@@ -1794,33 +2195,7 @@ function saveCurrentNote() {
 
 
 /* =====================================================
-   CARICA NOTA
-===================================================== */
-
-function loadCurrentNote() {
-
-    if (
-        !Number.isFinite(
-            currentValue
-        )
-    ) {
-
-        currentNote.value =
-            "";
-
-        return;
-    }
-
-
-    currentNote.value =
-        notes[
-            String(currentValue)
-        ] || "";
-}
-
-
-/* =====================================================
-   CENTRA LA SCALA
+   CENTRA SCALA
 ===================================================== */
 
 function centerTimeline() {
@@ -1847,7 +2222,7 @@ function centerTimeline() {
 
 
 /* =====================================================
-   DISPLAY
+   AGGIORNA DISPLAY
 ===================================================== */
 
 function updateDisplay() {
@@ -1864,7 +2239,14 @@ function updateDisplay() {
 
     drawNotes();
 
-    loadCurrentNote();
+
+    /*
+       Non esiste più una nota
+       legata direttamente al valore.
+    */
+
+    currentNote.value =
+        "";
 
 
     requestAnimationFrame(
@@ -1890,9 +2272,7 @@ function setInitialValue() {
 
 
     if (
-        !Number.isFinite(
-            value
-        )
+        !Number.isFinite(value)
     ) {
 
         startInput.focus();
@@ -1908,22 +2288,18 @@ function setInitialValue() {
         value;
 
 
-    notes = {};
+    notes = [];
 
 
     localStorage.setItem(
         START_KEY,
-        String(
-            startValue
-        )
+        String(startValue)
     );
 
 
     localStorage.setItem(
         CURRENT_KEY,
-        String(
-            currentValue
-        )
+        String(currentValue)
     );
 
 
@@ -1945,7 +2321,7 @@ function setInitialValue() {
 
 
 /* =====================================================
-   VARIAZIONE
+   APPLICA VARIAZIONE
 ===================================================== */
 
 function applyChange() {
@@ -1957,9 +2333,7 @@ function applyChange() {
 
 
     if (
-        !Number.isFinite(
-            change
-        )
+        !Number.isFinite(change)
     ) {
 
         changeInput.focus();
@@ -1969,42 +2343,64 @@ function applyChange() {
 
 
     /*
-       Salviamo la nota associata
-       al valore da cui partiamo.
+       Il valore attuale è il punto
+       di partenza del movimento.
     */
 
-    saveCurrentNote();
+    const previousValue =
+        currentValue;
 
 
     /*
-       REGOLA DELLA VARIAZIONE:
-
-       nuovo =
-           precedente + variazione
-
-       Esempio:
-
-       -3000 + 1000
-       = -2000
-
-       -2000 + (-500)
-       = -2500
+       La variazione viene sommata
+       al valore attuale.
     */
 
-    currentValue =
-        currentValue +
+    const newValue =
+        previousValue +
         change;
+
+
+    /*
+       La nota viene associata
+       ESCLUSIVAMENTE a questo
+       movimento.
+
+       Quindi anche se si torna
+       sullo stesso numero, viene
+       creata una nuova registrazione.
+    */
+
+    const text =
+        currentNote.value.trim();
+
+
+    if (
+        text !== ""
+    ) {
+
+        createMovement(
+            previousValue,
+            newValue,
+            text
+        );
+    }
+
+
+    currentValue =
+        newValue;
 
 
     localStorage.setItem(
         CURRENT_KEY,
-        String(
-            currentValue
-        )
+        String(currentValue)
     );
 
 
     changeInput.value =
+        "";
+
+    currentNote.value =
         "";
 
 
@@ -2051,7 +2447,7 @@ function resetApp() {
     currentValue =
         NaN;
 
-    notes = {};
+    notes = [];
 
 
     startInput.value =
@@ -2099,7 +2495,9 @@ startInput.addEventListener(
         ) {
 
             setInitialValue();
+
         }
+
     }
 );
 
@@ -2119,14 +2517,10 @@ changeInput.addEventListener(
         ) {
 
             applyChange();
+
         }
+
     }
-);
-
-
-currentNote.addEventListener(
-    "blur",
-    saveCurrentNote
 );
 
 
@@ -2138,10 +2532,10 @@ currentNote.addEventListener(
             event.key === "Enter"
         ) {
 
-            saveCurrentNote();
-
             currentNote.blur();
+
         }
+
     }
 );
 
@@ -2152,8 +2546,29 @@ resetButton.addEventListener(
 );
 
 
+editSave.addEventListener(
+    "click",
+    saveEditedNote
+);
+
+
+editCancel.addEventListener(
+    "click",
+    function() {
+
+        editOverlay.classList.add(
+            "hidden"
+        );
+
+        editingNoteId =
+            null;
+
+    }
+);
+
+
 /* =====================================================
-   CARICAMENTO
+   CARICAMENTO DATI
 ===================================================== */
 
 let startValue =
@@ -2172,21 +2587,42 @@ let currentValue =
     );
 
 
-let notes = {};
+let notes = [];
 
+
+/*
+   Caricamento compatibile anche
+   con eventuali dati precedenti.
+*/
 
 try {
 
-    notes =
+    const saved =
         JSON.parse(
             localStorage.getItem(
                 NOTES_KEY
             )
-        ) || {};
+        );
+
+
+    if (
+        Array.isArray(saved)
+    ) {
+
+        notes =
+            saved;
+
+    } else {
+
+        notes =
+            [];
+
+    }
 
 } catch {
 
-    notes = {};
+    notes =
+        [];
 }
 
 
@@ -2223,6 +2659,7 @@ if (
     startScreen.classList.remove(
         "hidden"
     );
+
 }
 
 </script>
