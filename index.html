@@ -1053,18 +1053,6 @@ function parseNumber(value) {
             ""
         );
 
-    /*
-       Supporta:
-
-       1300
-       +1300
-       -1300
-       1.300
-       -1.300
-       1300,50
-       -1300,50
-    */
-
     if (
         text.includes(",")
     ) {
@@ -1082,13 +1070,6 @@ function parseNumber(value) {
             );
 
     } else {
-
-        /*
-           Il punto viene considerato
-           separatore delle migliaia
-           solo quando ci sono
-           esattamente tre cifre dopo.
-        */
 
         text =
             text.replace(
@@ -1161,7 +1142,6 @@ function getValueColor(value) {
         return "#FFFFFF";
     }
 
-
     if (
         value > 0
     ) {
@@ -1193,10 +1173,8 @@ function getValueColor(value) {
         return "#00A83F";
     }
 
-
     const amount =
         Math.abs(value);
-
 
     if (
         amount <= 1000
@@ -1237,7 +1215,6 @@ function updateColor() {
             currentValue
         );
 
-
     rocketParts.forEach(
         part => {
 
@@ -1246,10 +1223,8 @@ function updateColor() {
         }
     );
 
-
     currentValueElement.style.color =
         color;
-
 
     rocket.style.filter =
         `drop-shadow(
@@ -1262,53 +1237,6 @@ function updateColor() {
    COSTRUZIONE SCALA
 ===================================================== */
 
-/*
-   QUESTA È LA PARTE MATEMATICA IMPORTANTE.
-
-   Per ogni valore reale della scala:
-
-       differenza =
-           valoreScala - valoreAttuale
-
-   Poi:
-
-       posizione =
-           centro -
-           differenza * pixelPerEuro
-
-   Conseguenza:
-
-       valoreScala > valoreAttuale
-       → posizione più in alto
-
-       valoreScala < valoreAttuale
-       → posizione più in basso
-
-
-   Esempio con valore attuale = 0:
-
-       +750 → sopra
-       +500 → sopra
-       +250 → sopra
-          0 → centro
-       -250 → sotto
-       -500 → sotto
-       -750 → sotto
-
-
-   Esempio con valore attuale = -300:
-
-       -100 → sopra
-       -250 → sopra
-       -300 → centro
-       -400 → sotto
-       -700 → sotto
-
-
-   NON viene utilizzato Math.abs()
-   per determinare la posizione.
-*/
-
 function buildScale() {
 
     ticks.innerHTML =
@@ -1317,31 +1245,18 @@ function buildScale() {
     labels.innerHTML =
         "";
 
-
     const totalValueRange =
         DISPLAY_RANGE * 2;
-
 
     const totalHeight =
         totalValueRange *
         PIXELS_PER_EURO;
 
-
     timelineContent.style.height =
         totalHeight + "px";
 
-
     const centerY =
         totalHeight / 2;
-
-
-    /*
-       Costruiamo valori reali
-       intorno al valore attuale.
-
-       Non costruiamo più una posizione
-       partendo dal valore assoluto.
-    */
 
     const minimumValue =
         currentValue -
@@ -1351,23 +1266,15 @@ function buildScale() {
         currentValue +
         DISPLAY_RANGE;
 
-
-    /*
-       Arrotondiamo gli estremi
-       ai multipli di 25.
-    */
-
     const firstValue =
         Math.ceil(
             minimumValue / STEP
         ) * STEP;
 
-
     const lastValue =
         Math.floor(
             maximumValue / STEP
         ) * STEP;
-
 
     for (
         let scaleValue =
@@ -1380,34 +1287,9 @@ function buildScale() {
             STEP
     ) {
 
-
-        /*
-           DIFFERENZA NUMERICA REALE.
-
-           Esempio:
-
-           current = -300
-
-           scale = -700
-
-           difference =
-               -700 - (-300)
-               = -400
-
-           y =
-               centro - (-400 * scala)
-               = centro + ...
-
-           quindi -700 è sotto.
-
-           Questo è esattamente ciò
-           che vogliamo.
-        */
-
         const difference =
             scaleValue -
             currentValue;
-
 
         const y =
             centerY -
@@ -1416,7 +1298,6 @@ function buildScale() {
                 PIXELS_PER_EURO
             );
 
-
         const tick =
             document.createElement(
                 "div"
@@ -1424,7 +1305,6 @@ function buildScale() {
 
         tick.className =
             "tick";
-
 
         if (
             scaleValue % 250 === 0
@@ -1435,7 +1315,6 @@ function buildScale() {
             );
         }
 
-
         if (
             scaleValue === 0
         ) {
@@ -1445,19 +1324,12 @@ function buildScale() {
             );
         }
 
-
         tick.style.top =
             `${y}px`;
-
 
         ticks.appendChild(
             tick
         );
-
-
-        /*
-           Numero ogni 250 €.
-        */
 
         if (
             scaleValue % 250 === 0
@@ -1471,22 +1343,18 @@ function buildScale() {
             label.className =
                 "scale-label";
 
-
             label.style.top =
                 `${y}px`;
-
 
             label.textContent =
                 formatValue(
                     scaleValue
                 );
 
-
             label.style.color =
                 getValueColor(
                     scaleValue
                 );
-
 
             labels.appendChild(
                 label
@@ -1513,16 +1381,13 @@ function createNote(
     note.className =
         "note";
 
-
     const color =
         getValueColor(
             value
         );
 
-
     note.style.color =
         color;
-
 
     const valueElement =
         document.createElement(
@@ -1540,7 +1405,6 @@ function createNote(
     valueElement.style.color =
         color;
 
-
     const textElement =
         document.createElement(
             "span"
@@ -1555,7 +1419,6 @@ function createNote(
     textElement.style.color =
         color;
 
-
     note.appendChild(
         valueElement
     );
@@ -1563,7 +1426,6 @@ function createNote(
     note.appendChild(
         textElement
     );
-
 
     return note;
 }
@@ -1577,7 +1439,6 @@ function drawNotes() {
 
     notesLayer.innerHTML =
         "";
-
 
     const entries =
         Object.entries(
@@ -1603,34 +1464,11 @@ function drawNotes() {
                 )
         );
 
-
-    /*
-       ORDINE NUMERICO REALE.
-
-       NON usare Math.abs().
-
-       -700 < -300
-
-       quindi:
-
-       -700 è più in basso
-       -300 è più in alto
-    */
-
     entries.sort(
         (a, b) =>
             a.value -
             b.value
     );
-
-
-    /*
-       NOTE SOPRA IL RAZZO
-
-       Devono essere valori
-       numericamente MAGGIORI
-       del valore attuale.
-    */
 
     const above =
         entries
@@ -1645,15 +1483,6 @@ function drawNotes() {
                     b.value
             );
 
-
-    /*
-       NOTE SOTTO IL RAZZO
-
-       Devono essere valori
-       numericamente MINORI
-       del valore attuale.
-    */
-
     const below =
         entries
             .filter(
@@ -1667,14 +1496,8 @@ function drawNotes() {
                     a.value
             );
 
-
     const NOTE_GAP =
         34;
-
-
-    /*
-       SOPRA
-    */
 
     above.forEach(
         (item, index) => {
@@ -1685,7 +1508,6 @@ function drawNotes() {
                     item.text
                 );
 
-
             note.style.top =
                 `calc(
                     50% -
@@ -1695,21 +1517,14 @@ function drawNotes() {
                     }px
                 )`;
 
-
             note.style.transform =
                 "translateY(-50%)";
-
 
             notesLayer.appendChild(
                 note
             );
         }
     );
-
-
-    /*
-       SOTTO
-    */
 
     below.forEach(
         (item, index) => {
@@ -1720,7 +1535,6 @@ function drawNotes() {
                     item.text
                 );
 
-
             note.style.top =
                 `calc(
                     50% +
@@ -1730,10 +1544,8 @@ function drawNotes() {
                     }px
                 )`;
 
-
             note.style.transform =
                 "translateY(-50%)";
-
 
             notesLayer.appendChild(
                 note
@@ -1757,16 +1569,13 @@ function saveCurrentNote() {
         return;
     }
 
-
     const text =
         currentNote.value.trim();
-
 
     const key =
         String(
             currentValue
         );
-
 
     if (
         text === ""
@@ -1780,14 +1589,12 @@ function saveCurrentNote() {
             text;
     }
 
-
     localStorage.setItem(
         NOTES_KEY,
         JSON.stringify(
             notes
         )
     );
-
 
     drawNotes();
 }
@@ -1811,7 +1618,6 @@ function loadCurrentNote() {
         return;
     }
 
-
     currentNote.value =
         notes[
             String(currentValue)
@@ -1829,7 +1635,6 @@ function centerTimeline() {
         timeline.scrollHeight -
         timeline.clientHeight;
 
-
     if (
         maxScroll <= 0
     ) {
@@ -1839,7 +1644,6 @@ function centerTimeline() {
 
         return;
     }
-
 
     timeline.scrollTop =
         maxScroll / 2;
@@ -1857,7 +1661,6 @@ function updateDisplay() {
             currentValue
         );
 
-
     updateColor();
 
     buildScale();
@@ -1865,7 +1668,6 @@ function updateDisplay() {
     drawNotes();
 
     loadCurrentNote();
-
 
     requestAnimationFrame(
         () => {
@@ -1888,11 +1690,8 @@ function setInitialValue() {
             startInput.value
         );
 
-
     if (
-        !Number.isFinite(
-            value
-        )
+        !Number.isFinite(value)
     ) {
 
         startInput.focus();
@@ -1900,16 +1699,13 @@ function setInitialValue() {
         return;
     }
 
-
     startValue =
         value;
 
     currentValue =
         value;
 
-
     notes = {};
-
 
     localStorage.setItem(
         START_KEY,
@@ -1918,14 +1714,12 @@ function setInitialValue() {
         )
     );
 
-
     localStorage.setItem(
         CURRENT_KEY,
         String(
             currentValue
         )
     );
-
 
     localStorage.setItem(
         NOTES_KEY,
@@ -1934,11 +1728,9 @@ function setInitialValue() {
         )
     );
 
-
     startScreen.classList.add(
         "hidden"
     );
-
 
     updateDisplay();
 }
@@ -1955,7 +1747,6 @@ function applyChange() {
             changeInput.value
         );
 
-
     if (
         !Number.isFinite(
             change
@@ -1967,34 +1758,11 @@ function applyChange() {
         return;
     }
 
-
-    /*
-       Salviamo la nota associata
-       al valore da cui partiamo.
-    */
-
     saveCurrentNote();
-
-
-    /*
-       REGOLA DELLA VARIAZIONE:
-
-       nuovo =
-           precedente + variazione
-
-       Esempio:
-
-       -3000 + 1000
-       = -2000
-
-       -2000 + (-500)
-       = -2500
-    */
 
     currentValue =
         currentValue +
         change;
-
 
     localStorage.setItem(
         CURRENT_KEY,
@@ -2003,10 +1771,8 @@ function applyChange() {
         )
     );
 
-
     changeInput.value =
         "";
-
 
     updateDisplay();
 }
@@ -2023,14 +1789,12 @@ function resetApp() {
             "Vuoi cancellare il valore iniziale e tutte le note?"
         );
 
-
     if (
         !confirmed
     ) {
 
         return;
     }
-
 
     localStorage.removeItem(
         START_KEY
@@ -2044,7 +1808,6 @@ function resetApp() {
         NOTES_KEY
     );
 
-
     startValue =
         NaN;
 
@@ -2052,7 +1815,6 @@ function resetApp() {
         NaN;
 
     notes = {};
-
 
     startInput.value =
         "";
@@ -2063,11 +1825,9 @@ function resetApp() {
     currentNote.value =
         "";
 
-
     startScreen.classList.remove(
         "hidden"
     );
-
 
     setTimeout(
         () => {
@@ -2089,7 +1849,6 @@ startButton.addEventListener(
     setInitialValue
 );
 
-
 startInput.addEventListener(
     "keydown",
     event => {
@@ -2103,12 +1862,10 @@ startInput.addEventListener(
     }
 );
 
-
 changeButton.addEventListener(
     "click",
     applyChange
 );
-
 
 changeInput.addEventListener(
     "keydown",
@@ -2123,12 +1880,10 @@ changeInput.addEventListener(
     }
 );
 
-
 currentNote.addEventListener(
     "blur",
     saveCurrentNote
 );
-
 
 currentNote.addEventListener(
     "keydown",
@@ -2144,7 +1899,6 @@ currentNote.addEventListener(
         }
     }
 );
-
 
 resetButton.addEventListener(
     "click",
@@ -2163,7 +1917,6 @@ let startValue =
         )
     );
 
-
 let currentValue =
     parseNumber(
         localStorage.getItem(
@@ -2171,9 +1924,7 @@ let currentValue =
         )
     );
 
-
 let notes = {};
-
 
 try {
 
@@ -2210,11 +1961,9 @@ if (
             startValue;
     }
 
-
     startScreen.classList.add(
         "hidden"
     );
-
 
     updateDisplay();
 
