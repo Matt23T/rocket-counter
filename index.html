@@ -432,31 +432,31 @@ body {
 
 
 /* =====================================================
-   CONTENITORE RAZZO
+   RAZZO
 ===================================================== */
 
 /*
-   IMPORTANTE:
+   IL RAZZO HA UNA COORDINATA VERTICALE
+   MEMORIZZATA ALL'AVVIO.
 
-   Il razzo NON è position: fixed.
+   NON viene più usato:
+   - visualViewport
+   - body.getBoundingClientRect()
+   - compensazione del body
+   - monitoraggio continuo
+   - ricentraggio durante la tastiera
 
-   È contenuto nel palco dell'app.
-   Safari può spostare il documento quando
-   compare la tastiera.
-
-   Il JavaScript compensa esclusivamente
-   questo spostamento sul contenitore.
-
-   La coordinata originale del razzo rimane
-   quindi sempre la stessa.
+   La coordinata iniziale viene salvata
+   in --rocket-fixed-top.
 */
 
 .rocket-layer {
 
-    position: absolute;
+    position: fixed;
 
     left: 50%;
-    top: 50%;
+
+    top: var(--rocket-fixed-top);
 
     width: 0;
     height: 0;
@@ -465,12 +465,15 @@ body {
 
     pointer-events: none;
 
-    will-change: transform;
+    transform:
+        translate3d(0, 0, 0);
+
+    will-change: auto;
 }
 
 
 /* =====================================================
-   RAZZO
+   RAZZO GRAFICO
 ===================================================== */
 
 .rocket {
@@ -969,11 +972,6 @@ body {
     font-weight: 700;
 }
 
-.start-input::placeholder {
-
-    color: #555;
-}
-
 .hidden {
 
     display: none !important;
@@ -1078,7 +1076,7 @@ body {
 
 
     <!-- =================================================
-         RAZZO ISOLATO DAL VIEWPORT
+         RAZZO
     ================================================= -->
 
     <div
@@ -1341,7 +1339,9 @@ body {
 document.addEventListener(
     "gesturestart",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
@@ -1351,7 +1351,9 @@ document.addEventListener(
 document.addEventListener(
     "gesturechange",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
@@ -1361,7 +1363,9 @@ document.addEventListener(
 document.addEventListener(
     "gestureend",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
@@ -1375,7 +1379,9 @@ document.addEventListener(
         if (
             event.touches.length > 1
         ) {
+
             event.preventDefault();
+
         }
 
     },
@@ -1518,6 +1524,84 @@ const rocketParts =
 
 
 /* =====================================================
+   POSIZIONE FISSA DEL RAZZO
+===================================================== */
+
+/*
+   QUESTO È IL PUNTO IMPORTANTE.
+
+   Viene eseguito una sola volta quando
+   l'app parte a schermo intero.
+
+   La posizione verticale del razzo viene
+   salvata in pixel.
+
+   Successivamente NON viene più ricalcolata
+   quando:
+   - appare la tastiera
+   - scompare la tastiera
+   - cambia visualViewport
+   - cambia scroll della scala
+   - cambia il valore
+*/
+
+let rocketFixedTop = null;
+
+
+function setRocketFixedPosition() {
+
+    if (
+        rocketFixedTop !== null
+    ) {
+        return;
+    }
+
+    /*
+       clientHeight rappresenta l'altezza
+       del contenitore principale.
+
+       Il punto centrale viene acquisito
+       esclusivamente all'avvio.
+    */
+
+    const appHeight =
+        document.documentElement.clientHeight;
+
+    rocketFixedTop =
+        Math.round(
+            appHeight / 2
+        );
+
+    document.documentElement.style
+        .setProperty(
+            "--rocket-fixed-top",
+            rocketFixedTop + "px"
+        );
+}
+
+
+/*
+   Aspettiamo che Safari abbia terminato
+   il layout iniziale prima di registrare
+   il punto fisso.
+*/
+
+requestAnimationFrame(
+    () => {
+
+        requestAnimationFrame(
+            () => {
+
+                setRocketFixedPosition();
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
    PARAMETRI SCALA
 ===================================================== */
 
@@ -1544,7 +1628,9 @@ function parseNumber(value) {
         value === null ||
         value === undefined
     ) {
+
         return NaN;
+
     }
 
     let text =
@@ -1553,7 +1639,9 @@ function parseNumber(value) {
     if (
         text === ""
     ) {
+
         return NaN;
+
     }
 
     text =
@@ -1585,6 +1673,7 @@ function parseNumber(value) {
                 /^([+-]?\d+)\.(\d{3})$/,
                 "$1$2"
             );
+
     }
 
     const number =
@@ -1624,6 +1713,7 @@ function formatValue(value) {
         return "+" +
             absolute +
             " €";
+
     }
 
     if (
@@ -1633,6 +1723,7 @@ function formatValue(value) {
         return "-" +
             absolute +
             " €";
+
     }
 
     return "0 €";
@@ -1648,7 +1739,9 @@ function getValueColor(value) {
     if (
         value === 0
     ) {
+
         return "#FFFFFF";
+
     }
 
     if (
@@ -1658,25 +1751,33 @@ function getValueColor(value) {
         if (
             value <= 1000
         ) {
+
             return "#B8FFD0";
+
         }
 
         if (
             value <= 2000
         ) {
+
             return "#62F28A";
+
         }
 
         if (
             value <= 3000
         ) {
+
             return "#20DD65";
+
         }
 
         if (
             value <= 4000
         ) {
+
             return "#08C951";
+
         }
 
         return "#00A83F";
@@ -1688,25 +1789,33 @@ function getValueColor(value) {
     if (
         amount <= 1000
     ) {
+
         return "#FFB9C0";
+
     }
 
     if (
         amount <= 2000
     ) {
+
         return "#FF6877";
+
     }
 
     if (
         amount <= 3000
     ) {
+
         return "#F8374C";
+
     }
 
     if (
         amount <= 4000
     ) {
+
         return "#E91E35";
+
     }
 
     return "#C90020";
@@ -1729,6 +1838,7 @@ function updateColor() {
 
             part.style.fill =
                 color;
+
         }
     );
 
@@ -1824,6 +1934,7 @@ function buildScale() {
             tick.classList.add(
                 "major"
             );
+
         }
 
         if (
@@ -1833,6 +1944,7 @@ function buildScale() {
             tick.classList.add(
                 "zero"
             );
+
         }
 
         tick.style.top =
@@ -1989,6 +2101,7 @@ function drawNotes() {
             notesLayer.appendChild(
                 note
             );
+
         }
     );
 }
@@ -2000,7 +2113,9 @@ function deleteNote(index) {
         index < 0 ||
         index >= notes.length
     ) {
+
         return;
+
     }
 
     notes.splice(
@@ -2132,6 +2247,7 @@ function drawGoals() {
                 (goal, index) => {
 
                     return {
+
                         value:
                             Number(
                                 goal.value
@@ -2144,6 +2260,7 @@ function drawGoals() {
 
                         originalIndex:
                             index
+
                     };
 
                 }
@@ -2196,7 +2313,9 @@ function deleteGoal(index) {
         index < 0 ||
         index >= goals.length
     ) {
+
         return;
+
     }
 
     goals.splice(
@@ -2270,6 +2389,7 @@ function saveGoal() {
         goalValueInput.focus();
 
         return;
+
     }
 
     if (
@@ -2279,6 +2399,7 @@ function saveGoal() {
         goalNameInput.focus();
 
         return;
+
     }
 
     goals.push({
@@ -2317,6 +2438,7 @@ function centerTimeline() {
             0;
 
         return;
+
     }
 
     timeline.scrollTop =
@@ -2348,216 +2470,9 @@ function updateDisplay() {
 
             centerTimeline();
 
-            /*
-               Aggiorniamo la posizione del palco
-               senza modificare la coordinata
-               originale del razzo.
-            */
-
-            stabilizeRocket();
-
         }
     );
 }
-
-
-/* =====================================================
-   BLOCCO FISICO DEL RAZZO
-===================================================== */
-
-/*
-   QUESTO È IL CAMBIAMENTO PRINCIPALE.
-
-   Safari iOS può spostare visivamente il body
-   quando una input riceve il focus.
-
-   Il body può quindi avere, per esempio:
-
-       top = -84px
-
-   anche se scrollTop = 0.
-
-   Il razzo viene normalmente trascinato
-   insieme al body.
-
-   Qui misuriamo lo spostamento reale del body
-   e applichiamo al SOLO rocketLayer
-   la compensazione opposta.
-
-   Esempio:
-
-       body      = -84px
-       compensazione = +84px
-
-   Risultato:
-
-       razzo = posizione originale.
-
-   Non viene utilizzato innerHeight.
-   Non viene utilizzato visualViewport.height.
-   Non viene ricentrato il razzo.
-*/
-
-let rocketInitialBodyTop = null;
-
-let rocketInitialBodyLeft = null;
-
-
-function stabilizeRocket() {
-
-    const bodyRect =
-        document.body.getBoundingClientRect();
-
-    if (
-        rocketInitialBodyTop === null
-    ) {
-
-        rocketInitialBodyTop =
-            bodyRect.top;
-    }
-
-    if (
-        rocketInitialBodyLeft === null
-    ) {
-
-        rocketInitialBodyLeft =
-            bodyRect.left;
-    }
-
-    const verticalShift =
-        rocketInitialBodyTop -
-        bodyRect.top;
-
-    const horizontalShift =
-        rocketInitialBodyLeft -
-        bodyRect.left;
-
-    rocketLayer.style.transform =
-        `translate3d(
-            ${horizontalShift}px,
-            ${verticalShift}px,
-            0
-        )`;
-}
-
-
-/* =====================================================
-   MONITORAGGIO SAFARI / TASTIERA
-===================================================== */
-
-/*
-   NON usiamo visualViewport per ricentrare
-   il razzo.
-
-   Lo usiamo soltanto come segnale per
-   controllare nuovamente l'effettiva
-   posizione del body.
-
-   Questo è fondamentale:
-   il razzo non viene mai posizionato
-   rispetto alla nuova altezza della tastiera.
-*/
-
-function requestRocketStabilization() {
-
-    requestAnimationFrame(
-        () => {
-
-            stabilizeRocket();
-
-            requestAnimationFrame(
-                () => {
-
-                    stabilizeRocket();
-
-                }
-            );
-
-        }
-    );
-}
-
-
-if (
-    window.visualViewport
-) {
-
-    window.visualViewport.addEventListener(
-        "scroll",
-        requestRocketStabilization,
-        {
-            passive: true
-        }
-    );
-
-    window.visualViewport.addEventListener(
-        "resize",
-        requestRocketStabilization,
-        {
-            passive: true
-        }
-    );
-}
-
-
-/*
-   Safari può modificare la posizione
-   durante l'animazione della tastiera.
-
-   Per questo controlliamo il body
-   per un breve periodo dopo il focus.
-*/
-
-function monitorKeyboardMovement() {
-
-    let frames = 0;
-
-    function check() {
-
-        stabilizeRocket();
-
-        frames++;
-
-        if (
-            frames < 60
-        ) {
-
-            requestAnimationFrame(
-                check
-            );
-        }
-    }
-
-    requestAnimationFrame(
-        check
-    );
-}
-
-
-document.addEventListener(
-    "focusin",
-    function() {
-
-        monitorKeyboardMovement();
-
-    }
-);
-
-
-/*
-   Anche quando la tastiera viene chiusa
-   controlliamo il ritorno alla posizione
-   originale.
-*/
-
-document.addEventListener(
-    "focusout",
-    function() {
-
-        monitorKeyboardMovement();
-
-    }
-);
 
 
 /* =====================================================
@@ -2580,6 +2495,7 @@ function setInitialValue() {
         startInput.focus();
 
         return;
+
     }
 
     startValue =
@@ -2638,6 +2554,7 @@ function applyChange() {
         changeInput.focus();
 
         return;
+
     }
 
     const comment =
@@ -2650,6 +2567,7 @@ function applyChange() {
         noteInput.focus();
 
         return;
+
     }
 
     const newValue =
@@ -2704,6 +2622,7 @@ function resetApp() {
     ) {
 
         return;
+
     }
 
     localStorage.removeItem(
@@ -2755,14 +2674,12 @@ function resetApp() {
         "hidden"
     );
 
-    rocketLayer.style.transform =
-        "translate3d(0,0,0)";
+    /*
+       NON resettiamo la coordinata del razzo.
 
-    rocketInitialBodyTop =
-        null;
-
-    rocketInitialBodyLeft =
-        null;
+       Deve rimanere quella registrata
+       quando l'app è stata aperta.
+    */
 
     setTimeout(
         () => {
@@ -2794,6 +2711,7 @@ startInput.addEventListener(
         ) {
 
             setInitialValue();
+
         }
 
     }
@@ -2815,6 +2733,7 @@ changeInput.addEventListener(
         ) {
 
             applyChange();
+
         }
 
     }
@@ -2830,6 +2749,7 @@ noteInput.addEventListener(
         ) {
 
             applyChange();
+
         }
 
     }
@@ -2863,6 +2783,7 @@ goalValueInput.addEventListener(
         ) {
 
             goalNameInput.focus();
+
         }
 
     }
@@ -2878,6 +2799,7 @@ goalNameInput.addEventListener(
         ) {
 
             saveGoal();
+
         }
 
     }
@@ -2894,6 +2816,7 @@ goalModal.addEventListener(
         ) {
 
             closeGoalModal();
+
         }
 
     }
@@ -2984,6 +2907,7 @@ try {
 } catch {
 
     notes = [];
+
 }
 
 
@@ -3039,6 +2963,7 @@ try {
 } catch {
 
     goals = [];
+
 }
 
 
@@ -3060,6 +2985,7 @@ if (
 
         currentValue =
             startValue;
+
     }
 
     startScreen.classList.add(
@@ -3078,161 +3004,28 @@ if (
 
 
 /* =====================================================
-   POSIZIONE INIZIALE DEL RAZZO
+   SICUREZZA POSIZIONE RAZZO
 ===================================================== */
 
 /*
-   Aspettiamo che il layout iniziale sia
-   completamente calcolato.
+   Se Safari esegue un resize della viewport
+   per la tastiera, NON tocchiamo mai
+   --rocket-fixed-top.
 
-   Questa diventa la posizione di riferimento
-   IMMUTABILE del razzo.
+   La coordinata registrata all'avvio
+   rimane quindi invariata.
 */
 
-requestAnimationFrame(
-    () => {
-
-        requestAnimationFrame(
-            () => {
-
-                stabilizeRocket();
-
-            }
-        );
-
-    }
-);
-
-
-/* =====================================================
-   CONTROLLO CONTINUO SOLO DURANTE CAMBIAMENTI
-===================================================== */
-
-/*
-   Non spostiamo continuamente il razzo.
-
-   Il controllo viene fatto solo quando
-   Safari cambia la posizione del documento.
-
-   Questo evita qualsiasi movimento
-   artificiale durante il normale utilizzo.
-*/
-
-let lastBodyTop = null;
-
-function detectBodyMovement() {
-
-    const rect =
-        document.body.getBoundingClientRect();
-
-    if (
-        lastBodyTop === null
-    ) {
-
-        lastBodyTop =
-            rect.top;
-
-        return;
-    }
-
-    if (
-        Math.abs(
-            rect.top -
-            lastBodyTop
-        ) > 0.5
-    ) {
-
-        stabilizeRocket();
-
-        lastBodyTop =
-            rect.top;
-    }
-}
-
-
-/*
-   Durante l'apertura della tastiera
-   Safari può modificare il viewport
-   senza generare un normale scroll.
-
-   Questo piccolo monitor viene attivato
-   solo mentre un campo è in focus.
-*/
-
-let keyboardMonitor = null;
-
-
-function startKeyboardMonitor() {
-
-    if (
-        keyboardMonitor !== null
-    ) {
-        return;
-    }
-
-    keyboardMonitor =
-        setInterval(
-            () => {
-
-                detectBodyMovement();
-
-            },
-            16
-        );
-}
-
-
-function stopKeyboardMonitor() {
-
-    if (
-        keyboardMonitor !== null
-    ) {
-
-        clearInterval(
-            keyboardMonitor
-        );
-
-        keyboardMonitor =
-            null;
-    }
-}
-
-
-document.addEventListener(
-    "focusin",
+window.addEventListener(
+    "resize",
     function() {
 
-        startKeyboardMonitor();
+        /*
+           Intenzionalmente vuoto.
 
-    }
-);
-
-
-document.addEventListener(
-    "focusout",
-    function() {
-
-        setTimeout(
-            () => {
-
-                if (
-                    !document.activeElement ||
-                    (
-                        document.activeElement.tagName !==
-                        "INPUT" &&
-                        document.activeElement.tagName !==
-                        "TEXTAREA"
-                    )
-                ) {
-
-                    stopKeyboardMonitor();
-
-                    stabilizeRocket();
-                }
-
-            },
-            300
-        );
+           NON dobbiamo ricalcolare la posizione
+           del razzo.
+        */
 
     }
 );
