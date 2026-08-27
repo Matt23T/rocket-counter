@@ -61,7 +61,15 @@ body {
     position: relative;
 
     width: 100%;
-    height: 100dvh;
+
+    /*
+       L'altezza viene impostata in JavaScript
+       una sola volta all'avvio.
+
+       In questo modo l'apertura della tastiera
+       NON modifica l'altezza della schermata.
+    */
+    height: var(--rocket-app-height);
 
     background: #000;
 
@@ -413,26 +421,12 @@ body {
    RAZZO CENTRALE
 ===================================================== */
 
-/*
-   IMPORTANTE:
-
-   Il valore di top NON usa più 50%.
-
-   Viene impostato una sola volta da JavaScript
-   sulla posizione originale del razzo.
-
-   In questo modo la comparsa della tastiera
-   non può modificare la posizione verticale
-   del razzo.
-*/
-
 .fixed-indicator {
 
     position: absolute;
 
     left: 50%;
-
-    top: var(--rocket-original-y);
+    top: 50%;
 
     width: 0;
     height: 0;
@@ -1331,6 +1325,31 @@ body {
 <script>
 
 /* =====================================================
+   ALTEZZA INIZIALE SCHERMATA
+===================================================== */
+
+/*
+   IMPORTANTE:
+
+   Salviamo l'altezza della schermata UNA SOLA VOLTA,
+   prima che venga aperta qualsiasi tastiera.
+
+   L'app utilizzerà sempre questa altezza.
+
+   Quindi quando iOS apre la tastiera:
+   - l'altezza dell'app NON cambia
+   - il centro dell'app NON cambia
+   - il razzo NON cambia posizione
+   - la schermata sottostante rimane identica
+*/
+
+document.documentElement.style.setProperty(
+    "--rocket-app-height",
+    window.innerHeight + "px"
+);
+
+
+/* =====================================================
    BLOCCO ZOOM
 ===================================================== */
 
@@ -1378,36 +1397,6 @@ document.addEventListener(
     {
         passive: false
     }
-);
-
-
-/* =====================================================
-   BLOCCO POSIZIONE ORIGINALE DEL RAZZO
-===================================================== */
-
-/*
-   La posizione viene calcolata UNA SOLA VOLTA.
-
-   Non viene ascoltato resize.
-   Non viene ricalcolata quando compare
-   la tastiera.
-
-   Quindi il cambiamento della viewport
-   provocato dalla tastiera non modifica
-   la posizione del razzo.
-*/
-
-const app =
-    document.querySelector(
-        ".app"
-    );
-
-const originalRocketY =
-    app.clientHeight / 2;
-
-document.documentElement.style.setProperty(
-    "--rocket-original-y",
-    originalRocketY + "px"
 );
 
 
