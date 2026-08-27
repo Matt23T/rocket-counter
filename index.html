@@ -61,7 +61,7 @@ body {
     position: relative;
 
     width: 100%;
-    height: 100dvh;
+    height: 100vh;
 
     background: #000;
 
@@ -418,7 +418,7 @@ body {
     position: absolute;
 
     left: 50%;
-    top: var(--rocket-center-y);
+    top: 50%;
 
     width: 0;
     height: 0;
@@ -1364,33 +1364,6 @@ document.addEventListener(
     {
         passive: false
     }
-);
-
-
-/* =====================================================
-   POSIZIONE CENTRALE RAZZO
-===================================================== */
-
-/*
-   Memorizza la posizione centrale
-   dello schermo quando l'app viene
-   caricata.
-
-   La posizione viene espressa in pixel
-   e NON viene più ricalcolata quando
-   compare la tastiera.
-
-   In questo modo l'apertura della
-   tastiera non sposta il razzo verso
-   l'alto.
-*/
-
-const rocketCenterY =
-    window.innerHeight / 2;
-
-document.documentElement.style.setProperty(
-    "--rocket-center-y",
-    rocketCenterY + "px"
 );
 
 
