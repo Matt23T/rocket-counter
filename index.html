@@ -27,7 +27,6 @@
 
 html,
 body {
-
     margin: 0;
     padding: 0;
 
@@ -50,11 +49,7 @@ body {
 }
 
 html {
-
     position: fixed;
-
-    left: 0;
-    top: 0;
 
     width: 100%;
     height: 100%;
@@ -63,11 +58,7 @@ html {
 }
 
 body {
-
     position: fixed;
-
-    left: 0;
-    top: 0;
 
     width: 100%;
     height: 100%;
@@ -79,7 +70,7 @@ body {
 
 
 /* =====================================================
-   APP
+   PALCO
 ===================================================== */
 
 .app {
@@ -161,6 +152,56 @@ body {
 
 
 /* =====================================================
+   PUNTO DEL VALORE CORRENTE
+===================================================== */
+
+/*
+   Questo punto appartiene alla SCALA.
+
+   Non appartiene al razzo.
+
+   La sua posizione verticale viene calcolata
+   in base al valore corrente.
+
+   Quindi:
+
+       valore corrente = posizione del punto
+
+   Anche se il razzo viene spostato con lo scroll,
+   il punto continua a indicare la posizione
+   numerica corretta sulla scala.
+*/
+
+.current-marker {
+
+    position: absolute;
+
+    left: 50%;
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    z-index: 30;
+
+    pointer-events: none;
+
+    box-shadow:
+        0 0 8px currentColor,
+        0 0 14px currentColor;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* =====================================================
    TACCHETTE
 ===================================================== */
 
@@ -173,7 +214,8 @@ body {
     width: 6px;
     height: 1px;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     background:
         rgba(255,255,255,0.20);
@@ -224,59 +266,6 @@ body {
 
 
 /* =====================================================
-   PUNTO FISSO
-===================================================== */
-
-/*
-   IMPORTANTE:
-
-   QUESTO PUNTO È COMPLETAMENTE INDIPENDENTE
-   DAL RAZZO.
-
-   NON è dentro rocket-layer.
-   NON usa stabilizeRocket().
-   NON segue il razzo.
-   NON viene spostato quando il razzo si muove.
-
-   È ancorato direttamente allo schermo.
-
-   La sua posizione verticale rappresenta
-   il valore attuale.
-*/
-
-.current-point {
-
-    position: fixed;
-
-    left: 50%;
-
-    top: 50%;
-
-    width: 10px;
-    height: 10px;
-
-    transform:
-        translate(-50%, -50%);
-
-    border-radius: 50%;
-
-    background: #fff;
-
-    box-shadow:
-        0 0 8px currentColor;
-
-    z-index: 65;
-
-    pointer-events: none;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-
-/* =====================================================
    OBIETTIVI
 ===================================================== */
 
@@ -285,6 +274,7 @@ body {
     position: absolute;
 
     top: 50%;
+
     left: 7px;
 
     width: calc(50% - 45px);
@@ -309,11 +299,6 @@ body {
 .goals-layer::-webkit-scrollbar {
     display: none;
 }
-
-
-/* =====================================================
-   SINGOLO OBIETTIVO
-===================================================== */
 
 .goal-item {
 
@@ -392,6 +377,7 @@ body {
     position: absolute;
 
     top: 50%;
+
     right: 7px;
 
     width: calc(50% - 40px);
@@ -417,11 +403,6 @@ body {
     display: none;
 }
 
-
-/* =====================================================
-   NOTA SINGOLA
-===================================================== */
-
 .note {
 
     width: 100%;
@@ -445,48 +426,16 @@ body {
     -webkit-user-select: none;
 }
 
+.note-value {
 
-/*
-   Variazione:
-   verde se positiva
-   rosso se negativa
-*/
-
-.note-change {
-
-    display: inline;
+    display: inline-block;
 
     margin-right: 5px;
 
     font-weight: 700;
 }
-
-
-/*
-   Valore finale:
-   colore determinato dalla posizione
-*/
-
-.note-current {
-
-    display: inline;
-
-    margin-right: 5px;
-
-    font-weight: 700;
-}
-
-
-/*
-   Testo nota:
-   SEMPRE BIANCO
-*/
 
 .note-text {
-
-    display: inline;
-
-    color: #fff;
 
     opacity: 0.90;
 }
@@ -578,7 +527,7 @@ body {
 
 
 /* =====================================================
-   VALORE ATTUALE
+   VALORE
 ===================================================== */
 
 .current-info {
@@ -738,7 +687,7 @@ body {
 
 
 /* =====================================================
-   PLUS
+   +
 ===================================================== */
 
 .plus-button {
@@ -1093,6 +1042,19 @@ body {
 
 }
 
+
+/* =====================================================
+   TASTIERA: IL VIEWPORT RESTA FISSO
+===================================================== */
+
+@supports (height: 100dvh) {
+
+    .app {
+        height: 100dvh;
+    }
+
+}
+
 </style>
 
 </head>
@@ -1102,10 +1064,6 @@ body {
 
 <div class="app">
 
-
-    <!-- =================================================
-         SCALA
-    ================================================= -->
 
     <div
         id="timeline"
@@ -1121,6 +1079,12 @@ body {
                 class="center-line"
             ></div>
 
+            <!-- PUNTO FISSO DEL VALORE -->
+            <div
+                id="currentMarker"
+                class="current-marker"
+            ></div>
+
             <div
                 id="ticks"
             ></div>
@@ -1134,33 +1098,11 @@ body {
     </div>
 
 
-    <!-- =================================================
-         PUNTO FISSO
-         
-         È FUORI DA ROCKET-LAYER.
-         
-         NON SEGUE IL RAZZO.
-    ================================================= -->
-
-    <div
-        id="currentPoint"
-        class="current-point"
-    ></div>
-
-
-    <!-- =================================================
-         OBIETTIVI
-    ================================================= -->
-
     <div
         id="goalsLayer"
         class="goals-layer"
     ></div>
 
-
-    <!-- =================================================
-         NOTE
-    ================================================= -->
 
     <div
         id="notesLayer"
@@ -1260,10 +1202,6 @@ body {
     </div>
 
 
-    <!-- =================================================
-         CONTROLLI
-    ================================================= -->
-
     <div
         class="controls"
     >
@@ -1292,6 +1230,7 @@ body {
 
         </div>
 
+
         <input
             id="noteInput"
             class="note-input"
@@ -1307,10 +1246,6 @@ body {
     </div>
 
 
-    <!-- =================================================
-         PLUS
-    ================================================= -->
-
     <button
         id="plusButton"
         class="plus-button"
@@ -1319,10 +1254,6 @@ body {
         +
     </button>
 
-
-    <!-- =================================================
-         RESET
-    ================================================= -->
 
     <button
         id="resetButton"
@@ -1452,19 +1383,25 @@ body {
 document.addEventListener(
     "gesturestart",
     event => event.preventDefault(),
-    { passive: false }
+    {
+        passive: false
+    }
 );
 
 document.addEventListener(
     "gesturechange",
     event => event.preventDefault(),
-    { passive: false }
+    {
+        passive: false
+    }
 );
 
 document.addEventListener(
     "gestureend",
     event => event.preventDefault(),
-    { passive: false }
+    {
+        passive: false
+    }
 );
 
 document.addEventListener(
@@ -1476,10 +1413,13 @@ document.addEventListener(
         ) {
 
             event.preventDefault();
+
         }
 
     },
-    { passive: false }
+    {
+        passive: false
+    }
 );
 
 
@@ -1524,9 +1464,9 @@ const labels =
         "labels"
     );
 
-const currentPoint =
+const currentMarker =
     document.getElementById(
-        "currentPoint"
+        "currentMarker"
     );
 
 const goalsLayer =
@@ -1742,37 +1682,6 @@ function formatValue(value) {
 }
 
 
-/*
-   Per il valore finale delle note
-   vogliamo visualizzare il valore
-   senza il "+" iniziale.
-
-   Esempio:
-
-   1.500 €
-   -500 €
-   0 €
-*/
-
-function formatCurrentValue(value) {
-
-    const rounded =
-        Math.round(
-            value * 100
-        ) / 100;
-
-    return Math.abs(rounded)
-        .toLocaleString(
-            "it-IT",
-            {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 2
-            }
-        ) +
-        " €";
-}
-
-
 /* =====================================================
    COLORI
 ===================================================== */
@@ -1782,7 +1691,6 @@ function getValueColor(value) {
     if (
         value === 0
     ) {
-
         return "#FFFFFF";
     }
 
@@ -1849,7 +1757,7 @@ function getValueColor(value) {
 
 
 /* =====================================================
-   COLORE RAZZO
+   COLORE RAZZO + PUNTO
 ===================================================== */
 
 function updateColor() {
@@ -1864,6 +1772,7 @@ function updateColor() {
 
             part.style.fill =
                 color;
+
         }
     );
 
@@ -1876,45 +1785,72 @@ function updateColor() {
         `drop-shadow(
             0 0 7px ${color}
         )`;
+
+
+    /* -----------------------------------------------
+       IL PUNTO HA ESATTAMENTE LO STESSO COLORE
+       DEL VALORE CORRENTE
+    ------------------------------------------------ */
+
+    currentMarker.style.backgroundColor =
+        color;
+
+    currentMarker.style.color =
+        color;
+
+    currentMarker.style.boxShadow =
+        `
+        0 0 8px ${color},
+        0 0 14px ${color}
+        `;
 }
 
 
 /* =====================================================
-   COLORE E POSIZIONE DEL PUNTO
+   POSIZIONE DEL PUNTO
 ===================================================== */
 
 /*
-   IL PUNTO È FISSO.
+   Il punto rappresenta ESATTAMENTE currentValue.
 
-   La sua posizione è sempre il centro
-   dello schermo.
+   La scala viene costruita con:
 
-   Questo è il punto corrispondente
-   al valore attuale della scala.
+       centerY = centro della scala
 
-   Non viene mai modificato da:
+   e:
 
-   - movimento del razzo
-   - scroll del razzo
-   - tastiera
-   - stabilizeRocket()
+       y = centerY
+
+   per il valore corrente.
+
+   Quindi il punto si trova sempre sulla
+   coordinata numerica del valore corrente.
 */
 
-function updateCurrentPoint() {
+function updateCurrentMarker() {
 
-    const color =
-        getValueColor(
+    if (
+        !Number.isFinite(
             currentValue
-        );
+        )
+    ) {
+        return;
+    }
 
-    currentPoint.style.color =
-        color;
+    const totalValueRange =
+        DISPLAY_RANGE * 2;
 
-    currentPoint.style.background =
-        color;
+    const totalHeight =
+        totalValueRange *
+        PIXELS_PER_EURO;
 
-    currentPoint.style.boxShadow =
-        `0 0 8px ${color}`;
+    const centerY =
+        totalHeight / 2;
+
+    currentMarker.style.top =
+        `${centerY}px`;
+
+    updateColor();
 }
 
 
@@ -1960,6 +1896,7 @@ function buildScale() {
         Math.floor(
             maximumValue / STEP
         ) * STEP;
+
 
     for (
         let scaleValue =
@@ -2016,6 +1953,7 @@ function buildScale() {
             tick
         );
 
+
         if (
             scaleValue % 250 === 0
         ) {
@@ -2046,6 +1984,14 @@ function buildScale() {
             );
         }
     }
+
+
+    /*
+       Il punto viene posizionato dopo
+       aver costruito la scala.
+    */
+
+    updateCurrentMarker();
 }
 
 
@@ -2055,7 +2001,6 @@ function buildScale() {
 
 function createNote(
     value,
-    change,
     text,
     index
 ) {
@@ -2068,76 +2013,29 @@ function createNote(
     note.className =
         "note";
 
-
-    /* -------------------------------
-       COLORE VARIAZIONE
-    -------------------------------- */
-
-    const changeColor =
-        change > 0
-            ? "#20DD65"
-            : change < 0
-                ? "#F8374C"
-                : "#FFFFFF";
-
-
-    /* -------------------------------
-       COLORE VALORE FINALE
-    -------------------------------- */
-
-    const valueColor =
+    const color =
         getValueColor(
             value
         );
 
+    note.style.color =
+        color;
 
-    /* -------------------------------
-       VARIAZIONE
-    -------------------------------- */
-
-    const changeElement =
+    const valueElement =
         document.createElement(
             "span"
         );
 
-    changeElement.className =
-        "note-change";
+    valueElement.className =
+        "note-value";
 
-    changeElement.textContent =
-        "(" +
+    valueElement.textContent =
         formatValue(
-            change
-        ) +
-        ")";
-
-    changeElement.style.color =
-        changeColor;
-
-
-    /* -------------------------------
-       VALORE FINALE
-    -------------------------------- */
-
-    const currentElement =
-        document.createElement(
-            "span"
-        );
-
-    currentElement.className =
-        "note-current";
-
-    currentElement.textContent =
-        formatCurrentValue(
             value
         );
 
-    currentElement.style.color =
-        valueColor;
-
-
-    /* -------------------------------
-       TESTO NOTA
-    -------------------------------- */
+    valueElement.style.color =
+        color;
 
     const textElement =
         document.createElement(
@@ -2150,10 +2048,8 @@ function createNote(
     textElement.textContent =
         text;
 
-
-    /* -------------------------------
-       DELETE
-    -------------------------------- */
+    textElement.style.color =
+        color;
 
     const deleteButton =
         document.createElement(
@@ -2175,16 +2071,12 @@ function createNote(
             deleteNote(
                 index
             );
+
         }
     );
 
-
     note.appendChild(
-        changeElement
-    );
-
-    note.appendChild(
-        currentElement
+        valueElement
     );
 
     note.appendChild(
@@ -2210,7 +2102,6 @@ function drawNotes() {
             const note =
                 createNote(
                     entry.value,
-                    entry.change,
                     entry.text,
                     index
                 );
@@ -2330,6 +2221,7 @@ function createGoal(
             deleteGoal(
                 index
             );
+
         }
     );
 
@@ -2374,6 +2266,7 @@ function drawGoals() {
                         originalIndex:
                             index
                     };
+
                 }
             )
             .filter(
@@ -2401,6 +2294,7 @@ function drawGoals() {
             goalsLayer.appendChild(
                 item
             );
+
         }
     );
 }
@@ -2515,6 +2409,7 @@ function saveGoal() {
 
         name:
             name
+
     });
 
     saveGoals();
@@ -2563,13 +2458,6 @@ function updateDisplay() {
 
     updateColor();
 
-    /*
-       Il punto viene aggiornato
-       separatamente dal razzo.
-    */
-
-    updateCurrentPoint();
-
     buildScale();
 
     drawGoals();
@@ -2589,15 +2477,8 @@ function updateDisplay() {
 
 
 /* =====================================================
-   RAZZO
+   BLOCCO FISICO RAZZO
 ===================================================== */
-
-/*
-   Questa funzione riguarda ESCLUSIVAMENTE
-   il razzo.
-
-   Il punto NON viene toccato.
-*/
 
 let rocketInitialBodyTop =
     null;
@@ -2645,7 +2526,7 @@ function stabilizeRocket() {
 
 
 /* =====================================================
-   MONITOR SAFARI / TASTIERA
+   MONITORAGGIO TASTIERA
 ===================================================== */
 
 function requestRocketStabilization() {
@@ -2662,6 +2543,7 @@ function requestRocketStabilization() {
 
                 }
             );
+
         }
     );
 }
@@ -2706,7 +2588,9 @@ function monitorKeyboardMovement() {
             requestAnimationFrame(
                 check
             );
+
         }
+
     }
 
     requestAnimationFrame(
@@ -2831,30 +2715,15 @@ function applyChange() {
         currentValue +
         change;
 
-
-    /*
-       Salviamo anche la variazione,
-       così la nota può mostrare:
-
-       (+100 €) 1.500 € Nota
-
-       oppure:
-
-       (-200 €) 1.300 € Nota
-    */
-
     notes.push({
 
         value:
             newValue,
 
-        change:
-            change,
-
         text:
             comment
-    });
 
+    });
 
     currentValue =
         newValue;
@@ -2953,23 +2822,6 @@ function resetApp() {
 
     rocketInitialBodyLeft =
         null;
-
-    /*
-       Anche il punto torna semplicemente
-       al centro dello schermo.
-    */
-
-    currentPoint.style.transform =
-        "translate(-50%, -50%)";
-
-    setTimeout(
-        () => {
-
-            startInput.focus();
-
-        },
-        100
-    );
 }
 
 
@@ -2992,6 +2844,7 @@ startInput.addEventListener(
         ) {
 
             setInitialValue();
+
         }
 
     }
@@ -3013,6 +2866,7 @@ changeInput.addEventListener(
         ) {
 
             applyChange();
+
         }
 
     }
@@ -3028,6 +2882,7 @@ noteInput.addEventListener(
         ) {
 
             applyChange();
+
         }
 
     }
@@ -3061,6 +2916,7 @@ goalValueInput.addEventListener(
         ) {
 
             goalNameInput.focus();
+
         }
 
     }
@@ -3076,6 +2932,7 @@ goalNameInput.addEventListener(
         ) {
 
             saveGoal();
+
         }
 
     }
@@ -3092,6 +2949,7 @@ goalModal.addEventListener(
         ) {
 
             closeGoalModal();
+
         }
 
     }
@@ -3161,27 +3019,11 @@ try {
                                     entry.value
                                 ),
 
-                            /*
-                               Compatibilità con eventuali
-                               note vecchie che non avevano
-                               ancora il campo change.
-                            */
-
-                            change:
-                                Number.isFinite(
-                                    Number(
-                                        entry.change
-                                    )
-                                )
-                                    ? Number(
-                                        entry.change
-                                    )
-                                    : 0,
-
                             text:
                                 String(
                                     entry.text
                                 )
+
                         };
 
                     }
@@ -3198,6 +3040,7 @@ try {
 } catch {
 
     notes = [];
+
 }
 
 
@@ -3236,6 +3079,7 @@ try {
                                 String(
                                     goal.name
                                 )
+
                         };
 
                     }
@@ -3252,6 +3096,7 @@ try {
 } catch {
 
     goals = [];
+
 }
 
 
@@ -3273,6 +3118,7 @@ if (
 
         currentValue =
             startValue;
+
     }
 
     startScreen.classList.add(
@@ -3286,6 +3132,7 @@ if (
     startScreen.classList.remove(
         "hidden"
     );
+
 }
 
 
@@ -3309,7 +3156,7 @@ requestAnimationFrame(
 
 
 /* =====================================================
-   CONTROLLO MOVIMENTO RAZZO
+   CONTROLLO MOVIMENTO BODY
 ===================================================== */
 
 let lastBodyTop =
@@ -3329,6 +3176,7 @@ function detectBodyMovement() {
             rect.top;
 
         return;
+
     }
 
     if (
@@ -3342,7 +3190,9 @@ function detectBodyMovement() {
 
         lastBodyTop =
             rect.top;
+
     }
+
 }
 
 
@@ -3357,6 +3207,7 @@ function startKeyboardMonitor() {
     ) {
 
         return;
+
     }
 
     keyboardMonitor =
@@ -3368,6 +3219,7 @@ function startKeyboardMonitor() {
             },
             16
         );
+
 }
 
 
@@ -3383,7 +3235,9 @@ function stopKeyboardMonitor() {
 
         keyboardMonitor =
             null;
+
     }
+
 }
 
 
@@ -3417,6 +3271,7 @@ document.addEventListener(
                     stopKeyboardMonitor();
 
                     stabilizeRocket();
+
                 }
 
             },
