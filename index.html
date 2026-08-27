@@ -61,7 +61,19 @@ body {
     position: relative;
 
     width: 100%;
-    height: 100dvh;
+
+    /*
+       L'altezza viene impostata una sola volta
+       all'avvio dell'app.
+
+       In questo modo, quando si apre la tastiera,
+       l'app non si restringe e il centro non cambia.
+    */
+    height:
+        var(
+            --app-height,
+            100dvh
+        );
 
     background: #000;
 
@@ -432,8 +444,12 @@ body {
 
     position: absolute;
 
+    /*
+       Razzo a sinistra della linea centrale
+    */
     right: 8px;
     left: auto;
+
     top: 0;
 
     width: 58px;
@@ -470,7 +486,11 @@ body {
 
     position: absolute;
 
-    left: 76px;
+    /*
+       Il valore resta sul lato destro della linea
+    */
+    left: 8px;
+
     top: 0;
 
     transform:
@@ -944,7 +964,7 @@ body {
 
     .current-info {
 
-        left: 73px;
+        left: 8px;
     }
 
     .current-value {
@@ -1315,6 +1335,27 @@ body {
 
 
 <script>
+
+/* =====================================================
+   BLOCCO ALTEZZA APP
+
+   Salviamo l'altezza iniziale dello schermo.
+
+   Quando la tastiera si apre, iOS riduce la viewport
+   dinamica, ma questa altezza NON viene modificata.
+
+   Di conseguenza il centro dell'app e il razzo
+   restano sempre nello stesso punto.
+===================================================== */
+
+const initialAppHeight =
+    window.innerHeight;
+
+document.documentElement.style.setProperty(
+    "--app-height",
+    initialAppHeight + "px"
+);
+
 
 /* =====================================================
    BLOCCO ZOOM
@@ -2158,21 +2199,6 @@ function createGoal(
    DISEGNA OBIETTIVI
 ===================================================== */
 
-/*
-   Gli obiettivi sono sempre
-   ordinati numericamente.
-
-   Esempio:
-
-   -500
-   -200
-   0
-   200
-   500
-
-   NON in ordine di inserimento.
-*/
-
 function drawGoals() {
 
     goalsLayer.innerHTML =
@@ -2337,11 +2363,6 @@ function saveGoal() {
     const name =
         goalNameInput.value.trim();
 
-
-    /*
-       Entrambi i campi
-       sono obbligatori.
-    */
 
     if (
         !Number.isFinite(
@@ -2520,10 +2541,6 @@ function applyChange() {
         );
 
 
-    /*
-       La variazione è obbligatoria.
-    */
-
     if (
         !Number.isFinite(
             change
@@ -2535,13 +2552,6 @@ function applyChange() {
         return;
     }
 
-
-    /*
-       Anche la nota è obbligatoria.
-
-       Non è possibile registrare
-       una variazione senza nota.
-    */
 
     const comment =
         noteInput.value.trim();
@@ -2557,22 +2567,10 @@ function applyChange() {
     }
 
 
-    /*
-       NUOVO VALORE:
-
-       precedente + variazione
-    */
-
     const newValue =
         currentValue +
         change;
 
-
-    /*
-       Lo storico delle note
-       mantiene l'ordine cronologico
-       nel quale vengono inserite.
-    */
 
     notes.push({
 
@@ -2735,12 +2733,6 @@ changeInput.addEventListener(
         if (
             event.key === "Enter"
         ) {
-
-            /*
-               Se premo invio nella
-               variazione, provo a
-               registrare entrambe.
-            */
 
             applyChange();
         }
