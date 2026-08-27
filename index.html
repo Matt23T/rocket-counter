@@ -27,6 +27,7 @@
 
 html,
 body {
+
     margin: 0;
     padding: 0;
 
@@ -49,7 +50,11 @@ body {
 }
 
 html {
+
     position: fixed;
+
+    left: 0;
+    top: 0;
 
     width: 100%;
     height: 100%;
@@ -58,7 +63,11 @@ html {
 }
 
 body {
+
     position: fixed;
+
+    left: 0;
+    top: 0;
 
     width: 100%;
     height: 100%;
@@ -70,7 +79,7 @@ body {
 
 
 /* =====================================================
-   PALCO
+   APP
 ===================================================== */
 
 .app {
@@ -152,56 +161,6 @@ body {
 
 
 /* =====================================================
-   PUNTO DEL VALORE CORRENTE
-===================================================== */
-
-/*
-   Questo punto appartiene alla SCALA.
-
-   Non appartiene al razzo.
-
-   La sua posizione verticale viene calcolata
-   in base al valore corrente.
-
-   Quindi:
-
-       valore corrente = posizione del punto
-
-   Anche se il razzo viene spostato con lo scroll,
-   il punto continua a indicare la posizione
-   numerica corretta sulla scala.
-*/
-
-.current-marker {
-
-    position: absolute;
-
-    left: 50%;
-
-    width: 9px;
-    height: 9px;
-
-    border-radius: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    z-index: 30;
-
-    pointer-events: none;
-
-    box-shadow:
-        0 0 8px currentColor,
-        0 0 14px currentColor;
-
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-
-/* =====================================================
    TACCHETTE
 ===================================================== */
 
@@ -214,8 +173,7 @@ body {
     width: 6px;
     height: 1px;
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 
     background:
         rgba(255,255,255,0.20);
@@ -266,6 +224,59 @@ body {
 
 
 /* =====================================================
+   PUNTO FISSO
+===================================================== */
+
+/*
+   IMPORTANTE:
+
+   QUESTO PUNTO È COMPLETAMENTE INDIPENDENTE
+   DAL RAZZO.
+
+   NON è dentro rocket-layer.
+   NON usa stabilizeRocket().
+   NON segue il razzo.
+   NON viene spostato quando il razzo si muove.
+
+   È ancorato direttamente allo schermo.
+
+   La sua posizione verticale rappresenta
+   il valore attuale.
+*/
+
+.current-point {
+
+    position: fixed;
+
+    left: 50%;
+
+    top: 50%;
+
+    width: 10px;
+    height: 10px;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    box-shadow:
+        0 0 8px currentColor;
+
+    z-index: 65;
+
+    pointer-events: none;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* =====================================================
    OBIETTIVI
 ===================================================== */
 
@@ -274,7 +285,6 @@ body {
     position: absolute;
 
     top: 50%;
-
     left: 7px;
 
     width: calc(50% - 45px);
@@ -299,6 +309,11 @@ body {
 .goals-layer::-webkit-scrollbar {
     display: none;
 }
+
+
+/* =====================================================
+   SINGOLO OBIETTIVO
+===================================================== */
 
 .goal-item {
 
@@ -377,7 +392,6 @@ body {
     position: absolute;
 
     top: 50%;
-
     right: 7px;
 
     width: calc(50% - 40px);
@@ -403,6 +417,11 @@ body {
     display: none;
 }
 
+
+/* =====================================================
+   NOTA SINGOLA
+===================================================== */
+
 .note {
 
     width: 100%;
@@ -426,42 +445,50 @@ body {
     -webkit-user-select: none;
 }
 
+
+/*
+   Variazione:
+   verde se positiva
+   rosso se negativa
+*/
+
 .note-change {
 
     display: inline;
 
-    white-space: nowrap;
+    margin-right: 5px;
 
     font-weight: 700;
 }
 
-.note-parenthesis {
 
-    color: #fff;
-
-    font-weight: 500;
-}
+/*
+   Valore finale:
+   colore determinato dalla posizione
+*/
 
 .note-current {
 
     display: inline;
 
-    margin-left: 5px;
-
-    white-space: nowrap;
+    margin-right: 5px;
 
     font-weight: 700;
 }
+
+
+/*
+   Testo nota:
+   SEMPRE BIANCO
+*/
 
 .note-text {
 
     display: inline;
 
-    margin-left: 5px;
+    color: #fff;
 
-    color: #fff !important;
-
-    opacity: 1;
+    opacity: 0.90;
 }
 
 .note-delete {
@@ -551,7 +578,7 @@ body {
 
 
 /* =====================================================
-   VALORE
+   VALORE ATTUALE
 ===================================================== */
 
 .current-info {
@@ -711,7 +738,7 @@ body {
 
 
 /* =====================================================
-   +
+   PLUS
 ===================================================== */
 
 .plus-button {
@@ -1066,19 +1093,6 @@ body {
 
 }
 
-
-/* =====================================================
-   TASTIERA: IL VIEWPORT RESTA FISSO
-===================================================== */
-
-@supports (height: 100dvh) {
-
-    .app {
-        height: 100dvh;
-    }
-
-}
-
 </style>
 
 </head>
@@ -1088,6 +1102,10 @@ body {
 
 <div class="app">
 
+
+    <!-- =================================================
+         SCALA
+    ================================================= -->
 
     <div
         id="timeline"
@@ -1103,12 +1121,6 @@ body {
                 class="center-line"
             ></div>
 
-            <!-- PUNTO FISSO DEL VALORE -->
-            <div
-                id="currentMarker"
-                class="current-marker"
-            ></div>
-
             <div
                 id="ticks"
             ></div>
@@ -1122,11 +1134,33 @@ body {
     </div>
 
 
+    <!-- =================================================
+         PUNTO FISSO
+         
+         È FUORI DA ROCKET-LAYER.
+         
+         NON SEGUE IL RAZZO.
+    ================================================= -->
+
+    <div
+        id="currentPoint"
+        class="current-point"
+    ></div>
+
+
+    <!-- =================================================
+         OBIETTIVI
+    ================================================= -->
+
     <div
         id="goalsLayer"
         class="goals-layer"
     ></div>
 
+
+    <!-- =================================================
+         NOTE
+    ================================================= -->
 
     <div
         id="notesLayer"
@@ -1226,6 +1260,10 @@ body {
     </div>
 
 
+    <!-- =================================================
+         CONTROLLI
+    ================================================= -->
+
     <div
         class="controls"
     >
@@ -1254,7 +1292,6 @@ body {
 
         </div>
 
-
         <input
             id="noteInput"
             class="note-input"
@@ -1270,6 +1307,10 @@ body {
     </div>
 
 
+    <!-- =================================================
+         PLUS
+    ================================================= -->
+
     <button
         id="plusButton"
         class="plus-button"
@@ -1278,6 +1319,10 @@ body {
         +
     </button>
 
+
+    <!-- =================================================
+         RESET
+    ================================================= -->
 
     <button
         id="resetButton"
@@ -1407,25 +1452,19 @@ body {
 document.addEventListener(
     "gesturestart",
     event => event.preventDefault(),
-    {
-        passive: false
-    }
+    { passive: false }
 );
 
 document.addEventListener(
     "gesturechange",
     event => event.preventDefault(),
-    {
-        passive: false
-    }
+    { passive: false }
 );
 
 document.addEventListener(
     "gestureend",
     event => event.preventDefault(),
-    {
-        passive: false
-    }
+    { passive: false }
 );
 
 document.addEventListener(
@@ -1437,13 +1476,10 @@ document.addEventListener(
         ) {
 
             event.preventDefault();
-
         }
 
     },
-    {
-        passive: false
-    }
+    { passive: false }
 );
 
 
@@ -1488,9 +1524,9 @@ const labels =
         "labels"
     );
 
-const currentMarker =
+const currentPoint =
     document.getElementById(
-        "currentMarker"
+        "currentPoint"
     );
 
 const goalsLayer =
@@ -1706,6 +1742,37 @@ function formatValue(value) {
 }
 
 
+/*
+   Per il valore finale delle note
+   vogliamo visualizzare il valore
+   senza il "+" iniziale.
+
+   Esempio:
+
+   1.500 €
+   -500 €
+   0 €
+*/
+
+function formatCurrentValue(value) {
+
+    const rounded =
+        Math.round(
+            value * 100
+        ) / 100;
+
+    return Math.abs(rounded)
+        .toLocaleString(
+            "it-IT",
+            {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            }
+        ) +
+        " €";
+}
+
+
 /* =====================================================
    COLORI
 ===================================================== */
@@ -1715,6 +1782,7 @@ function getValueColor(value) {
     if (
         value === 0
     ) {
+
         return "#FFFFFF";
     }
 
@@ -1781,7 +1849,7 @@ function getValueColor(value) {
 
 
 /* =====================================================
-   COLORE RAZZO + PUNTO
+   COLORE RAZZO
 ===================================================== */
 
 function updateColor() {
@@ -1796,7 +1864,6 @@ function updateColor() {
 
             part.style.fill =
                 color;
-
         }
     );
 
@@ -1809,55 +1876,45 @@ function updateColor() {
         `drop-shadow(
             0 0 7px ${color}
         )`;
-
-
-    /* -----------------------------------------------
-       IL PUNTO HA ESATTAMENTE LO STESSO COLORE
-       DEL VALORE CORRENTE
-    ------------------------------------------------ */
-
-    currentMarker.style.backgroundColor =
-        color;
-
-    currentMarker.style.color =
-        color;
-
-    currentMarker.style.boxShadow =
-        `
-        0 0 8px ${color},
-        0 0 14px ${color}
-        `;
 }
 
 
 /* =====================================================
-   POSIZIONE DEL PUNTO
+   COLORE E POSIZIONE DEL PUNTO
 ===================================================== */
 
-function updateCurrentMarker() {
+/*
+   IL PUNTO È FISSO.
 
-    if (
-        !Number.isFinite(
+   La sua posizione è sempre il centro
+   dello schermo.
+
+   Questo è il punto corrispondente
+   al valore attuale della scala.
+
+   Non viene mai modificato da:
+
+   - movimento del razzo
+   - scroll del razzo
+   - tastiera
+   - stabilizeRocket()
+*/
+
+function updateCurrentPoint() {
+
+    const color =
+        getValueColor(
             currentValue
-        )
-    ) {
-        return;
-    }
+        );
 
-    const totalValueRange =
-        DISPLAY_RANGE * 2;
+    currentPoint.style.color =
+        color;
 
-    const totalHeight =
-        totalValueRange *
-        PIXELS_PER_EURO;
+    currentPoint.style.background =
+        color;
 
-    const centerY =
-        totalHeight / 2;
-
-    currentMarker.style.top =
-        `${centerY}px`;
-
-    updateColor();
+    currentPoint.style.boxShadow =
+        `0 0 8px ${color}`;
 }
 
 
@@ -1903,7 +1960,6 @@ function buildScale() {
         Math.floor(
             maximumValue / STEP
         ) * STEP;
-
 
     for (
         let scaleValue =
@@ -1960,7 +2016,6 @@ function buildScale() {
             tick
         );
 
-
         if (
             scaleValue % 250 === 0
         ) {
@@ -1991,9 +2046,6 @@ function buildScale() {
             );
         }
     }
-
-
-    updateCurrentMarker();
 }
 
 
@@ -2017,29 +2069,31 @@ function createNote(
         "note";
 
 
-    /*
-       -------------------------------------------------
-       PARENTESI
-       -------------------------------------------------
-    */
+    /* -------------------------------
+       COLORE VARIAZIONE
+    -------------------------------- */
 
-    const openingParenthesis =
-        document.createElement(
-            "span"
+    const changeColor =
+        change > 0
+            ? "#20DD65"
+            : change < 0
+                ? "#F8374C"
+                : "#FFFFFF";
+
+
+    /* -------------------------------
+       COLORE VALORE FINALE
+    -------------------------------- */
+
+    const valueColor =
+        getValueColor(
+            value
         );
 
-    openingParenthesis.className =
-        "note-parenthesis";
 
-    openingParenthesis.textContent =
-        "(";
-
-
-    /*
-       -------------------------------------------------
-       PLUSVALENZA / VARIAZIONE
-       -------------------------------------------------
-    */
+    /* -------------------------------
+       VARIAZIONE
+    -------------------------------- */
 
     const changeElement =
         document.createElement(
@@ -2050,55 +2104,19 @@ function createNote(
         "note-change";
 
     changeElement.textContent =
+        "(" +
         formatValue(
             change
-        );
-
-    if (
-        change > 0
-    ) {
-
-        changeElement.style.color =
-            "#20DD65";
-
-    } else if (
-        change < 0
-    ) {
-
-        changeElement.style.color =
-            "#F8374C";
-
-    } else {
-
-        changeElement.style.color =
-            "#FFFFFF";
-
-    }
-
-
-    /*
-       -------------------------------------------------
-       PARENTESI CHIUSA
-       -------------------------------------------------
-    */
-
-    const closingParenthesis =
-        document.createElement(
-            "span"
-        );
-
-    closingParenthesis.className =
-        "note-parenthesis";
-
-    closingParenthesis.textContent =
+        ) +
         ")";
 
+    changeElement.style.color =
+        changeColor;
 
-    /*
-       -------------------------------------------------
-       VALORE RAGGIUNTO
-       -------------------------------------------------
-    */
+
+    /* -------------------------------
+       VALORE FINALE
+    -------------------------------- */
 
     const currentElement =
         document.createElement(
@@ -2109,21 +2127,17 @@ function createNote(
         "note-current";
 
     currentElement.textContent =
-        formatValue(
+        formatCurrentValue(
             value
         );
 
     currentElement.style.color =
-        getValueColor(
-            value
-        );
+        valueColor;
 
 
-    /*
-       -------------------------------------------------
-       TESTO DELLA NOTA
-       -------------------------------------------------
-    */
+    /* -------------------------------
+       TESTO NOTA
+    -------------------------------- */
 
     const textElement =
         document.createElement(
@@ -2136,15 +2150,10 @@ function createNote(
     textElement.textContent =
         text;
 
-    textElement.style.color =
-        "#FFFFFF";
 
-
-    /*
-       -------------------------------------------------
-       PULSANTE ELIMINA
-       -------------------------------------------------
-    */
+    /* -------------------------------
+       DELETE
+    -------------------------------- */
 
     const deleteButton =
         document.createElement(
@@ -2166,27 +2175,12 @@ function createNote(
             deleteNote(
                 index
             );
-
         }
     );
 
 
-    /*
-       -------------------------------------------------
-       COMPOSIZIONE NOTA
-       -------------------------------------------------
-    */
-
-    note.appendChild(
-        openingParenthesis
-    );
-
     note.appendChild(
         changeElement
-    );
-
-    note.appendChild(
-        closingParenthesis
     );
 
     note.appendChild(
@@ -2200,7 +2194,6 @@ function createNote(
     note.appendChild(
         deleteButton
     );
-
 
     return note;
 }
@@ -2337,7 +2330,6 @@ function createGoal(
             deleteGoal(
                 index
             );
-
         }
     );
 
@@ -2382,7 +2374,6 @@ function drawGoals() {
                         originalIndex:
                             index
                     };
-
                 }
             )
             .filter(
@@ -2410,7 +2401,6 @@ function drawGoals() {
             goalsLayer.appendChild(
                 item
             );
-
         }
     );
 }
@@ -2525,7 +2515,6 @@ function saveGoal() {
 
         name:
             name
-
     });
 
     saveGoals();
@@ -2574,6 +2563,13 @@ function updateDisplay() {
 
     updateColor();
 
+    /*
+       Il punto viene aggiornato
+       separatamente dal razzo.
+    */
+
+    updateCurrentPoint();
+
     buildScale();
 
     drawGoals();
@@ -2593,8 +2589,15 @@ function updateDisplay() {
 
 
 /* =====================================================
-   BLOCCO FISICO RAZZO
+   RAZZO
 ===================================================== */
+
+/*
+   Questa funzione riguarda ESCLUSIVAMENTE
+   il razzo.
+
+   Il punto NON viene toccato.
+*/
 
 let rocketInitialBodyTop =
     null;
@@ -2642,7 +2645,7 @@ function stabilizeRocket() {
 
 
 /* =====================================================
-   MONITORAGGIO TASTIERA
+   MONITOR SAFARI / TASTIERA
 ===================================================== */
 
 function requestRocketStabilization() {
@@ -2659,7 +2662,6 @@ function requestRocketStabilization() {
 
                 }
             );
-
         }
     );
 }
@@ -2704,9 +2706,7 @@ function monitorKeyboardMovement() {
             requestAnimationFrame(
                 check
             );
-
         }
-
     }
 
     requestAnimationFrame(
@@ -2831,6 +2831,18 @@ function applyChange() {
         currentValue +
         change;
 
+
+    /*
+       Salviamo anche la variazione,
+       così la nota può mostrare:
+
+       (+100 €) 1.500 € Nota
+
+       oppure:
+
+       (-200 €) 1.300 € Nota
+    */
+
     notes.push({
 
         value:
@@ -2841,8 +2853,8 @@ function applyChange() {
 
         text:
             comment
-
     });
+
 
     currentValue =
         newValue;
@@ -2941,6 +2953,23 @@ function resetApp() {
 
     rocketInitialBodyLeft =
         null;
+
+    /*
+       Anche il punto torna semplicemente
+       al centro dello schermo.
+    */
+
+    currentPoint.style.transform =
+        "translate(-50%, -50%)";
+
+    setTimeout(
+        () => {
+
+            startInput.focus();
+
+        },
+        100
+    );
 }
 
 
@@ -2963,7 +2992,6 @@ startInput.addEventListener(
         ) {
 
             setInitialValue();
-
         }
 
     }
@@ -2985,7 +3013,6 @@ changeInput.addEventListener(
         ) {
 
             applyChange();
-
         }
 
     }
@@ -3001,7 +3028,6 @@ noteInput.addEventListener(
         ) {
 
             applyChange();
-
         }
 
     }
@@ -3035,7 +3061,6 @@ goalValueInput.addEventListener(
         ) {
 
             goalNameInput.focus();
-
         }
 
     }
@@ -3051,7 +3076,6 @@ goalNameInput.addEventListener(
         ) {
 
             saveGoal();
-
         }
 
     }
@@ -3068,7 +3092,6 @@ goalModal.addEventListener(
         ) {
 
             closeGoalModal();
-
         }
 
     }
@@ -3138,16 +3161,27 @@ try {
                                     entry.value
                                 ),
 
+                            /*
+                               Compatibilità con eventuali
+                               note vecchie che non avevano
+                               ancora il campo change.
+                            */
+
                             change:
-                                Number(
-                                    entry.change
-                                ),
+                                Number.isFinite(
+                                    Number(
+                                        entry.change
+                                    )
+                                )
+                                    ? Number(
+                                        entry.change
+                                    )
+                                    : 0,
 
                             text:
                                 String(
                                     entry.text
                                 )
-
                         };
 
                     }
@@ -3157,9 +3191,6 @@ try {
                         Number.isFinite(
                             entry.value
                         ) &&
-                        Number.isFinite(
-                            entry.change
-                        ) &&
                         entry.text.trim() !== ""
                 );
     }
@@ -3167,7 +3198,6 @@ try {
 } catch {
 
     notes = [];
-
 }
 
 
@@ -3206,7 +3236,6 @@ try {
                                 String(
                                     goal.name
                                 )
-
                         };
 
                     }
@@ -3223,7 +3252,6 @@ try {
 } catch {
 
     goals = [];
-
 }
 
 
@@ -3245,7 +3273,6 @@ if (
 
         currentValue =
             startValue;
-
     }
 
     startScreen.classList.add(
@@ -3259,7 +3286,6 @@ if (
     startScreen.classList.remove(
         "hidden"
     );
-
 }
 
 
@@ -3283,7 +3309,7 @@ requestAnimationFrame(
 
 
 /* =====================================================
-   CONTROLLO MOVIMENTO BODY
+   CONTROLLO MOVIMENTO RAZZO
 ===================================================== */
 
 let lastBodyTop =
@@ -3303,7 +3329,6 @@ function detectBodyMovement() {
             rect.top;
 
         return;
-
     }
 
     if (
@@ -3317,9 +3342,7 @@ function detectBodyMovement() {
 
         lastBodyTop =
             rect.top;
-
     }
-
 }
 
 
@@ -3334,7 +3357,6 @@ function startKeyboardMonitor() {
     ) {
 
         return;
-
     }
 
     keyboardMonitor =
@@ -3346,7 +3368,6 @@ function startKeyboardMonitor() {
             },
             16
         );
-
 }
 
 
@@ -3362,9 +3383,7 @@ function stopKeyboardMonitor() {
 
         keyboardMonitor =
             null;
-
     }
-
 }
 
 
@@ -3398,7 +3417,6 @@ document.addEventListener(
                     stopKeyboardMonitor();
 
                     stabilizeRocket();
-
                 }
 
             },
