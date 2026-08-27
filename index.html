@@ -51,14 +51,33 @@ body {
 body {
     position: fixed;
 
+    width: 100%;
+    height: 100%;
+
     top: 0;
     left: 0;
 
-    width: 100%;
-    height: 100vh;
+    overflow: hidden;
 
     touch-action: pan-y;
 }
+
+
+/* =====================================================
+   CONTENITORE APP
+===================================================== */
+
+/*
+   IMPORTANTE:
+
+   L'altezza dell'app viene impostata una sola volta
+   all'avvio tramite JavaScript.
+
+   NON viene utilizzata 100dvh.
+
+   In questo modo l'altezza del contenitore non cambia
+   quando iOS apre la tastiera.
+*/
 
 .app {
     position: fixed;
@@ -67,7 +86,11 @@ body {
     left: 0;
 
     width: 100%;
-    height: 100vh;
+
+    height: var(--rocket-app-height);
+
+    min-height: var(--rocket-app-height);
+    max-height: var(--rocket-app-height);
 
     background: #000;
 
@@ -1323,38 +1346,172 @@ body {
 <script>
 
 /* =====================================================
+   ALTEZZA FISSA DELL'APP
+===================================================== */
+
+/*
+   Questo valore viene catturato PRIMA che l'utente
+   apra la tastiera.
+
+   Non viene mai sostituito con visualViewport.height
+   e non viene ricalcolato quando appare la tastiera.
+
+   Quindi:
+
+   SCHERMATA NORMALE
+          ↓
+   altezza iniziale salvata
+          ↓
+   apertura tastiera
+          ↓
+   stessa identica altezza dell'app
+          ↓
+   la tastiera copre semplicemente la parte inferiore
+*/
+
+const rocketInitialHeight =
+    window.innerHeight;
+
+
+document.documentElement.style.setProperty(
+    "--rocket-app-height",
+    `${rocketInitialHeight}px`
+);
+
+
+/*
+   Se l'orientamento del dispositivo cambia,
+   aggiorniamo l'altezza SOLO quando la tastiera
+   non è aperta.
+
+   Non usiamo visualViewport per dimensionare l'app
+   durante la digitazione.
+*/
+
+let rocketKeyboardWasOpen =
+    false;
+
+
+function updateRocketAppHeight() {
+
+    const currentWindowHeight =
+        window.innerHeight;
+
+
+    if (
+        currentWindowHeight <
+        rocketInitialHeight * 0.75
+    ) {
+
+        rocketKeyboardWasOpen =
+            true;
+
+        return;
+    }
+
+
+    if (
+        rocketKeyboardWasOpen
+    ) {
+
+        rocketKeyboardWasOpen =
+            false;
+
+        document.documentElement.style.setProperty(
+            "--rocket-app-height",
+            `${currentWindowHeight}px`
+        );
+
+        return;
+    }
+
+
+    /*
+       Aggiorna solo se cambia realmente
+       la dimensione fisica della finestra.
+    */
+
+    if (
+        Math.abs(
+            currentWindowHeight -
+            rocketInitialHeight
+        ) > 100
+    ) {
+
+        document.documentElement.style.setProperty(
+            "--rocket-app-height",
+            `${currentWindowHeight}px`
+        );
+    }
+}
+
+
+window.addEventListener(
+    "orientationchange",
+    function() {
+
+        setTimeout(
+            function() {
+
+                const newHeight =
+                    window.innerHeight;
+
+
+                document.documentElement.style.setProperty(
+                    "--rocket-app-height",
+                    `${newHeight}px`
+                );
+
+            },
+            300
+        );
+
+    }
+);
+
+
+/* =====================================================
    BLOCCO ZOOM
 ===================================================== */
 
 document.addEventListener(
     "gesturestart",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
     }
 );
+
 
 document.addEventListener(
     "gesturechange",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
     }
 );
 
+
 document.addEventListener(
     "gestureend",
     function(event) {
+
         event.preventDefault();
+
     },
     {
         passive: false
     }
 );
+
 
 document.addEventListener(
     "touchmove",
@@ -1363,7 +1520,9 @@ document.addEventListener(
         if (
             event.touches.length > 1
         ) {
+
             event.preventDefault();
+
         }
 
     },
@@ -1532,23 +1691,28 @@ function parseNumber(value) {
         value === null ||
         value === undefined
     ) {
+
         return NaN;
     }
 
     let text =
         String(value).trim();
 
+
     if (
         text === ""
     ) {
+
         return NaN;
     }
+
 
     text =
         text.replace(
             /\s/g,
             ""
         );
+
 
     if (
         text.includes(",")
@@ -1575,8 +1739,10 @@ function parseNumber(value) {
             );
     }
 
+
     const number =
         Number(text);
+
 
     return Number.isFinite(number)
         ? number
@@ -1595,6 +1761,7 @@ function formatValue(value) {
             value * 100
         ) / 100;
 
+
     const absolute =
         Math.abs(rounded)
             .toLocaleString(
@@ -1605,6 +1772,7 @@ function formatValue(value) {
                 }
             );
 
+
     if (
         rounded > 0
     ) {
@@ -1614,6 +1782,7 @@ function formatValue(value) {
             " €";
     }
 
+
     if (
         rounded < 0
     ) {
@@ -1622,6 +1791,7 @@ function formatValue(value) {
             absolute +
             " €";
     }
+
 
     return "0 €";
 }
@@ -1636,6 +1806,7 @@ function getValueColor(value) {
     if (
         value === 0
     ) {
+
         return "#FFFFFF";
     }
 
@@ -1647,24 +1818,28 @@ function getValueColor(value) {
         if (
             value <= 1000
         ) {
+
             return "#B8FFD0";
         }
 
         if (
             value <= 2000
         ) {
+
             return "#62F28A";
         }
 
         if (
             value <= 3000
         ) {
+
             return "#20DD65";
         }
 
         if (
             value <= 4000
         ) {
+
             return "#08C951";
         }
 
@@ -1679,24 +1854,28 @@ function getValueColor(value) {
     if (
         amount <= 1000
     ) {
+
         return "#FFB9C0";
     }
 
     if (
         amount <= 2000
     ) {
+
         return "#FF6877";
     }
 
     if (
         amount <= 3000
     ) {
+
         return "#F8374C";
     }
 
     if (
         amount <= 4000
     ) {
+
         return "#E91E35";
     }
 
@@ -1721,6 +1900,7 @@ function updateColor() {
 
             part.style.fill =
                 color;
+
         }
     );
 
@@ -1770,6 +1950,7 @@ function buildScale() {
         currentValue -
         DISPLAY_RANGE;
 
+
     const maximumValue =
         currentValue +
         DISPLAY_RANGE;
@@ -1816,6 +1997,7 @@ function buildScale() {
                 "div"
             );
 
+
         tick.className =
             "tick";
 
@@ -1858,21 +2040,26 @@ function buildScale() {
                     "div"
                 );
 
+
             label.className =
                 "scale-label";
 
+
             label.style.top =
                 `${y}px`;
+
 
             label.textContent =
                 formatValue(
                     scaleValue
                 );
 
+
             label.style.color =
                 getValueColor(
                     scaleValue
                 );
+
 
             labels.appendChild(
                 label
@@ -1897,6 +2084,7 @@ function createNote(
             "div"
         );
 
+
     note.className =
         "note";
 
@@ -1916,13 +2104,16 @@ function createNote(
             "span"
         );
 
+
     valueElement.className =
         "note-value";
+
 
     valueElement.textContent =
         formatValue(
             value
         );
+
 
     valueElement.style.color =
         color;
@@ -1933,11 +2124,14 @@ function createNote(
             "span"
         );
 
+
     textElement.className =
         "note-text";
 
+
     textElement.textContent =
         text;
+
 
     textElement.style.color =
         color;
@@ -1948,8 +2142,10 @@ function createNote(
             "button"
         );
 
+
     deleteButton.className =
         "note-delete";
+
 
     deleteButton.textContent =
         "×";
@@ -1973,9 +2169,11 @@ function createNote(
         valueElement
     );
 
+
     note.appendChild(
         textElement
     );
+
 
     note.appendChild(
         deleteButton
@@ -2010,6 +2208,7 @@ function drawNotes() {
             notesLayer.appendChild(
                 note
             );
+
         }
     );
 }
@@ -2025,6 +2224,7 @@ function deleteNote(index) {
         index < 0 ||
         index >= notes.length
     ) {
+
         return;
     }
 
@@ -2071,6 +2271,7 @@ function createGoal(
             "div"
         );
 
+
     item.className =
         "goal-item";
 
@@ -2090,13 +2291,16 @@ function createGoal(
             "span"
         );
 
+
     valueElement.className =
         "goal-value";
+
 
     valueElement.textContent =
         formatValue(
             value
         );
+
 
     valueElement.style.color =
         color;
@@ -2107,11 +2311,14 @@ function createGoal(
             "span"
         );
 
+
     nameElement.className =
         "goal-text";
 
+
     nameElement.textContent =
         name;
+
 
     nameElement.style.color =
         color;
@@ -2122,8 +2329,10 @@ function createGoal(
             "button"
         );
 
+
     deleteButton.className =
         "goal-delete";
+
 
     deleteButton.textContent =
         "×";
@@ -2147,9 +2356,11 @@ function createGoal(
         valueElement
     );
 
+
     item.appendChild(
         nameElement
     );
+
 
     item.appendChild(
         deleteButton
@@ -2164,11 +2375,6 @@ function createGoal(
    DISEGNA OBIETTIVI
 ===================================================== */
 
-/*
-   Gli obiettivi sono sempre
-   ordinati numericamente.
-*/
-
 function drawGoals() {
 
     goalsLayer.innerHTML =
@@ -2181,6 +2387,7 @@ function drawGoals() {
                 (goal, index) => {
 
                     return {
+
                         value:
                             Number(
                                 goal.value
@@ -2193,6 +2400,7 @@ function drawGoals() {
 
                         originalIndex:
                             index
+
                     };
 
                 }
@@ -2255,6 +2463,7 @@ function deleteGoal(index) {
         index < 0 ||
         index >= goals.length
     ) {
+
         return;
     }
 
@@ -2310,8 +2519,10 @@ function closeGoalModal() {
         "hidden"
     );
 
+
     goalValueInput.value =
         "";
+
 
     goalNameInput.value =
         "";
@@ -2460,6 +2671,7 @@ function setInitialValue() {
     startValue =
         value;
 
+
     currentValue =
         value;
 
@@ -2571,6 +2783,7 @@ function applyChange() {
     changeInput.value =
         "";
 
+
     noteInput.value =
         "";
 
@@ -2603,13 +2816,16 @@ function resetApp() {
         START_KEY
     );
 
+
     localStorage.removeItem(
         CURRENT_KEY
     );
 
+
     localStorage.removeItem(
         NOTES_KEY
     );
+
 
     localStorage.removeItem(
         GOALS_KEY
@@ -2619,8 +2835,10 @@ function resetApp() {
     startValue =
         NaN;
 
+
     currentValue =
         NaN;
+
 
     notes = [];
 
@@ -2630,8 +2848,10 @@ function resetApp() {
     startInput.value =
         "";
 
+
     changeInput.value =
         "";
+
 
     noteInput.value =
         "";
@@ -2644,6 +2864,7 @@ function resetApp() {
 
     goalsLayer.innerHTML =
         "";
+
 
     notesLayer.innerHTML =
         "";
@@ -2684,6 +2905,7 @@ startInput.addEventListener(
         ) {
 
             setInitialValue();
+
         }
 
     }
@@ -2705,6 +2927,7 @@ changeInput.addEventListener(
         ) {
 
             applyChange();
+
         }
 
     }
@@ -2720,6 +2943,7 @@ noteInput.addEventListener(
         ) {
 
             applyChange();
+
         }
 
     }
@@ -2753,6 +2977,7 @@ goalValueInput.addEventListener(
         ) {
 
             goalNameInput.focus();
+
         }
 
     }
@@ -2768,6 +2993,7 @@ goalNameInput.addEventListener(
         ) {
 
             saveGoal();
+
         }
 
     }
@@ -2784,6 +3010,7 @@ goalModal.addEventListener(
         ) {
 
             closeGoalModal();
+
         }
 
     }
@@ -2870,11 +3097,13 @@ try {
                         ) &&
                         entry.text.trim() !== ""
                 );
+
     }
 
 } catch {
 
     notes = [];
+
 }
 
 
@@ -2926,11 +3155,13 @@ try {
                         ) &&
                         goal.name.trim() !== ""
                 );
+
     }
 
 } catch {
 
     goals = [];
+
 }
 
 
