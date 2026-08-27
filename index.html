@@ -60,9 +60,6 @@ html {
 body {
     position: fixed;
 
-    left: 0;
-    top: 0;
-
     width: 100%;
     height: 100%;
 
@@ -73,19 +70,18 @@ body {
 
 
 /* =====================================================
-   PALCO APP
+   PALCO
 ===================================================== */
 
 .app {
 
-    position: fixed;
+    position: absolute;
 
     left: 0;
     top: 0;
 
     width: 100%;
     height: 100vh;
-
     height: 100svh;
 
     background: #000;
@@ -156,6 +152,56 @@ body {
 
 
 /* =====================================================
+   PUNTO DEL VALORE CORRENTE
+===================================================== */
+
+/*
+   Questo punto appartiene alla SCALA.
+
+   Non appartiene al razzo.
+
+   La sua posizione verticale viene calcolata
+   in base al valore corrente.
+
+   Quindi:
+
+       valore corrente = posizione del punto
+
+   Anche se il razzo viene spostato con lo scroll,
+   il punto continua a indicare la posizione
+   numerica corretta sulla scala.
+*/
+
+.current-marker {
+
+    position: absolute;
+
+    left: 50%;
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    z-index: 30;
+
+    pointer-events: none;
+
+    box-shadow:
+        0 0 8px currentColor,
+        0 0 14px currentColor;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* =====================================================
    TACCHETTE
 ===================================================== */
 
@@ -168,7 +214,8 @@ body {
     width: 6px;
     height: 1px;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     background:
         rgba(255,255,255,0.20);
@@ -194,7 +241,7 @@ body {
 
 
 /* =====================================================
-   NUMERI SCALA
+   NUMERI
 ===================================================== */
 
 .scale-label {
@@ -215,34 +262,6 @@ body {
     opacity: 0.65;
 
     pointer-events: none;
-}
-
-
-/* =====================================================
-   PUNTO FISSO VALORE ATTUALE
-===================================================== */
-
-.current-point {
-
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    width: 9px;
-    height: 9px;
-
-    transform:
-        translate(-50%, -50%);
-
-    border-radius: 50%;
-
-    z-index: 65;
-
-    pointer-events: none;
-
-    box-shadow:
-        0 0 7px currentColor;
 }
 
 
@@ -280,11 +299,6 @@ body {
 .goals-layer::-webkit-scrollbar {
     display: none;
 }
-
-
-/* =====================================================
-   SINGOLO OBIETTIVO
-===================================================== */
 
 .goal-item {
 
@@ -389,11 +403,6 @@ body {
     display: none;
 }
 
-
-/* =====================================================
-   NOTA SINGOLA
-===================================================== */
-
 .note {
 
     width: 100%;
@@ -417,52 +426,43 @@ body {
     -webkit-user-select: none;
 }
 
-
-/*
-   VARIAZIONE
-*/
-
 .note-change {
 
     display: inline;
 
-    margin-right: 4px;
+    white-space: nowrap;
 
     font-weight: 700;
 }
 
+.note-parenthesis {
 
-/*
-   VALORE RAGGIUNTO
-*/
+    color: #fff;
 
-.note-value {
+    font-weight: 500;
+}
+
+.note-current {
 
     display: inline;
 
-    margin-right: 5px;
+    margin-left: 5px;
+
+    white-space: nowrap;
 
     font-weight: 700;
 }
-
-
-/*
-   TESTO NOTA
-*/
 
 .note-text {
 
     display: inline;
 
+    margin-left: 5px;
+
     color: #fff !important;
 
     opacity: 1;
 }
-
-
-/*
-   CANCELLA NOTA
-*/
 
 .note-delete {
 
@@ -472,8 +472,6 @@ body {
     height: 19px;
 
     padding: 0;
-
-    margin-left: 4px;
 
     border: none;
 
@@ -553,7 +551,7 @@ body {
 
 
 /* =====================================================
-   VALORE ATTUALE
+   VALORE
 ===================================================== */
 
 .current-info {
@@ -713,7 +711,7 @@ body {
 
 
 /* =====================================================
-   PULSANTE +
+   +
 ===================================================== */
 
 .plus-button {
@@ -794,7 +792,7 @@ body {
 
 
 /* =====================================================
-   MODALE OBIETTIVO
+   MODALE
 ===================================================== */
 
 .goal-modal {
@@ -1070,20 +1068,13 @@ body {
 
 
 /* =====================================================
-   TASTIERA IOS
-   L'APP NON VIENE RICENTRATA.
-   LA TASTIERA SI SOVRAPPONE.
+   TASTIERA: IL VIEWPORT RESTA FISSO
 ===================================================== */
 
-@supports (-webkit-touch-callout: none) {
+@supports (height: 100dvh) {
 
-    html,
-    body,
     .app {
-
-        height: 100vh;
-        min-height: 100vh;
-        max-height: 100vh;
+        height: 100dvh;
     }
 
 }
@@ -1097,10 +1088,6 @@ body {
 
 <div class="app">
 
-
-    <!-- =================================================
-         SCALA
-    ================================================= -->
 
     <div
         id="timeline"
@@ -1116,6 +1103,12 @@ body {
                 class="center-line"
             ></div>
 
+            <!-- PUNTO FISSO DEL VALORE -->
+            <div
+                id="currentMarker"
+                class="current-marker"
+            ></div>
+
             <div
                 id="ticks"
             ></div>
@@ -1129,30 +1122,11 @@ body {
     </div>
 
 
-    <!-- =================================================
-         PUNTO FISSO
-         INDICA SEMPRE IL VALORE ATTUALE
-    ================================================= -->
-
-    <div
-        id="currentPoint"
-        class="current-point"
-    ></div>
-
-
-    <!-- =================================================
-         OBIETTIVI
-    ================================================= -->
-
     <div
         id="goalsLayer"
         class="goals-layer"
     ></div>
 
-
-    <!-- =================================================
-         NOTE
-    ================================================= -->
 
     <div
         id="notesLayer"
@@ -1252,10 +1226,6 @@ body {
     </div>
 
 
-    <!-- =================================================
-         CONTROLLI
-    ================================================= -->
-
     <div
         class="controls"
     >
@@ -1284,6 +1254,7 @@ body {
 
         </div>
 
+
         <input
             id="noteInput"
             class="note-input"
@@ -1299,10 +1270,6 @@ body {
     </div>
 
 
-    <!-- =================================================
-         PLUS
-    ================================================= -->
-
     <button
         id="plusButton"
         class="plus-button"
@@ -1311,10 +1278,6 @@ body {
         +
     </button>
 
-
-    <!-- =================================================
-         RESET
-    ================================================= -->
 
     <button
         id="resetButton"
@@ -1444,29 +1407,37 @@ body {
 document.addEventListener(
     "gesturestart",
     event => event.preventDefault(),
-    { passive: false }
+    {
+        passive: false
+    }
 );
 
 document.addEventListener(
     "gesturechange",
     event => event.preventDefault(),
-    { passive: false }
+    {
+        passive: false
+    }
 );
 
 document.addEventListener(
     "gestureend",
     event => event.preventDefault(),
-    { passive: false }
+    {
+        passive: false
+    }
 );
 
 document.addEventListener(
     "touchmove",
-    function(event) {
+    event => {
 
         if (
             event.touches.length > 1
         ) {
+
             event.preventDefault();
+
         }
 
     },
@@ -1481,16 +1452,16 @@ document.addEventListener(
 ===================================================== */
 
 const START_KEY =
-    "rocket_start_value_v9";
+    "rocket_start_value_v8";
 
 const CURRENT_KEY =
-    "rocket_current_value_v9";
+    "rocket_current_value_v8";
 
 const NOTES_KEY =
-    "rocket_notes_v9";
+    "rocket_notes_v8";
 
 const GOALS_KEY =
-    "rocket_goals_v9";
+    "rocket_goals_v8";
 
 
 /* =====================================================
@@ -1517,9 +1488,9 @@ const labels =
         "labels"
     );
 
-const currentPoint =
+const currentMarker =
     document.getElementById(
-        "currentPoint"
+        "currentMarker"
     );
 
 const goalsLayer =
@@ -1535,11 +1506,6 @@ const notesLayer =
 const rocketLayer =
     document.getElementById(
         "rocketLayer"
-    );
-
-const rocket =
-    document.getElementById(
-        "rocket"
     );
 
 const currentValueElement =
@@ -1830,22 +1796,68 @@ function updateColor() {
 
             part.style.fill =
                 color;
+
         }
     );
 
     currentValueElement.style.color =
         color;
 
-    currentPoint.style.color =
-        color;
-
-    currentPoint.style.background =
-        color;
-
-    rocket.style.filter =
+    document.getElementById(
+        "rocket"
+    ).style.filter =
         `drop-shadow(
             0 0 7px ${color}
         )`;
+
+
+    /* -----------------------------------------------
+       IL PUNTO HA ESATTAMENTE LO STESSO COLORE
+       DEL VALORE CORRENTE
+    ------------------------------------------------ */
+
+    currentMarker.style.backgroundColor =
+        color;
+
+    currentMarker.style.color =
+        color;
+
+    currentMarker.style.boxShadow =
+        `
+        0 0 8px ${color},
+        0 0 14px ${color}
+        `;
+}
+
+
+/* =====================================================
+   POSIZIONE DEL PUNTO
+===================================================== */
+
+function updateCurrentMarker() {
+
+    if (
+        !Number.isFinite(
+            currentValue
+        )
+    ) {
+        return;
+    }
+
+    const totalValueRange =
+        DISPLAY_RANGE * 2;
+
+    const totalHeight =
+        totalValueRange *
+        PIXELS_PER_EURO;
+
+    const centerY =
+        totalHeight / 2;
+
+    currentMarker.style.top =
+        `${centerY}px`;
+
+    updateColor();
 }
 
 
@@ -1891,6 +1903,7 @@ function buildScale() {
         Math.floor(
             maximumValue / STEP
         ) * STEP;
+
 
     for (
         let scaleValue =
@@ -1947,6 +1960,7 @@ function buildScale() {
             tick
         );
 
+
         if (
             scaleValue % 250 === 0
         ) {
@@ -1977,6 +1991,9 @@ function buildScale() {
             );
         }
     }
+
+
+    updateCurrentMarker();
 }
 
 
@@ -1985,8 +2002,8 @@ function buildScale() {
 ===================================================== */
 
 function createNote(
-    change,
     value,
+    change,
     text,
     index
 ) {
@@ -2000,9 +2017,29 @@ function createNote(
         "note";
 
 
-    /* -----------------------------------------------
-       VARIAZIONE
-    ----------------------------------------------- */
+    /*
+       -------------------------------------------------
+       PARENTESI
+       -------------------------------------------------
+    */
+
+    const openingParenthesis =
+        document.createElement(
+            "span"
+        );
+
+    openingParenthesis.className =
+        "note-parenthesis";
+
+    openingParenthesis.textContent =
+        "(";
+
+
+    /*
+       -------------------------------------------------
+       PLUSVALENZA / VARIAZIONE
+       -------------------------------------------------
+    */
 
     const changeElement =
         document.createElement(
@@ -2013,16 +2050,9 @@ function createNote(
         "note-change";
 
     changeElement.textContent =
-        "(" +
         formatValue(
             change
-        ) +
-        ")";
-
-    /*
-       Il colore della variazione dipende
-       esclusivamente dal segno della variazione.
-    */
+        );
 
     if (
         change > 0
@@ -2042,35 +2072,58 @@ function createNote(
 
         changeElement.style.color =
             "#FFFFFF";
+
     }
 
 
-    /* -----------------------------------------------
-       VALORE RAGGIUNTO
-    ----------------------------------------------- */
+    /*
+       -------------------------------------------------
+       PARENTESI CHIUSA
+       -------------------------------------------------
+    */
 
-    const valueElement =
+    const closingParenthesis =
         document.createElement(
             "span"
         );
 
-    valueElement.className =
-        "note-value";
+    closingParenthesis.className =
+        "note-parenthesis";
 
-    valueElement.textContent =
+    closingParenthesis.textContent =
+        ")";
+
+
+    /*
+       -------------------------------------------------
+       VALORE RAGGIUNTO
+       -------------------------------------------------
+    */
+
+    const currentElement =
+        document.createElement(
+            "span"
+        );
+
+    currentElement.className =
+        "note-current";
+
+    currentElement.textContent =
         formatValue(
             value
         );
 
-    valueElement.style.color =
+    currentElement.style.color =
         getValueColor(
             value
         );
 
 
-    /* -----------------------------------------------
-       TESTO NOTA
-    ----------------------------------------------- */
+    /*
+       -------------------------------------------------
+       TESTO DELLA NOTA
+       -------------------------------------------------
+    */
 
     const textElement =
         document.createElement(
@@ -2087,9 +2140,11 @@ function createNote(
         "#FFFFFF";
 
 
-    /* -----------------------------------------------
-       CANCELLA
-    ----------------------------------------------- */
+    /*
+       -------------------------------------------------
+       PULSANTE ELIMINA
+       -------------------------------------------------
+    */
 
     const deleteButton =
         document.createElement(
@@ -2116,12 +2171,26 @@ function createNote(
     );
 
 
+    /*
+       -------------------------------------------------
+       COMPOSIZIONE NOTA
+       -------------------------------------------------
+    */
+
+    note.appendChild(
+        openingParenthesis
+    );
+
     note.appendChild(
         changeElement
     );
 
     note.appendChild(
-        valueElement
+        closingParenthesis
+    );
+
+    note.appendChild(
+        currentElement
     );
 
     note.appendChild(
@@ -2131,6 +2200,7 @@ function createNote(
     note.appendChild(
         deleteButton
     );
+
 
     return note;
 }
@@ -2146,8 +2216,8 @@ function drawNotes() {
 
             const note =
                 createNote(
-                    entry.change,
                     entry.value,
+                    entry.change,
                     entry.text,
                     index
                 );
@@ -2298,6 +2368,7 @@ function drawGoals() {
                 (goal, index) => {
 
                     return {
+
                         value:
                             Number(
                                 goal.value
@@ -2522,12 +2593,14 @@ function updateDisplay() {
 
 
 /* =====================================================
-   POSIZIONE RAZZO
+   BLOCCO FISICO RAZZO
 ===================================================== */
 
-let rocketInitialBodyTop = null;
+let rocketInitialBodyTop =
+    null;
 
-let rocketInitialBodyLeft = null;
+let rocketInitialBodyLeft =
+    null;
 
 
 function stabilizeRocket() {
@@ -2631,7 +2704,9 @@ function monitorKeyboardMovement() {
             requestAnimationFrame(
                 check
             );
+
         }
+
     }
 
     requestAnimationFrame(
@@ -2756,22 +2831,13 @@ function applyChange() {
         currentValue +
         change;
 
-
-    /*
-       Salviamo separatamente:
-
-       change = variazione effettuata
-       value  = valore raggiunto
-       text   = nota
-    */
-
     notes.push({
-
-        change:
-            change,
 
         value:
             newValue,
+
+        change:
+            change,
 
         text:
             comment
@@ -2875,15 +2941,6 @@ function resetApp() {
 
     rocketInitialBodyLeft =
         null;
-
-    setTimeout(
-        () => {
-
-            startInput.focus();
-
-        },
-        100
-    );
 }
 
 
@@ -2906,6 +2963,7 @@ startInput.addEventListener(
         ) {
 
             setInitialValue();
+
         }
 
     }
@@ -2927,6 +2985,7 @@ changeInput.addEventListener(
         ) {
 
             applyChange();
+
         }
 
     }
@@ -2942,6 +3001,7 @@ noteInput.addEventListener(
         ) {
 
             applyChange();
+
         }
 
     }
@@ -2975,6 +3035,7 @@ goalValueInput.addEventListener(
         ) {
 
             goalNameInput.focus();
+
         }
 
     }
@@ -2990,6 +3051,7 @@ goalNameInput.addEventListener(
         ) {
 
             saveGoal();
+
         }
 
     }
@@ -3006,6 +3068,7 @@ goalModal.addEventListener(
         ) {
 
             closeGoalModal();
+
         }
 
     }
@@ -3040,6 +3103,7 @@ let currentValue =
 
 let notes = [];
 
+
 let goals = [];
 
 
@@ -3067,44 +3131,22 @@ try {
                 .map(
                     entry => {
 
-                        const value =
-                            Number(
-                                entry.value
-                            );
-
-                        const text =
-                            String(
-                                entry.text
-                            );
-
-                        /*
-                           Le nuove note contengono
-                           direttamente la variazione.
-
-                           Per eventuali note precedenti
-                           senza change utilizziamo 0
-                           invece di inventare una variazione.
-                        */
-
-                        const change =
-                            Number(
-                                entry.change
-                            );
-
                         return {
 
-                            change:
-                                Number.isFinite(
-                                    change
-                                )
-                                    ? change
-                                    : 0,
-
                             value:
-                                value,
+                                Number(
+                                    entry.value
+                                ),
+
+                            change:
+                                Number(
+                                    entry.change
+                                ),
 
                             text:
-                                text
+                                String(
+                                    entry.text
+                                )
 
                         };
 
@@ -3115,6 +3157,9 @@ try {
                         Number.isFinite(
                             entry.value
                         ) &&
+                        Number.isFinite(
+                            entry.change
+                        ) &&
                         entry.text.trim() !== ""
                 );
     }
@@ -3122,6 +3167,7 @@ try {
 } catch {
 
     notes = [];
+
 }
 
 
@@ -3177,6 +3223,7 @@ try {
 } catch {
 
     goals = [];
+
 }
 
 
@@ -3198,6 +3245,7 @@ if (
 
         currentValue =
             startValue;
+
     }
 
     startScreen.classList.add(
@@ -3238,7 +3286,8 @@ requestAnimationFrame(
    CONTROLLO MOVIMENTO BODY
 ===================================================== */
 
-let lastBodyTop = null;
+let lastBodyTop =
+    null;
 
 
 function detectBodyMovement() {
@@ -3254,6 +3303,7 @@ function detectBodyMovement() {
             rect.top;
 
         return;
+
     }
 
     if (
@@ -3267,11 +3317,14 @@ function detectBodyMovement() {
 
         lastBodyTop =
             rect.top;
+
     }
+
 }
 
 
-let keyboardMonitor = null;
+let keyboardMonitor =
+    null;
 
 
 function startKeyboardMonitor() {
@@ -3281,6 +3334,7 @@ function startKeyboardMonitor() {
     ) {
 
         return;
+
     }
 
     keyboardMonitor =
@@ -3292,6 +3346,7 @@ function startKeyboardMonitor() {
             },
             16
         );
+
 }
 
 
@@ -3307,7 +3362,9 @@ function stopKeyboardMonitor() {
 
         keyboardMonitor =
             null;
+
     }
+
 }
 
 
@@ -3341,6 +3398,7 @@ document.addEventListener(
                     stopKeyboardMonitor();
 
                     stabilizeRocket();
+
                 }
 
             },
