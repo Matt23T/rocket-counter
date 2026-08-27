@@ -413,13 +413,26 @@ body {
    RAZZO CENTRALE
 ===================================================== */
 
+/*
+   IMPORTANTE:
+
+   Il valore di top NON usa più 50%.
+
+   Viene impostato una sola volta da JavaScript
+   sulla posizione originale del razzo.
+
+   In questo modo la comparsa della tastiera
+   non può modificare la posizione verticale
+   del razzo.
+*/
+
 .fixed-indicator {
 
-    position: fixed;
+    position: absolute;
 
     left: 50%;
 
-    top: var(--rocket-fixed-y);
+    top: var(--rocket-original-y);
 
     width: 0;
     height: 0;
@@ -1369,24 +1382,32 @@ document.addEventListener(
 
 
 /* =====================================================
-   POSIZIONE ORIGINALE DEL RAZZO
+   BLOCCO POSIZIONE ORIGINALE DEL RAZZO
 ===================================================== */
 
 /*
-   La posizione verticale viene calcolata
-   una sola volta, all'apertura della pagina.
+   La posizione viene calcolata UNA SOLA VOLTA.
 
-   Quando iOS apre la tastiera la viewport
-   può cambiare altezza, ma questa coordinata
-   NON viene più ricalcolata.
+   Non viene ascoltato resize.
+   Non viene ricalcolata quando compare
+   la tastiera.
 
-   In questo modo il razzo rimane esattamente
-   nella posizione originale.
+   Quindi il cambiamento della viewport
+   provocato dalla tastiera non modifica
+   la posizione del razzo.
 */
 
+const app =
+    document.querySelector(
+        ".app"
+    );
+
+const originalRocketY =
+    app.clientHeight / 2;
+
 document.documentElement.style.setProperty(
-    "--rocket-fixed-y",
-    (window.innerHeight / 2) + "px"
+    "--rocket-original-y",
+    originalRocketY + "px"
 );
 
 
@@ -2181,21 +2202,6 @@ function createGoal(
    DISEGNA OBIETTIVI
 ===================================================== */
 
-/*
-   Gli obiettivi sono sempre
-   ordinati numericamente.
-
-   Esempio:
-
-   -500
-   -200
-   0
-   200
-   500
-
-   NON in ordine di inserimento.
-*/
-
 function drawGoals() {
 
     goalsLayer.innerHTML =
@@ -2360,11 +2366,6 @@ function saveGoal() {
     const name =
         goalNameInput.value.trim();
 
-
-    /*
-       Entrambi i campi
-       sono obbligatori.
-    */
 
     if (
         !Number.isFinite(
@@ -2543,10 +2544,6 @@ function applyChange() {
         );
 
 
-    /*
-       La variazione è obbligatoria.
-    */
-
     if (
         !Number.isFinite(
             change
@@ -2558,13 +2555,6 @@ function applyChange() {
         return;
     }
 
-
-    /*
-       Anche la nota è obbligatoria.
-
-       Non è possibile registrare
-       una variazione senza nota.
-    */
 
     const comment =
         noteInput.value.trim();
@@ -2580,22 +2570,10 @@ function applyChange() {
     }
 
 
-    /*
-       NUOVO VALORE:
-
-       precedente + variazione
-    */
-
     const newValue =
         currentValue +
         change;
 
-
-    /*
-       Lo storico delle note
-       mantiene l'ordine cronologico
-       nel quale vengono inserite.
-    */
 
     notes.push({
 
@@ -2758,12 +2736,6 @@ changeInput.addEventListener(
         if (
             event.key === "Enter"
         ) {
-
-            /*
-               Se premo invio nella
-               variazione, provo a
-               registrare entrambe.
-            */
 
             applyChange();
         }
