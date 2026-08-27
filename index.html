@@ -61,7 +61,7 @@ body {
     position: relative;
 
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
 
     background: #000;
 
@@ -415,10 +415,11 @@ body {
 
 .fixed-indicator {
 
-    position: absolute;
+    position: fixed;
 
     left: 50%;
-    top: 50%;
+
+    top: var(--rocket-fixed-y);
 
     width: 0;
     height: 0;
@@ -1364,6 +1365,28 @@ document.addEventListener(
     {
         passive: false
     }
+);
+
+
+/* =====================================================
+   POSIZIONE ORIGINALE DEL RAZZO
+===================================================== */
+
+/*
+   La posizione verticale viene calcolata
+   una sola volta, all'apertura della pagina.
+
+   Quando iOS apre la tastiera la viewport
+   può cambiare altezza, ma questa coordinata
+   NON viene più ricalcolata.
+
+   In questo modo il razzo rimane esattamente
+   nella posizione originale.
+*/
+
+document.documentElement.style.setProperty(
+    "--rocket-fixed-y",
+    (window.innerHeight / 2) + "px"
 );
 
 
