@@ -27,7 +27,6 @@
 
 html,
 body {
-
     margin: 0;
     padding: 0;
 
@@ -50,7 +49,6 @@ body {
 }
 
 html {
-
     position: fixed;
 
     width: 100%;
@@ -60,7 +58,6 @@ html {
 }
 
 body {
-
     position: fixed;
 
     width: 100%;
@@ -73,38 +70,23 @@ body {
 
 
 /* =====================================================
-   PALCO DELL'APP
+   PALCO
 ===================================================== */
-
-/*
-   L'APP HA UNA DIMENSIONE FISSA.
-
-   NON viene ridimensionata quando compare
-   la tastiera di iOS.
-
-   La tastiera deve semplicemente sovrapporsi
-   alla parte inferiore dello schermo.
-*/
 
 .app {
 
-    position: fixed;
+    position: absolute;
 
     left: 0;
     top: 0;
 
-    width: 100vw;
+    width: 100%;
     height: 100vh;
+    height: 100svh;
 
     background: #000;
 
     overflow: hidden;
-
-    /*
-       Evita che il layout venga ricalcolato
-       usando la nuova altezza disponibile.
-    */
-    min-height: 100vh;
 }
 
 
@@ -170,6 +152,56 @@ body {
 
 
 /* =====================================================
+   PUNTO DEL VALORE CORRENTE
+===================================================== */
+
+/*
+   Questo punto appartiene alla SCALA.
+
+   Non appartiene al razzo.
+
+   La sua posizione verticale viene calcolata
+   in base al valore corrente.
+
+   Quindi:
+
+       valore corrente = posizione del punto
+
+   Anche se il razzo viene spostato con lo scroll,
+   il punto continua a indicare la posizione
+   numerica corretta sulla scala.
+*/
+
+.current-marker {
+
+    position: absolute;
+
+    left: 50%;
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    z-index: 30;
+
+    pointer-events: none;
+
+    box-shadow:
+        0 0 8px currentColor,
+        0 0 14px currentColor;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* =====================================================
    TACCHETTE
 ===================================================== */
 
@@ -182,7 +214,8 @@ body {
     width: 6px;
     height: 1px;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     background:
         rgba(255,255,255,0.20);
@@ -208,7 +241,7 @@ body {
 
 
 /* =====================================================
-   NUMERI DELLA SCALA
+   NUMERI
 ===================================================== */
 
 .scale-label {
@@ -233,7 +266,7 @@ body {
 
 
 /* =====================================================
-   OBIETTIVI A SINISTRA
+   OBIETTIVI
 ===================================================== */
 
 .goals-layer {
@@ -266,11 +299,6 @@ body {
 .goals-layer::-webkit-scrollbar {
     display: none;
 }
-
-
-/* =====================================================
-   SINGOLO OBIETTIVO
-===================================================== */
 
 .goal-item {
 
@@ -341,7 +369,7 @@ body {
 
 
 /* =====================================================
-   NOTE A DESTRA
+   NOTE
 ===================================================== */
 
 .notes-layer {
@@ -374,11 +402,6 @@ body {
 .notes-layer::-webkit-scrollbar {
     display: none;
 }
-
-
-/* =====================================================
-   NOTA SINGOLA
-===================================================== */
 
 .note {
 
@@ -452,16 +475,6 @@ body {
    RAZZO
 ===================================================== */
 
-/*
-   IL RAZZO È PARTE DEL PALCO.
-
-   NON viene mai ricentrato in base alla
-   tastiera.
-
-   top: 50% significa sempre il 50%
-   dell'area dell'app originale.
-*/
-
 .rocket-layer {
 
     position: absolute;
@@ -475,12 +488,9 @@ body {
     z-index: 70;
 
     pointer-events: none;
+
+    will-change: transform;
 }
-
-
-/* =====================================================
-   RAZZO GRAFICO
-===================================================== */
 
 .rocket {
 
@@ -517,7 +527,7 @@ body {
 
 
 /* =====================================================
-   VALORE ATTUALE
+   VALORE
 ===================================================== */
 
 .current-info {
@@ -562,7 +572,11 @@ body {
 
     left: 50%;
 
-    bottom: 16px;
+    bottom:
+        calc(
+            16px +
+            env(safe-area-inset-bottom)
+        );
 
     transform:
         translateX(-50%);
@@ -673,7 +687,7 @@ body {
 
 
 /* =====================================================
-   PULSANTE +
+   +
 ===================================================== */
 
 .plus-button {
@@ -754,7 +768,7 @@ body {
 
 
 /* =====================================================
-   MODALE OBIETTIVO
+   MODALE
 ===================================================== */
 
 .goal-modal {
@@ -1028,6 +1042,19 @@ body {
 
 }
 
+
+/* =====================================================
+   TASTIERA: IL VIEWPORT RESTA FISSO
+===================================================== */
+
+@supports (height: 100dvh) {
+
+    .app {
+        height: 100dvh;
+    }
+
+}
+
 </style>
 
 </head>
@@ -1050,6 +1077,12 @@ body {
 
             <div
                 class="center-line"
+            ></div>
+
+            <!-- PUNTO FISSO DEL VALORE -->
+            <div
+                id="currentMarker"
+                class="current-marker"
             ></div>
 
             <div
@@ -1197,6 +1230,7 @@ body {
 
         </div>
 
+
         <input
             id="noteInput"
             class="note-input"
@@ -1228,6 +1262,10 @@ body {
         Reset
     </button>
 
+
+    <!-- =================================================
+         MODALE OBIETTIVO
+    ================================================= -->
 
     <div
         id="goalModal"
@@ -1292,6 +1330,10 @@ body {
     </div>
 
 
+    <!-- =================================================
+         SCHERMATA INIZIALE
+    ================================================= -->
+
     <div
         id="startScreen"
         class="start-screen"
@@ -1340,11 +1382,7 @@ body {
 
 document.addEventListener(
     "gesturestart",
-    function(event) {
-
-        event.preventDefault();
-
-    },
+    event => event.preventDefault(),
     {
         passive: false
     }
@@ -1352,11 +1390,7 @@ document.addEventListener(
 
 document.addEventListener(
     "gesturechange",
-    function(event) {
-
-        event.preventDefault();
-
-    },
+    event => event.preventDefault(),
     {
         passive: false
     }
@@ -1364,11 +1398,7 @@ document.addEventListener(
 
 document.addEventListener(
     "gestureend",
-    function(event) {
-
-        event.preventDefault();
-
-    },
+    event => event.preventDefault(),
     {
         passive: false
     }
@@ -1376,7 +1406,7 @@ document.addEventListener(
 
 document.addEventListener(
     "touchmove",
-    function(event) {
+    event => {
 
         if (
             event.touches.length > 1
@@ -1434,6 +1464,11 @@ const labels =
         "labels"
     );
 
+const currentMarker =
+    document.getElementById(
+        "currentMarker"
+    );
+
 const goalsLayer =
     document.getElementById(
         "goalsLayer"
@@ -1442,6 +1477,11 @@ const goalsLayer =
 const notesLayer =
     document.getElementById(
         "notesLayer"
+    );
+
+const rocketLayer =
+    document.getElementById(
+        "rocketLayer"
     );
 
 const currentValueElement =
@@ -1547,9 +1587,7 @@ function parseNumber(value) {
         value === null ||
         value === undefined
     ) {
-
         return NaN;
-
     }
 
     let text =
@@ -1558,9 +1596,7 @@ function parseNumber(value) {
     if (
         text === ""
     ) {
-
         return NaN;
-
     }
 
     text =
@@ -1592,7 +1628,6 @@ function parseNumber(value) {
                 /^([+-]?\d+)\.(\d{3})$/,
                 "$1$2"
             );
-
     }
 
     const number =
@@ -1632,7 +1667,6 @@ function formatValue(value) {
         return "+" +
             absolute +
             " €";
-
     }
 
     if (
@@ -1642,7 +1676,6 @@ function formatValue(value) {
         return "-" +
             absolute +
             " €";
-
     }
 
     return "0 €";
@@ -1658,9 +1691,7 @@ function getValueColor(value) {
     if (
         value === 0
     ) {
-
         return "#FFFFFF";
-
     }
 
     if (
@@ -1670,37 +1701,28 @@ function getValueColor(value) {
         if (
             value <= 1000
         ) {
-
             return "#B8FFD0";
-
         }
 
         if (
             value <= 2000
         ) {
-
             return "#62F28A";
-
         }
 
         if (
             value <= 3000
         ) {
-
             return "#20DD65";
-
         }
 
         if (
             value <= 4000
         ) {
-
             return "#08C951";
-
         }
 
         return "#00A83F";
-
     }
 
     const amount =
@@ -1709,33 +1731,25 @@ function getValueColor(value) {
     if (
         amount <= 1000
     ) {
-
         return "#FFB9C0";
-
     }
 
     if (
         amount <= 2000
     ) {
-
         return "#FF6877";
-
     }
 
     if (
         amount <= 3000
     ) {
-
         return "#F8374C";
-
     }
 
     if (
         amount <= 4000
     ) {
-
         return "#E91E35";
-
     }
 
     return "#C90020";
@@ -1743,7 +1757,7 @@ function getValueColor(value) {
 
 
 /* =====================================================
-   COLORE RAZZO
+   COLORE RAZZO + PUNTO
 ===================================================== */
 
 function updateColor() {
@@ -1771,6 +1785,72 @@ function updateColor() {
         `drop-shadow(
             0 0 7px ${color}
         )`;
+
+
+    /* -----------------------------------------------
+       IL PUNTO HA ESATTAMENTE LO STESSO COLORE
+       DEL VALORE CORRENTE
+    ------------------------------------------------ */
+
+    currentMarker.style.backgroundColor =
+        color;
+
+    currentMarker.style.color =
+        color;
+
+    currentMarker.style.boxShadow =
+        `
+        0 0 8px ${color},
+        0 0 14px ${color}
+        `;
+}
+
+
+/* =====================================================
+   POSIZIONE DEL PUNTO
+===================================================== */
+
+/*
+   Il punto rappresenta ESATTAMENTE currentValue.
+
+   La scala viene costruita con:
+
+       centerY = centro della scala
+
+   e:
+
+       y = centerY
+
+   per il valore corrente.
+
+   Quindi il punto si trova sempre sulla
+   coordinata numerica del valore corrente.
+*/
+
+function updateCurrentMarker() {
+
+    if (
+        !Number.isFinite(
+            currentValue
+        )
+    ) {
+        return;
+    }
+
+    const totalValueRange =
+        DISPLAY_RANGE * 2;
+
+    const totalHeight =
+        totalValueRange *
+        PIXELS_PER_EURO;
+
+    const centerY =
+        totalHeight / 2;
+
+    currentMarker.style.top =
+        `${centerY}px`;
+
+    updateColor();
 }
 
 
@@ -1817,6 +1897,7 @@ function buildScale() {
             maximumValue / STEP
         ) * STEP;
 
+
     for (
         let scaleValue =
             firstValue;
@@ -1854,7 +1935,6 @@ function buildScale() {
             tick.classList.add(
                 "major"
             );
-
         }
 
         if (
@@ -1864,7 +1944,6 @@ function buildScale() {
             tick.classList.add(
                 "zero"
             );
-
         }
 
         tick.style.top =
@@ -1873,6 +1952,7 @@ function buildScale() {
         ticks.appendChild(
             tick
         );
+
 
         if (
             scaleValue % 250 === 0
@@ -1904,6 +1984,14 @@ function buildScale() {
             );
         }
     }
+
+
+    /*
+       Il punto viene posizionato dopo
+       aver costruito la scala.
+    */
+
+    updateCurrentMarker();
 }
 
 
@@ -2021,7 +2109,6 @@ function drawNotes() {
             notesLayer.appendChild(
                 note
             );
-
         }
     );
 }
@@ -2033,9 +2120,7 @@ function deleteNote(index) {
         index < 0 ||
         index >= notes.length
     ) {
-
         return;
-
     }
 
     notes.splice(
@@ -2180,7 +2265,6 @@ function drawGoals() {
 
                         originalIndex:
                             index
-
                     };
 
                 }
@@ -2233,9 +2317,7 @@ function deleteGoal(index) {
         index < 0 ||
         index >= goals.length
     ) {
-
         return;
-
     }
 
     goals.splice(
@@ -2309,7 +2391,6 @@ function saveGoal() {
         goalValueInput.focus();
 
         return;
-
     }
 
     if (
@@ -2319,7 +2400,6 @@ function saveGoal() {
         goalNameInput.focus();
 
         return;
-
     }
 
     goals.push({
@@ -2341,7 +2421,7 @@ function saveGoal() {
 
 
 /* =====================================================
-   CENTRA LA SCALA
+   CENTRA SCALA
 ===================================================== */
 
 function centerTimeline() {
@@ -2358,7 +2438,6 @@ function centerTimeline() {
             0;
 
         return;
-
     }
 
     timeline.scrollTop =
@@ -2390,9 +2469,154 @@ function updateDisplay() {
 
             centerTimeline();
 
+            stabilizeRocket();
+
         }
     );
 }
+
+
+/* =====================================================
+   BLOCCO FISICO RAZZO
+===================================================== */
+
+let rocketInitialBodyTop =
+    null;
+
+let rocketInitialBodyLeft =
+    null;
+
+
+function stabilizeRocket() {
+
+    const bodyRect =
+        document.body.getBoundingClientRect();
+
+    if (
+        rocketInitialBodyTop === null
+    ) {
+
+        rocketInitialBodyTop =
+            bodyRect.top;
+    }
+
+    if (
+        rocketInitialBodyLeft === null
+    ) {
+
+        rocketInitialBodyLeft =
+            bodyRect.left;
+    }
+
+    const verticalShift =
+        rocketInitialBodyTop -
+        bodyRect.top;
+
+    const horizontalShift =
+        rocketInitialBodyLeft -
+        bodyRect.left;
+
+    rocketLayer.style.transform =
+        `translate3d(
+            ${horizontalShift}px,
+            ${verticalShift}px,
+            0
+        )`;
+}
+
+
+/* =====================================================
+   MONITORAGGIO TASTIERA
+===================================================== */
+
+function requestRocketStabilization() {
+
+    requestAnimationFrame(
+        () => {
+
+            stabilizeRocket();
+
+            requestAnimationFrame(
+                () => {
+
+                    stabilizeRocket();
+
+                }
+            );
+
+        }
+    );
+}
+
+
+if (
+    window.visualViewport
+) {
+
+    window.visualViewport.addEventListener(
+        "scroll",
+        requestRocketStabilization,
+        {
+            passive: true
+        }
+    );
+
+    window.visualViewport.addEventListener(
+        "resize",
+        requestRocketStabilization,
+        {
+            passive: true
+        }
+    );
+}
+
+
+function monitorKeyboardMovement() {
+
+    let frames = 0;
+
+    function check() {
+
+        stabilizeRocket();
+
+        frames++;
+
+        if (
+            frames < 60
+        ) {
+
+            requestAnimationFrame(
+                check
+            );
+
+        }
+
+    }
+
+    requestAnimationFrame(
+        check
+    );
+}
+
+
+document.addEventListener(
+    "focusin",
+    function() {
+
+        monitorKeyboardMovement();
+
+    }
+);
+
+
+document.addEventListener(
+    "focusout",
+    function() {
+
+        monitorKeyboardMovement();
+
+    }
+);
 
 
 /* =====================================================
@@ -2415,7 +2639,6 @@ function setInitialValue() {
         startInput.focus();
 
         return;
-
     }
 
     startValue =
@@ -2474,7 +2697,6 @@ function applyChange() {
         changeInput.focus();
 
         return;
-
     }
 
     const comment =
@@ -2487,7 +2709,6 @@ function applyChange() {
         noteInput.focus();
 
         return;
-
     }
 
     const newValue =
@@ -2542,7 +2763,6 @@ function resetApp() {
     ) {
 
         return;
-
     }
 
     localStorage.removeItem(
@@ -2594,14 +2814,14 @@ function resetApp() {
         "hidden"
     );
 
-    setTimeout(
-        () => {
+    rocketLayer.style.transform =
+        "translate3d(0,0,0)";
 
-            startInput.focus();
+    rocketInitialBodyTop =
+        null;
 
-        },
-        100
-    );
+    rocketInitialBodyLeft =
+        null;
 }
 
 
@@ -2914,6 +3134,152 @@ if (
     );
 
 }
+
+
+/* =====================================================
+   POSIZIONE INIZIALE RAZZO
+===================================================== */
+
+requestAnimationFrame(
+    () => {
+
+        requestAnimationFrame(
+            () => {
+
+                stabilizeRocket();
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   CONTROLLO MOVIMENTO BODY
+===================================================== */
+
+let lastBodyTop =
+    null;
+
+
+function detectBodyMovement() {
+
+    const rect =
+        document.body.getBoundingClientRect();
+
+    if (
+        lastBodyTop === null
+    ) {
+
+        lastBodyTop =
+            rect.top;
+
+        return;
+
+    }
+
+    if (
+        Math.abs(
+            rect.top -
+            lastBodyTop
+        ) > 0.5
+    ) {
+
+        stabilizeRocket();
+
+        lastBodyTop =
+            rect.top;
+
+    }
+
+}
+
+
+let keyboardMonitor =
+    null;
+
+
+function startKeyboardMonitor() {
+
+    if (
+        keyboardMonitor !== null
+    ) {
+
+        return;
+
+    }
+
+    keyboardMonitor =
+        setInterval(
+            () => {
+
+                detectBodyMovement();
+
+            },
+            16
+        );
+
+}
+
+
+function stopKeyboardMonitor() {
+
+    if (
+        keyboardMonitor !== null
+    ) {
+
+        clearInterval(
+            keyboardMonitor
+        );
+
+        keyboardMonitor =
+            null;
+
+    }
+
+}
+
+
+document.addEventListener(
+    "focusin",
+    function() {
+
+        startKeyboardMonitor();
+
+    }
+);
+
+
+document.addEventListener(
+    "focusout",
+    function() {
+
+        setTimeout(
+            () => {
+
+                if (
+                    !document.activeElement ||
+                    (
+                        document.activeElement.tagName !==
+                        "INPUT" &&
+                        document.activeElement.tagName !==
+                        "TEXTAREA"
+                    )
+                ) {
+
+                    stopKeyboardMonitor();
+
+                    stabilizeRocket();
+
+                }
+
+            },
+            300
+        );
+
+    }
+);
 
 </script>
 
