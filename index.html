@@ -27,7 +27,6 @@
 
 html,
 body {
-
     margin: 0;
     padding: 0;
 
@@ -47,128 +46,48 @@ body {
     overflow: hidden;
 
     overscroll-behavior: none;
+}
 
+html {
     position: fixed;
-
-    top: 0;
-    left: 0;
 
     width: 100%;
     height: 100%;
+
+    overflow: hidden;
+}
+
+body {
+    position: fixed;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
 
     touch-action: pan-y;
 }
 
 
 /* =====================================================
-   APP
-
-   IMPORTANTE:
-
-   L'altezza viene fissata all'avvio.
-
-   NON viene utilizzata 100dvh.
-
-   Quindi la comparsa della tastiera non
-   modifica l'altezza logica dell'app.
+   PALCO DELL'APP
 ===================================================== */
 
 .app {
 
-    position: fixed;
+    position: absolute;
 
-    top: 0;
     left: 0;
+    top: 0;
 
     width: 100%;
+    height: 100vh;
 
-    height: var(--rocket-app-height);
-
-    min-height: var(--rocket-app-height);
-    max-height: var(--rocket-app-height);
+    height: 100svh;
 
     background: #000;
 
     overflow: hidden;
-
-    transform: none;
-
-    margin: 0;
-    padding: 0;
-}
-
-
-/* =====================================================
-   PALCO FISSO DEL RAZZO
-
-   QUESTO È IL CAMBIAMENTO PRINCIPALE.
-
-   Il razzo non è più posizionato in base
-   all'altezza corrente dello schermo.
-
-   Il palco conserva l'altezza originale
-   dell'app rilevata all'avvio.
-
-   La tastiera può quindi ridurre il viewport
-   visibile, ma non cambia il palco.
-===================================================== */
-
-.rocket-stage {
-
-    position: fixed;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-
-    height: var(--rocket-original-height);
-
-    min-height: var(--rocket-original-height);
-    max-height: var(--rocket-original-height);
-
-    overflow: visible;
-
-    pointer-events: none;
-
-    z-index: 70;
-
-    transform: none;
-}
-
-
-/* =====================================================
-   INDICATORE DEL RAZZO
-
-   Posizione assoluta rispetto al palco
-   con altezza ORIGINALE.
-
-   Il 50% quindi non dipende più dall'altezza
-   ridotta dalla tastiera.
-===================================================== */
-
-.fixed-indicator {
-
-    position: absolute;
-
-    left: 50%;
-
-    top:
-        calc(
-            var(--rocket-original-height) / 2
-        );
-
-    width: 0;
-    height: 0;
-
-    margin: 0;
-    padding: 0;
-
-    z-index: 70;
-
-    pointer-events: none;
-
-    transform: none;
 }
 
 
@@ -513,6 +432,44 @@ body {
 
 
 /* =====================================================
+   CONTENITORE RAZZO
+===================================================== */
+
+/*
+   IMPORTANTE:
+
+   Il razzo NON è position: fixed.
+
+   È contenuto nel palco dell'app.
+   Safari può spostare il documento quando
+   compare la tastiera.
+
+   Il JavaScript compensa esclusivamente
+   questo spostamento sul contenitore.
+
+   La coordinata originale del razzo rimane
+   quindi sempre la stessa.
+*/
+
+.rocket-layer {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 0;
+    height: 0;
+
+    z-index: 70;
+
+    pointer-events: none;
+
+    will-change: transform;
+}
+
+
+/* =====================================================
    RAZZO
 ===================================================== */
 
@@ -526,8 +483,6 @@ body {
 
     width: 58px;
     height: 29px;
-
-    margin: 0;
 
     transform:
         translateY(-50%);
@@ -1014,6 +969,11 @@ body {
     font-weight: 700;
 }
 
+.start-input::placeholder {
+
+    color: #555;
+}
+
 .hidden {
 
     display: none !important;
@@ -1075,12 +1035,8 @@ body {
 
 <body>
 
-<div class="app" id="app">
+<div class="app">
 
-
-    <!-- =================================================
-         SCALA SCORRIBILE
-    ================================================= -->
 
     <div
         id="timeline"
@@ -1109,19 +1065,11 @@ body {
     </div>
 
 
-    <!-- =================================================
-         OBIETTIVI
-    ================================================= -->
-
     <div
         id="goalsLayer"
         class="goals-layer"
     ></div>
 
-
-    <!-- =================================================
-         NOTE
-    ================================================= -->
 
     <div
         id="notesLayer"
@@ -1130,110 +1078,96 @@ body {
 
 
     <!-- =================================================
-         PALCO RAZZO
-
-         COMPLETAMENTE INDIPENDENTE DALLA SCALA.
-         IL SUO RIFERIMENTO È L'ALTEZZA ORIGINALE.
+         RAZZO ISOLATO DAL VIEWPORT
     ================================================= -->
 
     <div
-        id="rocketStage"
-        class="rocket-stage"
+        id="rocketLayer"
+        class="rocket-layer"
     >
 
-        <div
-            id="fixedIndicator"
-            class="fixed-indicator"
+        <svg
+            id="rocket"
+            class="rocket"
+            viewBox="0 0 100 50"
+            xmlns="http://www.w3.org/2000/svg"
         >
 
-            <svg
-                id="rocket"
-                class="rocket"
-                viewBox="0 0 100 50"
-                xmlns="http://www.w3.org/2000/svg"
-            >
+            <path
+                class="rocket-part"
+                d="
+                    M8 25
+                    C25 10 52 7 78 25
+                    C52 43 25 40 8 25
+                    Z
+                "
+            />
 
-                <path
-                    class="rocket-part"
-                    d="
-                        M8 25
-                        C25 10 52 7 78 25
-                        C52 43 25 40 8 25
-                        Z
-                    "
-                />
+            <path
+                class="rocket-part"
+                d="
+                    M65 13
+                    C82 15 94 21 99 25
+                    C94 29 82 35 65 37
+                    Z
+                "
+            />
 
-                <path
-                    class="rocket-part"
-                    d="
-                        M65 13
-                        C82 15 94 21 99 25
-                        C94 29 82 35 65 37
-                        Z
-                    "
-                />
+            <circle
+                cx="68"
+                cy="25"
+                r="5"
+                class="rocket-window"
+            />
 
-                <circle
-                    cx="68"
-                    cy="25"
-                    r="5"
-                    class="rocket-window"
-                />
+            <path
+                class="rocket-part"
+                d="
+                    M39 16
+                    L25 5
+                    L28 20
+                    Z
+                "
+            />
 
-                <path
-                    class="rocket-part"
-                    d="
-                        M39 16
-                        L25 5
-                        L28 20
-                        Z
-                    "
-                />
+            <path
+                class="rocket-part"
+                d="
+                    M39 34
+                    L25 45
+                    L28 30
+                    Z
+                "
+            />
 
-                <path
-                    class="rocket-part"
-                    d="
-                        M39 34
-                        L25 45
-                        L28 30
-                        Z
-                    "
-                />
+            <path
+                class="rocket-part"
+                d="
+                    M12 18
+                    C1 20 1 30 12 32
+                    L22 25
+                    Z
+                "
+            />
 
-                <path
-                    class="rocket-part"
-                    d="
-                        M12 18
-                        C1 20 1 30 12 32
-                        L22 25
-                        Z
-                    "
-                />
+        </svg>
 
-            </svg>
 
+        <div
+            class="current-info"
+        >
 
             <div
-                class="current-info"
+                id="currentValue"
+                class="current-value"
             >
-
-                <div
-                    id="currentValue"
-                    class="current-value"
-                >
-                    0 €
-                </div>
-
+                0 €
             </div>
 
         </div>
 
     </div>
 
-
-    <!-- =================================================
-         CONTROLLI
-    ================================================= -->
 
     <div
         class="controls"
@@ -1278,10 +1212,6 @@ body {
     </div>
 
 
-    <!-- =================================================
-         PULSANTE +
-    ================================================= -->
-
     <button
         id="plusButton"
         class="plus-button"
@@ -1291,10 +1221,6 @@ body {
     </button>
 
 
-    <!-- =================================================
-         RESET
-    ================================================= -->
-
     <button
         id="resetButton"
         class="reset-button"
@@ -1302,10 +1228,6 @@ body {
         Reset
     </button>
 
-
-    <!-- =================================================
-         MODALE OBIETTIVO
-    ================================================= -->
 
     <div
         id="goalModal"
@@ -1370,10 +1292,6 @@ body {
     </div>
 
 
-    <!-- =================================================
-         VALORE INIZIALE
-    ================================================= -->
-
     <div
         id="startScreen"
         class="start-screen"
@@ -1423,9 +1341,7 @@ body {
 document.addEventListener(
     "gesturestart",
     function(event) {
-
         event.preventDefault();
-
     },
     {
         passive: false
@@ -1435,9 +1351,7 @@ document.addEventListener(
 document.addEventListener(
     "gesturechange",
     function(event) {
-
         event.preventDefault();
-
     },
     {
         passive: false
@@ -1447,9 +1361,7 @@ document.addEventListener(
 document.addEventListener(
     "gestureend",
     function(event) {
-
         event.preventDefault();
-
     },
     {
         passive: false
@@ -1463,9 +1375,7 @@ document.addEventListener(
         if (
             event.touches.length > 1
         ) {
-
             event.preventDefault();
-
         }
 
     },
@@ -1473,236 +1383,6 @@ document.addEventListener(
         passive: false
     }
 );
-
-
-/* =====================================================
-   BLOCCO DIMENSIONE ORIGINALE
-
-   QUESTO VIENE ESEGUITO UNA SOLA VOLTA.
-
-   L'altezza registrata diventa il riferimento
-   permanente del razzo.
-
-   La tastiera non può modificarla.
-===================================================== */
-
-const ORIGINAL_APP_HEIGHT =
-    window.innerHeight;
-
-
-/*
-   Salviamo immediatamente
-   l'altezza originale.
-*/
-
-document.documentElement.style
-    .setProperty(
-        "--rocket-app-height",
-        ORIGINAL_APP_HEIGHT + "px"
-    );
-
-document.documentElement.style
-    .setProperty(
-        "--rocket-original-height",
-        ORIGINAL_APP_HEIGHT + "px"
-    );
-
-
-/*
-   Salviamo anche la larghezza originale.
-*/
-
-const ORIGINAL_APP_WIDTH =
-    window.innerWidth;
-
-document.documentElement.style
-    .setProperty(
-        "--rocket-original-width",
-        ORIGINAL_APP_WIDTH + "px"
-    );
-
-
-/* =====================================================
-   BLOCCO DELLA RISPOSTA ALLA TASTIERA
-
-   IMPORTANTE:
-
-   NON aggiorniamo mai
-   --rocket-original-height.
-
-   Anche se iOS modifica innerHeight,
-   il razzo continua a utilizzare
-   il valore originale.
-===================================================== */
-
-let keyboardIsOpen =
-    false;
-
-
-/*
-   VisualViewport viene utilizzato
-   esclusivamente per sapere se la
-   tastiera è comparsa.
-
-   NON viene utilizzato per
-   ricentrare il razzo.
-*/
-
-if (
-    window.visualViewport
-) {
-
-    const initialVisualHeight =
-        window.visualViewport.height;
-
-
-    window.visualViewport.addEventListener(
-        "resize",
-        function() {
-
-            const currentVisualHeight =
-                window.visualViewport.height;
-
-
-            keyboardIsOpen =
-                currentVisualHeight <
-                initialVisualHeight - 80;
-
-
-            /*
-               Nessun ridimensionamento
-               dell'app.
-            */
-
-            document.documentElement.style
-                .setProperty(
-                    "--rocket-app-height",
-                    ORIGINAL_APP_HEIGHT + "px"
-                );
-
-
-            document.documentElement.style
-                .setProperty(
-                    "--rocket-original-height",
-                    ORIGINAL_APP_HEIGHT + "px"
-                );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   PREVENZIONE SCROLL AUTOMATICO INPUT
-
-   iOS può cercare di portare l'input
-   al centro quando apre la tastiera.
-
-   L'app invece deve restare nella
-   propria posizione.
-===================================================== */
-
-let savedTimelineScroll =
-    0;
-
-
-function saveScrollPosition() {
-
-    savedTimelineScroll =
-        timeline.scrollTop;
-
-}
-
-
-function restoreScrollPosition() {
-
-    timeline.scrollTop =
-        savedTimelineScroll;
-
-}
-
-
-/*
-   Salviamo la posizione prima del focus.
-*/
-
-document.addEventListener(
-    "focusin",
-    function(event) {
-
-        if (
-            event.target.tagName ===
-            "INPUT"
-        ) {
-
-            saveScrollPosition();
-
-        }
-
-    }
-);
-
-
-/*
-   Dopo l'apertura della tastiera
-   ripristiniamo lo scroll della scala.
-*/
-
-document.addEventListener(
-    "focusin",
-    function() {
-
-        requestAnimationFrame(
-            function() {
-
-                requestAnimationFrame(
-                    function() {
-
-                        restoreScrollPosition();
-
-                    }
-                );
-
-            }
-        );
-
-    }
-);
-
-
-/*
-   Anche durante resize di iOS
-   non permettiamo alla scala
-   di essere spostata automaticamente.
-*/
-
-if (
-    window.visualViewport
-) {
-
-    window.visualViewport.addEventListener(
-        "resize",
-        function() {
-
-            if (
-                keyboardIsOpen
-            ) {
-
-                requestAnimationFrame(
-                    function() {
-
-                        restoreScrollPosition();
-
-                    }
-                );
-
-            }
-
-        }
-    );
-
-}
 
 
 /* =====================================================
@@ -1754,6 +1434,11 @@ const goalsLayer =
 const notesLayer =
     document.getElementById(
         "notesLayer"
+    );
+
+const rocketLayer =
+    document.getElementById(
+        "rocketLayer"
     );
 
 const currentValueElement =
@@ -1831,11 +1516,6 @@ const rocketParts =
         ".rocket-part"
     );
 
-const rocket =
-    document.getElementById(
-        "rocket"
-    );
-
 
 /* =====================================================
    PARAMETRI SCALA
@@ -1864,30 +1544,23 @@ function parseNumber(value) {
         value === null ||
         value === undefined
     ) {
-
         return NaN;
-
     }
 
     let text =
         String(value).trim();
 
-
     if (
         text === ""
     ) {
-
         return NaN;
-
     }
-
 
     text =
         text.replace(
             /\s/g,
             ""
         );
-
 
     if (
         text.includes(",")
@@ -1912,13 +1585,10 @@ function parseNumber(value) {
                 /^([+-]?\d+)\.(\d{3})$/,
                 "$1$2"
             );
-
     }
-
 
     const number =
         Number(text);
-
 
     return Number.isFinite(number)
         ? number
@@ -1937,7 +1607,6 @@ function formatValue(value) {
             value * 100
         ) / 100;
 
-
     const absolute =
         Math.abs(rounded)
             .toLocaleString(
@@ -1948,7 +1617,6 @@ function formatValue(value) {
                 }
             );
 
-
     if (
         rounded > 0
     ) {
@@ -1956,9 +1624,7 @@ function formatValue(value) {
         return "+" +
             absolute +
             " €";
-
     }
-
 
     if (
         rounded < 0
@@ -1967,9 +1633,7 @@ function formatValue(value) {
         return "-" +
             absolute +
             " €";
-
     }
-
 
     return "0 €";
 }
@@ -1984,11 +1648,8 @@ function getValueColor(value) {
     if (
         value === 0
     ) {
-
         return "#FFFFFF";
-
     }
-
 
     if (
         value > 0
@@ -1997,73 +1658,55 @@ function getValueColor(value) {
         if (
             value <= 1000
         ) {
-
             return "#B8FFD0";
-
         }
 
         if (
             value <= 2000
         ) {
-
             return "#62F28A";
-
         }
 
         if (
             value <= 3000
         ) {
-
             return "#20DD65";
-
         }
 
         if (
             value <= 4000
         ) {
-
             return "#08C951";
-
         }
 
         return "#00A83F";
     }
 
-
     const amount =
         Math.abs(value);
-
 
     if (
         amount <= 1000
     ) {
-
         return "#FFB9C0";
-
     }
 
     if (
         amount <= 2000
     ) {
-
         return "#FF6877";
-
     }
 
     if (
         amount <= 3000
     ) {
-
         return "#F8374C";
-
     }
 
     if (
         amount <= 4000
     ) {
-
         return "#E91E35";
-
     }
 
     return "#C90020";
@@ -2081,22 +1724,20 @@ function updateColor() {
             currentValue
         );
 
-
     rocketParts.forEach(
         part => {
 
             part.style.fill =
                 color;
-
         }
     );
-
 
     currentValueElement.style.color =
         color;
 
-
-    rocket.style.filter =
+    document.getElementById(
+        "rocket"
+    ).style.filter =
         `drop-shadow(
             0 0 7px ${color}
         )`;
@@ -2115,45 +1756,36 @@ function buildScale() {
     labels.innerHTML =
         "";
 
-
     const totalValueRange =
         DISPLAY_RANGE * 2;
-
 
     const totalHeight =
         totalValueRange *
         PIXELS_PER_EURO;
 
-
     timelineContent.style.height =
         totalHeight + "px";
 
-
     const centerY =
         totalHeight / 2;
-
 
     const minimumValue =
         currentValue -
         DISPLAY_RANGE;
 
-
     const maximumValue =
         currentValue +
         DISPLAY_RANGE;
-
 
     const firstValue =
         Math.ceil(
             minimumValue / STEP
         ) * STEP;
 
-
     const lastValue =
         Math.floor(
             maximumValue / STEP
         ) * STEP;
-
 
     for (
         let scaleValue =
@@ -2170,7 +1802,6 @@ function buildScale() {
             scaleValue -
             currentValue;
 
-
         const y =
             centerY -
             (
@@ -2178,16 +1809,13 @@ function buildScale() {
                 PIXELS_PER_EURO
             );
 
-
         const tick =
             document.createElement(
                 "div"
             );
 
-
         tick.className =
             "tick";
-
 
         if (
             scaleValue % 250 === 0
@@ -2196,9 +1824,7 @@ function buildScale() {
             tick.classList.add(
                 "major"
             );
-
         }
-
 
         if (
             scaleValue === 0
@@ -2207,18 +1833,14 @@ function buildScale() {
             tick.classList.add(
                 "zero"
             );
-
         }
-
 
         tick.style.top =
             `${y}px`;
 
-
         ticks.appendChild(
             tick
         );
-
 
         if (
             scaleValue % 250 === 0
@@ -2229,40 +1851,32 @@ function buildScale() {
                     "div"
                 );
 
-
             label.className =
                 "scale-label";
 
-
             label.style.top =
                 `${y}px`;
-
 
             label.textContent =
                 formatValue(
                     scaleValue
                 );
 
-
             label.style.color =
                 getValueColor(
                     scaleValue
                 );
 
-
             labels.appendChild(
                 label
             );
-
         }
-
     }
-
 }
 
 
 /* =====================================================
-   CREA NOTA
+   NOTE
 ===================================================== */
 
 function createNote(
@@ -2276,72 +1890,57 @@ function createNote(
             "div"
         );
 
-
     note.className =
         "note";
-
 
     const color =
         getValueColor(
             value
         );
 
-
     note.style.color =
         color;
-
 
     const valueElement =
         document.createElement(
             "span"
         );
 
-
     valueElement.className =
         "note-value";
-
 
     valueElement.textContent =
         formatValue(
             value
         );
 
-
     valueElement.style.color =
         color;
-
 
     const textElement =
         document.createElement(
             "span"
         );
 
-
     textElement.className =
         "note-text";
-
 
     textElement.textContent =
         text;
 
-
     textElement.style.color =
         color;
-
 
     const deleteButton =
         document.createElement(
             "button"
         );
 
-
     deleteButton.className =
         "note-delete";
 
-
     deleteButton.textContent =
         "×";
-
 
     deleteButton.addEventListener(
         "click",
@@ -2356,7 +1955,6 @@ function createNote(
         }
     );
 
-
     note.appendChild(
         valueElement
     );
@@ -2369,20 +1967,14 @@ function createNote(
         deleteButton
     );
 
-
     return note;
 }
 
-
-/* =====================================================
-   DISEGNA NOTE
-===================================================== */
 
 function drawNotes() {
 
     notesLayer.innerHTML =
         "";
-
 
     notes.forEach(
         (entry, index) => {
@@ -2394,19 +1986,13 @@ function drawNotes() {
                     index
                 );
 
-
             notesLayer.appendChild(
                 note
             );
-
         }
     );
 }
 
-
-/* =====================================================
-   ELIMINA NOTA
-===================================================== */
 
 function deleteNote(index) {
 
@@ -2414,27 +2000,19 @@ function deleteNote(index) {
         index < 0 ||
         index >= notes.length
     ) {
-
         return;
-
     }
-
 
     notes.splice(
         index,
         1
     );
 
-
     saveNotes();
 
     drawNotes();
 }
 
-
-/* =====================================================
-   SALVA NOTE
-===================================================== */
 
 function saveNotes() {
 
@@ -2448,7 +2026,7 @@ function saveNotes() {
 
 
 /* =====================================================
-   CREA OBIETTIVO
+   OBIETTIVI
 ===================================================== */
 
 function createGoal(
@@ -2462,72 +2040,57 @@ function createGoal(
             "div"
         );
 
-
     item.className =
         "goal-item";
-
 
     const color =
         getValueColor(
             value
         );
 
-
     item.style.color =
         color;
-
 
     const valueElement =
         document.createElement(
             "span"
         );
 
-
     valueElement.className =
         "goal-value";
-
 
     valueElement.textContent =
         formatValue(
             value
         );
 
-
     valueElement.style.color =
         color;
-
 
     const nameElement =
         document.createElement(
             "span"
         );
 
-
     nameElement.className =
         "goal-text";
-
 
     nameElement.textContent =
         name;
 
-
     nameElement.style.color =
         color;
-
 
     const deleteButton =
         document.createElement(
             "button"
         );
 
-
     deleteButton.className =
         "goal-delete";
 
-
     deleteButton.textContent =
         "×";
-
 
     deleteButton.addEventListener(
         "click",
@@ -2542,7 +2105,6 @@ function createGoal(
         }
     );
 
-
     item.appendChild(
         valueElement
     );
@@ -2555,20 +2117,14 @@ function createGoal(
         deleteButton
     );
 
-
     return item;
 }
 
-
-/* =====================================================
-   DISEGNA OBIETTIVI
-===================================================== */
 
 function drawGoals() {
 
     goalsLayer.innerHTML =
         "";
-
 
     const sortedGoals =
         goals
@@ -2576,7 +2132,6 @@ function drawGoals() {
                 (goal, index) => {
 
                     return {
-
                         value:
                             Number(
                                 goal.value
@@ -2589,7 +2144,6 @@ function drawGoals() {
 
                         originalIndex:
                             index
-
                     };
 
                 }
@@ -2606,7 +2160,6 @@ function drawGoals() {
                     b.value
             );
 
-
     sortedGoals.forEach(
         goal => {
 
@@ -2617,7 +2170,6 @@ function drawGoals() {
                     goal.originalIndex
                 );
 
-
             goalsLayer.appendChild(
                 item
             );
@@ -2626,10 +2178,6 @@ function drawGoals() {
     );
 }
 
-
-/* =====================================================
-   SALVA OBIETTIVI
-===================================================== */
 
 function saveGoals() {
 
@@ -2642,27 +2190,19 @@ function saveGoals() {
 }
 
 
-/* =====================================================
-   ELIMINA OBIETTIVO
-===================================================== */
-
 function deleteGoal(index) {
 
     if (
         index < 0 ||
         index >= goals.length
     ) {
-
         return;
-
     }
-
 
     goals.splice(
         index,
         1
     );
-
 
     saveGoals();
 
@@ -2671,7 +2211,7 @@ function deleteGoal(index) {
 
 
 /* =====================================================
-   APRI MODALE
+   MODALE
 ===================================================== */
 
 function openGoalModal() {
@@ -2682,11 +2222,9 @@ function openGoalModal() {
     goalNameInput.value =
         "";
 
-
     goalModal.classList.remove(
         "hidden"
     );
-
 
     setTimeout(
         () => {
@@ -2699,16 +2237,11 @@ function openGoalModal() {
 }
 
 
-/* =====================================================
-   CHIUDI MODALE
-===================================================== */
-
 function closeGoalModal() {
 
     goalModal.classList.add(
         "hidden"
     );
-
 
     goalValueInput.value =
         "";
@@ -2718,10 +2251,6 @@ function closeGoalModal() {
 }
 
 
-/* =====================================================
-   SALVA OBIETTIVO
-===================================================== */
-
 function saveGoal() {
 
     const value =
@@ -2729,10 +2258,8 @@ function saveGoal() {
             goalValueInput.value
         );
 
-
     const name =
         goalNameInput.value.trim();
-
 
     if (
         !Number.isFinite(
@@ -2745,7 +2272,6 @@ function saveGoal() {
         return;
     }
 
-
     if (
         name === ""
     ) {
@@ -2754,7 +2280,6 @@ function saveGoal() {
 
         return;
     }
-
 
     goals.push({
 
@@ -2766,7 +2291,6 @@ function saveGoal() {
 
     });
 
-
     saveGoals();
 
     drawGoals();
@@ -2777,10 +2301,6 @@ function saveGoal() {
 
 /* =====================================================
    CENTRA LA SCALA
-
-   SOLO LA SCALA.
-
-   IL RAZZO NON VIENE TOCCATO.
 ===================================================== */
 
 function centerTimeline() {
@@ -2788,7 +2308,6 @@ function centerTimeline() {
     const maxScroll =
         timeline.scrollHeight -
         timeline.clientHeight;
-
 
     if (
         maxScroll <= 0
@@ -2800,7 +2319,6 @@ function centerTimeline() {
         return;
     }
 
-
     timeline.scrollTop =
         maxScroll / 2;
 }
@@ -2808,11 +2326,6 @@ function centerTimeline() {
 
 /* =====================================================
    DISPLAY
-
-   NOTA:
-
-   Nessuna operazione qui modifica
-   la posizione del razzo.
 ===================================================== */
 
 function updateDisplay() {
@@ -2822,7 +2335,6 @@ function updateDisplay() {
             currentValue
         );
 
-
     updateColor();
 
     buildScale();
@@ -2831,15 +2343,221 @@ function updateDisplay() {
 
     drawNotes();
 
-
     requestAnimationFrame(
         () => {
 
             centerTimeline();
 
+            /*
+               Aggiorniamo la posizione del palco
+               senza modificare la coordinata
+               originale del razzo.
+            */
+
+            stabilizeRocket();
+
         }
     );
 }
+
+
+/* =====================================================
+   BLOCCO FISICO DEL RAZZO
+===================================================== */
+
+/*
+   QUESTO È IL CAMBIAMENTO PRINCIPALE.
+
+   Safari iOS può spostare visivamente il body
+   quando una input riceve il focus.
+
+   Il body può quindi avere, per esempio:
+
+       top = -84px
+
+   anche se scrollTop = 0.
+
+   Il razzo viene normalmente trascinato
+   insieme al body.
+
+   Qui misuriamo lo spostamento reale del body
+   e applichiamo al SOLO rocketLayer
+   la compensazione opposta.
+
+   Esempio:
+
+       body      = -84px
+       compensazione = +84px
+
+   Risultato:
+
+       razzo = posizione originale.
+
+   Non viene utilizzato innerHeight.
+   Non viene utilizzato visualViewport.height.
+   Non viene ricentrato il razzo.
+*/
+
+let rocketInitialBodyTop = null;
+
+let rocketInitialBodyLeft = null;
+
+
+function stabilizeRocket() {
+
+    const bodyRect =
+        document.body.getBoundingClientRect();
+
+    if (
+        rocketInitialBodyTop === null
+    ) {
+
+        rocketInitialBodyTop =
+            bodyRect.top;
+    }
+
+    if (
+        rocketInitialBodyLeft === null
+    ) {
+
+        rocketInitialBodyLeft =
+            bodyRect.left;
+    }
+
+    const verticalShift =
+        rocketInitialBodyTop -
+        bodyRect.top;
+
+    const horizontalShift =
+        rocketInitialBodyLeft -
+        bodyRect.left;
+
+    rocketLayer.style.transform =
+        `translate3d(
+            ${horizontalShift}px,
+            ${verticalShift}px,
+            0
+        )`;
+}
+
+
+/* =====================================================
+   MONITORAGGIO SAFARI / TASTIERA
+===================================================== */
+
+/*
+   NON usiamo visualViewport per ricentrare
+   il razzo.
+
+   Lo usiamo soltanto come segnale per
+   controllare nuovamente l'effettiva
+   posizione del body.
+
+   Questo è fondamentale:
+   il razzo non viene mai posizionato
+   rispetto alla nuova altezza della tastiera.
+*/
+
+function requestRocketStabilization() {
+
+    requestAnimationFrame(
+        () => {
+
+            stabilizeRocket();
+
+            requestAnimationFrame(
+                () => {
+
+                    stabilizeRocket();
+
+                }
+            );
+
+        }
+    );
+}
+
+
+if (
+    window.visualViewport
+) {
+
+    window.visualViewport.addEventListener(
+        "scroll",
+        requestRocketStabilization,
+        {
+            passive: true
+        }
+    );
+
+    window.visualViewport.addEventListener(
+        "resize",
+        requestRocketStabilization,
+        {
+            passive: true
+        }
+    );
+}
+
+
+/*
+   Safari può modificare la posizione
+   durante l'animazione della tastiera.
+
+   Per questo controlliamo il body
+   per un breve periodo dopo il focus.
+*/
+
+function monitorKeyboardMovement() {
+
+    let frames = 0;
+
+    function check() {
+
+        stabilizeRocket();
+
+        frames++;
+
+        if (
+            frames < 60
+        ) {
+
+            requestAnimationFrame(
+                check
+            );
+        }
+    }
+
+    requestAnimationFrame(
+        check
+    );
+}
+
+
+document.addEventListener(
+    "focusin",
+    function() {
+
+        monitorKeyboardMovement();
+
+    }
+);
+
+
+/*
+   Anche quando la tastiera viene chiusa
+   controlliamo il ritorno alla posizione
+   originale.
+*/
+
+document.addEventListener(
+    "focusout",
+    function() {
+
+        monitorKeyboardMovement();
+
+    }
+);
 
 
 /* =====================================================
@@ -2853,7 +2571,6 @@ function setInitialValue() {
             startInput.value
         );
 
-
     if (
         !Number.isFinite(
             value
@@ -2865,18 +2582,15 @@ function setInitialValue() {
         return;
     }
 
-
     startValue =
         value;
 
     currentValue =
         value;
 
-
     notes = [];
 
     goals = [];
-
 
     localStorage.setItem(
         START_KEY,
@@ -2885,7 +2599,6 @@ function setInitialValue() {
         )
     );
 
-
     localStorage.setItem(
         CURRENT_KEY,
         String(
@@ -2893,16 +2606,13 @@ function setInitialValue() {
         )
     );
 
-
     saveNotes();
 
     saveGoals();
 
-
     startScreen.classList.add(
         "hidden"
     );
-
 
     updateDisplay();
 }
@@ -2919,7 +2629,6 @@ function applyChange() {
             changeInput.value
         );
 
-
     if (
         !Number.isFinite(
             change
@@ -2931,10 +2640,8 @@ function applyChange() {
         return;
     }
 
-
     const comment =
         noteInput.value.trim();
-
 
     if (
         comment === ""
@@ -2945,11 +2652,9 @@ function applyChange() {
         return;
     }
 
-
     const newValue =
         currentValue +
         change;
-
 
     notes.push({
 
@@ -2961,10 +2666,8 @@ function applyChange() {
 
     });
 
-
     currentValue =
         newValue;
-
 
     localStorage.setItem(
         CURRENT_KEY,
@@ -2973,16 +2676,13 @@ function applyChange() {
         )
     );
 
-
     saveNotes();
-
 
     changeInput.value =
         "";
 
     noteInput.value =
         "";
-
 
     updateDisplay();
 }
@@ -2999,14 +2699,12 @@ function resetApp() {
             "Vuoi cancellare il valore iniziale, tutte le note e tutti gli obiettivi?"
         );
 
-
     if (
         !confirmed
     ) {
 
         return;
     }
-
 
     localStorage.removeItem(
         START_KEY
@@ -3024,7 +2722,6 @@ function resetApp() {
         GOALS_KEY
     );
 
-
     startValue =
         NaN;
 
@@ -3035,7 +2732,6 @@ function resetApp() {
 
     goals = [];
 
-
     startInput.value =
         "";
 
@@ -3045,11 +2741,9 @@ function resetApp() {
     noteInput.value =
         "";
 
-
     goalModal.classList.add(
         "hidden"
     );
-
 
     goalsLayer.innerHTML =
         "";
@@ -3057,11 +2751,18 @@ function resetApp() {
     notesLayer.innerHTML =
         "";
 
-
     startScreen.classList.remove(
         "hidden"
     );
 
+    rocketLayer.style.transform =
+        "translate3d(0,0,0)";
+
+    rocketInitialBodyTop =
+        null;
+
+    rocketInitialBodyLeft =
+        null;
 
     setTimeout(
         () => {
@@ -3093,7 +2794,6 @@ startInput.addEventListener(
         ) {
 
             setInitialValue();
-
         }
 
     }
@@ -3115,7 +2815,6 @@ changeInput.addEventListener(
         ) {
 
             applyChange();
-
         }
 
     }
@@ -3131,7 +2830,6 @@ noteInput.addEventListener(
         ) {
 
             applyChange();
-
         }
 
     }
@@ -3165,7 +2863,6 @@ goalValueInput.addEventListener(
         ) {
 
             goalNameInput.focus();
-
         }
 
     }
@@ -3181,7 +2878,6 @@ goalNameInput.addEventListener(
         ) {
 
             saveGoal();
-
         }
 
     }
@@ -3198,7 +2894,6 @@ goalModal.addEventListener(
         ) {
 
             closeGoalModal();
-
         }
 
     }
@@ -3250,7 +2945,6 @@ try {
             )
         );
 
-
     if (
         Array.isArray(
             savedNotes
@@ -3285,13 +2979,11 @@ try {
                         ) &&
                         entry.text.trim() !== ""
                 );
-
     }
 
 } catch {
 
     notes = [];
-
 }
 
 
@@ -3307,7 +2999,6 @@ try {
                 GOALS_KEY
             )
         );
-
 
     if (
         Array.isArray(
@@ -3343,13 +3034,11 @@ try {
                         ) &&
                         goal.name.trim() !== ""
                 );
-
     }
 
 } catch {
 
     goals = [];
-
 }
 
 
@@ -3371,14 +3060,11 @@ if (
 
         currentValue =
             startValue;
-
     }
-
 
     startScreen.classList.add(
         "hidden"
     );
-
 
     updateDisplay();
 
@@ -3392,67 +3078,161 @@ if (
 
 
 /* =====================================================
-   CONTROLLO FINALE DIMENSIONI
-
-   Questo codice NON sposta il razzo.
-
-   Serve soltanto a garantire che i valori
-   originali rimangano invariati anche se
-   iOS cambia innerHeight.
+   POSIZIONE INIZIALE DEL RAZZO
 ===================================================== */
 
-window.addEventListener(
-    "resize",
-    function() {
+/*
+   Aspettiamo che il layout iniziale sia
+   completamente calcolato.
 
-        document.documentElement.style
-            .setProperty(
-                "--rocket-app-height",
-                ORIGINAL_APP_HEIGHT + "px"
-            );
+   Questa diventa la posizione di riferimento
+   IMMUTABILE del razzo.
+*/
 
-        document.documentElement.style
-            .setProperty(
-                "--rocket-original-height",
-                ORIGINAL_APP_HEIGHT + "px"
-            );
+requestAnimationFrame(
+    () => {
 
-        document.documentElement.style
-            .setProperty(
-                "--rocket-original-width",
-                ORIGINAL_APP_WIDTH + "px"
-            );
+        requestAnimationFrame(
+            () => {
+
+                stabilizeRocket();
+
+            }
+        );
 
     }
 );
 
 
+/* =====================================================
+   CONTROLLO CONTINUO SOLO DURANTE CAMBIAMENTI
+===================================================== */
+
 /*
-   Anche orientation/viewport changes
-   non possono modificare il riferimento
-   del razzo.
+   Non spostiamo continuamente il razzo.
+
+   Il controllo viene fatto solo quando
+   Safari cambia la posizione del documento.
+
+   Questo evita qualsiasi movimento
+   artificiale durante il normale utilizzo.
 */
 
-window.addEventListener(
-    "orientationchange",
+let lastBodyTop = null;
+
+function detectBodyMovement() {
+
+    const rect =
+        document.body.getBoundingClientRect();
+
+    if (
+        lastBodyTop === null
+    ) {
+
+        lastBodyTop =
+            rect.top;
+
+        return;
+    }
+
+    if (
+        Math.abs(
+            rect.top -
+            lastBodyTop
+        ) > 0.5
+    ) {
+
+        stabilizeRocket();
+
+        lastBodyTop =
+            rect.top;
+    }
+}
+
+
+/*
+   Durante l'apertura della tastiera
+   Safari può modificare il viewport
+   senza generare un normale scroll.
+
+   Questo piccolo monitor viene attivato
+   solo mentre un campo è in focus.
+*/
+
+let keyboardMonitor = null;
+
+
+function startKeyboardMonitor() {
+
+    if (
+        keyboardMonitor !== null
+    ) {
+        return;
+    }
+
+    keyboardMonitor =
+        setInterval(
+            () => {
+
+                detectBodyMovement();
+
+            },
+            16
+        );
+}
+
+
+function stopKeyboardMonitor() {
+
+    if (
+        keyboardMonitor !== null
+    ) {
+
+        clearInterval(
+            keyboardMonitor
+        );
+
+        keyboardMonitor =
+            null;
+    }
+}
+
+
+document.addEventListener(
+    "focusin",
     function() {
 
-        /*
-           Il valore originale rimane
-           deliberatamente invariato.
-        */
+        startKeyboardMonitor();
 
-        document.documentElement.style
-            .setProperty(
-                "--rocket-original-height",
-                ORIGINAL_APP_HEIGHT + "px"
-            );
+    }
+);
 
-        document.documentElement.style
-            .setProperty(
-                "--rocket-app-height",
-                ORIGINAL_APP_HEIGHT + "px"
-            );
+
+document.addEventListener(
+    "focusout",
+    function() {
+
+        setTimeout(
+            () => {
+
+                if (
+                    !document.activeElement ||
+                    (
+                        document.activeElement.tagName !==
+                        "INPUT" &&
+                        document.activeElement.tagName !==
+                        "TEXTAREA"
+                    )
+                ) {
+
+                    stopKeyboardMonitor();
+
+                    stabilizeRocket();
+                }
+
+            },
+            300
+        );
 
     }
 );
