@@ -51,46 +51,27 @@ body {
 body {
     position: fixed;
 
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-
-    touch-action: pan-y;
-}
-
-/*
-   IMPORTANTE:
-
-   L'app NON usa 100dvh.
-
-   L'altezza viene fissata alla viewport
-   originale e NON viene modificata quando
-   iOS apre la tastiera.
-
-   La tastiera viene quindi visualizzata
-   sopra la parte inferiore dell'app.
-*/
-
-.app {
-    position: fixed;
-
-    left: 0;
     top: 0;
+    left: 0;
 
     width: 100%;
     height: 100vh;
 
-    min-height: 100vh;
-    max-height: 100vh;
+    touch-action: pan-y;
+}
+
+.app {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100vh;
 
     background: #000;
 
     overflow: hidden;
-
-    transform: translateZ(0);
-
-    -webkit-transform: translateZ(0);
 }
 
 
@@ -1393,53 +1374,6 @@ document.addEventListener(
 
 
 /* =====================================================
-   BLOCCO DIMENSIONE VIEWPORT
-===================================================== */
-
-/*
-   NON utilizziamo visualViewport.height.
-
-   La viewport visibile di Safari diminuisce
-   quando appare la tastiera.
-
-   Noi NON vogliamo che questo cambi
-   l'altezza dell'app.
-
-   L'app rimane quindi agganciata alla
-   viewport originale.
-*/
-
-
-const ORIGINAL_VIEWPORT_HEIGHT =
-    window.innerHeight;
-
-
-/*
-   Impedisce a eventuali variazioni della
-   viewport causate dalla tastiera di
-   modificare la dimensione dell'app.
-*/
-
-document.documentElement.style.height =
-    ORIGINAL_VIEWPORT_HEIGHT + "px";
-
-document.body.style.height =
-    ORIGINAL_VIEWPORT_HEIGHT + "px";
-
-document.querySelector(".app").style.height =
-    ORIGINAL_VIEWPORT_HEIGHT + "px";
-
-
-/*
-   Quando iOS apre o chiude la tastiera,
-   NON ricalcoliamo la posizione del razzo.
-
-   Non viene eseguito nessun codice
-   collegato a visualViewport.
-*/
-
-
-/* =====================================================
    STORAGE
 ===================================================== */
 
@@ -2229,6 +2163,11 @@ function createGoal(
 /* =====================================================
    DISEGNA OBIETTIVI
 ===================================================== */
+
+/*
+   Gli obiettivi sono sempre
+   ordinati numericamente.
+*/
 
 function drawGoals() {
 
