@@ -68,7 +68,6 @@ body {
     touch-action: pan-y;
 }
 
-
 /* =====================================================
    PALCO
 ===================================================== */
@@ -88,7 +87,6 @@ body {
 
     overflow: hidden;
 }
-
 
 /* =====================================================
    SCALA
@@ -127,7 +125,6 @@ body {
     height: 2400px;
 }
 
-
 /* =====================================================
    LINEA CENTRALE
 ===================================================== */
@@ -150,27 +147,9 @@ body {
     pointer-events: none;
 }
 
-
 /* =====================================================
    PUNTO DEL VALORE CORRENTE
 ===================================================== */
-
-/*
-   Questo punto appartiene alla SCALA.
-
-   Non appartiene al razzo.
-
-   La sua posizione verticale viene calcolata
-   in base al valore corrente.
-
-   Quindi:
-
-       valore corrente = posizione del punto
-
-   Anche se il razzo viene spostato con lo scroll,
-   il punto continua a indicare la posizione
-   numerica corretta sulla scala.
-*/
 
 .current-marker {
 
@@ -199,7 +178,6 @@ body {
         color 0.2s ease,
         box-shadow 0.2s ease;
 }
-
 
 /* =====================================================
    TACCHETTE
@@ -239,7 +217,6 @@ body {
         rgba(255,255,255,0.75);
 }
 
-
 /* =====================================================
    NUMERI
 ===================================================== */
@@ -263,7 +240,6 @@ body {
 
     pointer-events: none;
 }
-
 
 /* =====================================================
    OBIETTIVI
@@ -367,7 +343,6 @@ body {
         scale(0.9);
 }
 
-
 /* =====================================================
    NOTE
 ===================================================== */
@@ -426,18 +401,52 @@ body {
     -webkit-user-select: none;
 }
 
-.note-value {
+/*
+   PRIMA PARTE:
 
-    display: inline-block;
+   ( + / - variazione )
 
-    margin-right: 5px;
+   Le parentesi sono sempre bianche.
+*/
+
+.note-parenthesis {
+
+    color: #fff;
 
     font-weight: 700;
 }
 
+.note-change {
+
+    font-weight: 700;
+}
+
+/*
+   SECONDA PARTE:
+
+   valore raggiunto dopo la variazione
+*/
+
+.note-result {
+
+    margin-left: 5px;
+
+    font-weight: 700;
+}
+
+/*
+   TERZA PARTE:
+
+   testo scritto dall'utente
+*/
+
 .note-text {
 
-    opacity: 0.90;
+    margin-left: 5px;
+
+    color: #fff;
+
+    opacity: 0.95;
 }
 
 .note-delete {
@@ -469,7 +478,6 @@ body {
     transform:
         scale(0.9);
 }
-
 
 /* =====================================================
    RAZZO
@@ -525,7 +533,6 @@ body {
     fill: #000;
 }
 
-
 /* =====================================================
    VALORE
 ===================================================== */
@@ -560,7 +567,6 @@ body {
     transition:
         color 0.2s ease;
 }
-
 
 /* =====================================================
    CONTROLLI
@@ -685,7 +691,6 @@ body {
         scale(0.96);
 }
 
-
 /* =====================================================
    +
 ===================================================== */
@@ -732,7 +737,6 @@ body {
         scale(0.94);
 }
 
-
 /* =====================================================
    RESET
 ===================================================== */
@@ -765,7 +769,6 @@ body {
 
     z-index: 90;
 }
-
 
 /* =====================================================
    MODALE
@@ -892,7 +895,6 @@ body {
     color: #000;
 }
 
-
 /* =====================================================
    SCHERMATA INIZIALE
 ===================================================== */
@@ -993,7 +995,6 @@ body {
     display: none !important;
 }
 
-
 /* =====================================================
    MOBILE
 ===================================================== */
@@ -1042,7 +1043,6 @@ body {
 
 }
 
-
 /* =====================================================
    TASTIERA: IL VIEWPORT RESTA FISSO
 ===================================================== */
@@ -1059,11 +1059,9 @@ body {
 
 </head>
 
-
 <body>
 
 <div class="app">
-
 
     <div
         id="timeline"
@@ -1079,7 +1077,6 @@ body {
                 class="center-line"
             ></div>
 
-            <!-- PUNTO FISSO DEL VALORE -->
             <div
                 id="currentMarker"
                 class="current-marker"
@@ -1097,22 +1094,15 @@ body {
 
     </div>
 
-
     <div
         id="goalsLayer"
         class="goals-layer"
     ></div>
 
-
     <div
         id="notesLayer"
         class="notes-layer"
     ></div>
-
-
-    <!-- =================================================
-         RAZZO
-    ================================================= -->
 
     <div
         id="rocketLayer"
@@ -1185,7 +1175,6 @@ body {
 
         </svg>
 
-
         <div
             class="current-info"
         >
@@ -1200,7 +1189,6 @@ body {
         </div>
 
     </div>
-
 
     <div
         class="controls"
@@ -1230,7 +1218,6 @@ body {
 
         </div>
 
-
         <input
             id="noteInput"
             class="note-input"
@@ -1245,7 +1232,6 @@ body {
 
     </div>
 
-
     <button
         id="plusButton"
         class="plus-button"
@@ -1254,18 +1240,12 @@ body {
         +
     </button>
 
-
     <button
         id="resetButton"
         class="reset-button"
     >
         Reset
     </button>
-
-
-    <!-- =================================================
-         MODALE OBIETTIVO
-    ================================================= -->
 
     <div
         id="goalModal"
@@ -1329,11 +1309,6 @@ body {
 
     </div>
 
-
-    <!-- =================================================
-         SCHERMATA INIZIALE
-    ================================================= -->
-
     <div
         id="startScreen"
         class="start-screen"
@@ -1372,7 +1347,6 @@ body {
     </div>
 
 </div>
-
 
 <script>
 
@@ -1422,7 +1396,6 @@ document.addEventListener(
     }
 );
 
-
 /* =====================================================
    STORAGE
 ===================================================== */
@@ -1438,7 +1411,6 @@ const NOTES_KEY =
 
 const GOALS_KEY =
     "rocket_goals_v8";
-
 
 /* =====================================================
    ELEMENTI
@@ -1559,7 +1531,6 @@ const rocketParts =
         ".rocket-part"
     );
 
-
 /* =====================================================
    PARAMETRI SCALA
 ===================================================== */
@@ -1575,7 +1546,6 @@ const PIXELS_PER_STEP =
 
 const PIXELS_PER_EURO =
     PIXELS_PER_STEP / STEP;
-
 
 /* =====================================================
    NUMERI
@@ -1638,7 +1608,6 @@ function parseNumber(value) {
         : NaN;
 }
 
-
 /* =====================================================
    FORMATTAZIONE
 ===================================================== */
@@ -1680,7 +1649,6 @@ function formatValue(value) {
 
     return "0 €";
 }
-
 
 /* =====================================================
    COLORI
@@ -1755,7 +1723,6 @@ function getValueColor(value) {
     return "#C90020";
 }
 
-
 /* =====================================================
    COLORE RAZZO + PUNTO
 ===================================================== */
@@ -1786,12 +1753,6 @@ function updateColor() {
             0 0 7px ${color}
         )`;
 
-
-    /* -----------------------------------------------
-       IL PUNTO HA ESATTAMENTE LO STESSO COLORE
-       DEL VALORE CORRENTE
-    ------------------------------------------------ */
-
     currentMarker.style.backgroundColor =
         color;
 
@@ -1805,27 +1766,9 @@ function updateColor() {
         `;
 }
 
-
 /* =====================================================
    POSIZIONE DEL PUNTO
 ===================================================== */
-
-/*
-   Il punto rappresenta ESATTAMENTE currentValue.
-
-   La scala viene costruita con:
-
-       centerY = centro della scala
-
-   e:
-
-       y = centerY
-
-   per il valore corrente.
-
-   Quindi il punto si trova sempre sulla
-   coordinata numerica del valore corrente.
-*/
 
 function updateCurrentMarker() {
 
@@ -1852,7 +1795,6 @@ function updateCurrentMarker() {
 
     updateColor();
 }
-
 
 /* =====================================================
    COSTRUZIONE SCALA
@@ -1896,7 +1838,6 @@ function buildScale() {
         Math.floor(
             maximumValue / STEP
         ) * STEP;
-
 
     for (
         let scaleValue =
@@ -1953,7 +1894,6 @@ function buildScale() {
             tick
         );
 
-
         if (
             scaleValue % 250 === 0
         ) {
@@ -1985,21 +1925,15 @@ function buildScale() {
         }
     }
 
-
-    /*
-       Il punto viene posizionato dopo
-       aver costruito la scala.
-    */
-
     updateCurrentMarker();
 }
-
 
 /* =====================================================
    NOTE
 ===================================================== */
 
 function createNote(
+    change,
     value,
     text,
     index
@@ -2013,29 +1947,63 @@ function createNote(
     note.className =
         "note";
 
-    const color =
-        getValueColor(
-            value
-        );
-
-    note.style.color =
-        color;
-
-    const valueElement =
+    const openParenthesis =
         document.createElement(
             "span"
         );
 
-    valueElement.className =
-        "note-value";
+    openParenthesis.className =
+        "note-parenthesis";
 
-    valueElement.textContent =
+    openParenthesis.textContent =
+        "(";
+
+    const changeElement =
+        document.createElement(
+            "span"
+        );
+
+    changeElement.className =
+        "note-change";
+
+    changeElement.textContent =
+        formatValue(
+            change
+        );
+
+    changeElement.style.color =
+        getValueColor(
+            change
+        );
+
+    const closeParenthesis =
+        document.createElement(
+            "span"
+        );
+
+    closeParenthesis.className =
+        "note-parenthesis";
+
+    closeParenthesis.textContent =
+        ")";
+
+    const resultElement =
+        document.createElement(
+            "span"
+        );
+
+    resultElement.className =
+        "note-result";
+
+    resultElement.textContent =
         formatValue(
             value
         );
 
-    valueElement.style.color =
-        color;
+    resultElement.style.color =
+        getValueColor(
+            value
+        );
 
     const textElement =
         document.createElement(
@@ -2047,9 +2015,6 @@ function createNote(
 
     textElement.textContent =
         text;
-
-    textElement.style.color =
-        color;
 
     const deleteButton =
         document.createElement(
@@ -2076,7 +2041,19 @@ function createNote(
     );
 
     note.appendChild(
-        valueElement
+        openParenthesis
+    );
+
+    note.appendChild(
+        changeElement
+    );
+
+    note.appendChild(
+        closeParenthesis
+    );
+
+    note.appendChild(
+        resultElement
     );
 
     note.appendChild(
@@ -2090,7 +2067,6 @@ function createNote(
     return note;
 }
 
-
 function drawNotes() {
 
     notesLayer.innerHTML =
@@ -2101,6 +2077,7 @@ function drawNotes() {
 
             const note =
                 createNote(
+                    entry.change,
                     entry.value,
                     entry.text,
                     index
@@ -2112,7 +2089,6 @@ function drawNotes() {
         }
     );
 }
-
 
 function deleteNote(index) {
 
@@ -2133,7 +2109,6 @@ function deleteNote(index) {
     drawNotes();
 }
 
-
 function saveNotes() {
 
     localStorage.setItem(
@@ -2143,7 +2118,6 @@ function saveNotes() {
         )
     );
 }
-
 
 /* =====================================================
    OBIETTIVI
@@ -2240,7 +2214,6 @@ function createGoal(
     return item;
 }
 
-
 function drawGoals() {
 
     goalsLayer.innerHTML =
@@ -2299,7 +2272,6 @@ function drawGoals() {
     );
 }
 
-
 function saveGoals() {
 
     localStorage.setItem(
@@ -2309,7 +2281,6 @@ function saveGoals() {
         )
     );
 }
-
 
 function deleteGoal(index) {
 
@@ -2329,7 +2300,6 @@ function deleteGoal(index) {
 
     drawGoals();
 }
-
 
 /* =====================================================
    MODALE
@@ -2357,7 +2327,6 @@ function openGoalModal() {
     );
 }
 
-
 function closeGoalModal() {
 
     goalModal.classList.add(
@@ -2370,7 +2339,6 @@ function closeGoalModal() {
     goalNameInput.value =
         "";
 }
-
 
 function saveGoal() {
 
@@ -2419,7 +2387,6 @@ function saveGoal() {
     closeGoalModal();
 }
 
-
 /* =====================================================
    CENTRA SCALA
 ===================================================== */
@@ -2443,7 +2410,6 @@ function centerTimeline() {
     timeline.scrollTop =
         maxScroll / 2;
 }
-
 
 /* =====================================================
    DISPLAY
@@ -2475,7 +2441,6 @@ function updateDisplay() {
     );
 }
 
-
 /* =====================================================
    BLOCCO FISICO RAZZO
 ===================================================== */
@@ -2485,7 +2450,6 @@ let rocketInitialBodyTop =
 
 let rocketInitialBodyLeft =
     null;
-
 
 function stabilizeRocket() {
 
@@ -2524,7 +2488,6 @@ function stabilizeRocket() {
         )`;
 }
 
-
 /* =====================================================
    MONITORAGGIO TASTIERA
 ===================================================== */
@@ -2548,7 +2511,6 @@ function requestRocketStabilization() {
     );
 }
 
-
 if (
     window.visualViewport
 ) {
@@ -2569,7 +2531,6 @@ if (
         }
     );
 }
-
 
 function monitorKeyboardMovement() {
 
@@ -2598,7 +2559,6 @@ function monitorKeyboardMovement() {
     );
 }
 
-
 document.addEventListener(
     "focusin",
     function() {
@@ -2608,7 +2568,6 @@ document.addEventListener(
     }
 );
 
-
 document.addEventListener(
     "focusout",
     function() {
@@ -2617,7 +2576,6 @@ document.addEventListener(
 
     }
 );
-
 
 /* =====================================================
    VALORE INIZIALE
@@ -2676,7 +2634,6 @@ function setInitialValue() {
     updateDisplay();
 }
 
-
 /* =====================================================
    APPLICA VARIAZIONE
 ===================================================== */
@@ -2717,6 +2674,9 @@ function applyChange() {
 
     notes.push({
 
+        change:
+            change,
+
         value:
             newValue,
 
@@ -2745,7 +2705,6 @@ function applyChange() {
 
     updateDisplay();
 }
-
 
 /* =====================================================
    RESET
@@ -2824,7 +2783,6 @@ function resetApp() {
         null;
 }
 
-
 /* =====================================================
    EVENTI
 ===================================================== */
@@ -2833,7 +2791,6 @@ startButton.addEventListener(
     "click",
     setInitialValue
 );
-
 
 startInput.addEventListener(
     "keydown",
@@ -2850,12 +2807,10 @@ startInput.addEventListener(
     }
 );
 
-
 changeButton.addEventListener(
     "click",
     applyChange
 );
-
 
 changeInput.addEventListener(
     "keydown",
@@ -2872,7 +2827,6 @@ changeInput.addEventListener(
     }
 );
 
-
 noteInput.addEventListener(
     "keydown",
     event => {
@@ -2888,24 +2842,20 @@ noteInput.addEventListener(
     }
 );
 
-
 plusButton.addEventListener(
     "click",
     openGoalModal
 );
-
 
 goalCancel.addEventListener(
     "click",
     closeGoalModal
 );
 
-
 goalSave.addEventListener(
     "click",
     saveGoal
 );
-
 
 goalValueInput.addEventListener(
     "keydown",
@@ -2922,7 +2872,6 @@ goalValueInput.addEventListener(
     }
 );
 
-
 goalNameInput.addEventListener(
     "keydown",
     event => {
@@ -2937,7 +2886,6 @@ goalNameInput.addEventListener(
 
     }
 );
-
 
 goalModal.addEventListener(
     "click",
@@ -2955,12 +2903,10 @@ goalModal.addEventListener(
     }
 );
 
-
 resetButton.addEventListener(
     "click",
     resetApp
 );
-
 
 /* =====================================================
    CARICAMENTO DATI
@@ -2973,7 +2919,6 @@ let startValue =
         )
     );
 
-
 let currentValue =
     parseNumber(
         localStorage.getItem(
@@ -2981,12 +2926,9 @@ let currentValue =
         )
     );
 
-
 let notes = [];
 
-
 let goals = [];
-
 
 /* =====================================================
    CARICA NOTE
@@ -3014,6 +2956,11 @@ try {
 
                         return {
 
+                            change:
+                                Number(
+                                    entry.change
+                                ),
+
                             value:
                                 Number(
                                     entry.value
@@ -3031,6 +2978,9 @@ try {
                 .filter(
                     entry =>
                         Number.isFinite(
+                            entry.change
+                        ) &&
+                        Number.isFinite(
                             entry.value
                         ) &&
                         entry.text.trim() !== ""
@@ -3042,7 +2992,6 @@ try {
     notes = [];
 
 }
-
 
 /* =====================================================
    CARICA OBIETTIVI
@@ -3099,7 +3048,6 @@ try {
 
 }
 
-
 /* =====================================================
    AVVIO
 ===================================================== */
@@ -3135,7 +3083,6 @@ if (
 
 }
 
-
 /* =====================================================
    POSIZIONE INIZIALE RAZZO
 ===================================================== */
@@ -3154,14 +3101,12 @@ requestAnimationFrame(
     }
 );
 
-
 /* =====================================================
    CONTROLLO MOVIMENTO BODY
 ===================================================== */
 
 let lastBodyTop =
     null;
-
 
 function detectBodyMovement() {
 
@@ -3195,10 +3140,8 @@ function detectBodyMovement() {
 
 }
 
-
 let keyboardMonitor =
     null;
-
 
 function startKeyboardMonitor() {
 
@@ -3222,7 +3165,6 @@ function startKeyboardMonitor() {
 
 }
 
-
 function stopKeyboardMonitor() {
 
     if (
@@ -3240,7 +3182,6 @@ function stopKeyboardMonitor() {
 
 }
 
-
 document.addEventListener(
     "focusin",
     function() {
@@ -3249,7 +3190,6 @@ document.addEventListener(
 
     }
 );
-
 
 document.addEventListener(
     "focusout",
