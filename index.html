@@ -54,18 +54,43 @@ body {
     width: 100%;
     height: 100%;
 
+    overflow: hidden;
+
     touch-action: pan-y;
 }
 
+/*
+   IMPORTANTE:
+
+   L'app NON usa 100dvh.
+
+   L'altezza viene fissata alla viewport
+   originale e NON viene modificata quando
+   iOS apre la tastiera.
+
+   La tastiera viene quindi visualizzata
+   sopra la parte inferiore dell'app.
+*/
+
 .app {
-    position: relative;
+    position: fixed;
+
+    left: 0;
+    top: 0;
 
     width: 100%;
-    height: 100dvh;
+    height: 100vh;
+
+    min-height: 100vh;
+    max-height: 100vh;
 
     background: #000;
 
     overflow: hidden;
+
+    transform: translateZ(0);
+
+    -webkit-transform: translateZ(0);
 }
 
 
@@ -413,26 +438,12 @@ body {
    RAZZO CENTRALE
 ===================================================== */
 
-/*
-   IMPORTANTE:
-
-   La posizione verticale NON usa più top: 50%.
-
-   Viene impostata una sola volta da JavaScript,
-   in pixel, sulla posizione centrale originale
-   dello schermo.
-
-   In questo modo l'apertura della tastiera non
-   modifica la posizione del razzo.
-*/
-
 .fixed-indicator {
 
-    position: fixed;
+    position: absolute;
 
     left: 50%;
-
-    top: var(--rocket-original-top);
+    top: 50%;
 
     width: 0;
     height: 0;
@@ -1382,31 +1393,50 @@ document.addEventListener(
 
 
 /* =====================================================
-   POSIZIONE ORIGINALE DEL RAZZO
+   BLOCCO DIMENSIONE VIEWPORT
 ===================================================== */
 
 /*
-   La posizione viene calcolata ESATTAMENTE UNA VOLTA.
+   NON utilizziamo visualViewport.height.
 
-   Non viene usato 50% nel CSS.
+   La viewport visibile di Safari diminuisce
+   quando appare la tastiera.
 
-   Non viene usato resize.
+   Noi NON vogliamo che questo cambi
+   l'altezza dell'app.
 
-   Non viene usato visualViewport.
-
-   Non viene aggiornata quando compare la tastiera.
-
-   Il valore rimane quindi quello della schermata
-   originale all'apertura dell'app.
+   L'app rimane quindi agganciata alla
+   viewport originale.
 */
 
-const rocketOriginalTop =
-    window.innerHeight / 2;
 
-document.documentElement.style.setProperty(
-    "--rocket-original-top",
-    rocketOriginalTop + "px"
-);
+const ORIGINAL_VIEWPORT_HEIGHT =
+    window.innerHeight;
+
+
+/*
+   Impedisce a eventuali variazioni della
+   viewport causate dalla tastiera di
+   modificare la dimensione dell'app.
+*/
+
+document.documentElement.style.height =
+    ORIGINAL_VIEWPORT_HEIGHT + "px";
+
+document.body.style.height =
+    ORIGINAL_VIEWPORT_HEIGHT + "px";
+
+document.querySelector(".app").style.height =
+    ORIGINAL_VIEWPORT_HEIGHT + "px";
+
+
+/*
+   Quando iOS apre o chiude la tastiera,
+   NON ricalcoliamo la posizione del razzo.
+
+   Non viene eseguito nessun codice
+   collegato a visualViewport.
+*/
 
 
 /* =====================================================
@@ -2200,21 +2230,6 @@ function createGoal(
    DISEGNA OBIETTIVI
 ===================================================== */
 
-/*
-   Gli obiettivi sono sempre
-   ordinati numericamente.
-
-   Esempio:
-
-   -500
-   -200
-   0
-   200
-   500
-
-   NON in ordine di inserimento.
-*/
-
 function drawGoals() {
 
     goalsLayer.innerHTML =
@@ -2379,11 +2394,6 @@ function saveGoal() {
     const name =
         goalNameInput.value.trim();
 
-
-    /*
-       Entrambi i campi
-       sono obbligatori.
-    */
 
     if (
         !Number.isFinite(
@@ -2562,10 +2572,6 @@ function applyChange() {
         );
 
 
-    /*
-       La variazione è obbligatoria.
-    */
-
     if (
         !Number.isFinite(
             change
@@ -2577,13 +2583,6 @@ function applyChange() {
         return;
     }
 
-
-    /*
-       Anche la nota è obbligatoria.
-
-       Non è possibile registrare
-       una variazione senza nota.
-    */
 
     const comment =
         noteInput.value.trim();
@@ -2599,22 +2598,10 @@ function applyChange() {
     }
 
 
-    /*
-       NUOVO VALORE:
-
-       precedente + variazione
-    */
-
     const newValue =
         currentValue +
         change;
 
-
-    /*
-       Lo storico delle note
-       mantiene l'ordine cronologico
-       nel quale vengono inserite.
-    */
 
     notes.push({
 
@@ -2777,12 +2764,6 @@ changeInput.addEventListener(
         if (
             event.key === "Enter"
         ) {
-
-            /*
-               Se premo invio nella
-               variazione, provo a
-               registrare entrambe.
-            */
 
             applyChange();
         }
