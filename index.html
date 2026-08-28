@@ -557,19 +557,25 @@ body {
 
 /* =====================================================
    NOTE
+   MODIFICA: NOTE IN ALTO A DESTRA
 ===================================================== */
 
 .notes-layer {
 
     position: absolute;
 
-    top: calc(50% + 25px);
+    top:
+        calc(
+            12px +
+            env(safe-area-inset-top)
+        );
 
     right: 7px;
 
-    width: calc(50% - 40px);
+    width:
+        calc(50% - 40px);
 
-    max-height: 58vh;
+    max-height: 42vh;
 
     transform: none;
 
@@ -750,119 +756,6 @@ body {
 }
 
 /* =====================================================
-   PANNELLO NOTE
-===================================================== */
-
-.notes-modal {
-
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 210;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 25px;
-
-    background:
-        rgba(0,0,0,0.72);
-
-    backdrop-filter:
-        blur(8px);
-
-    -webkit-backdrop-filter:
-        blur(8px);
-}
-
-.notes-box {
-
-    width:
-        min(
-            340px,
-            calc(100vw - 50px)
-        );
-
-    max-height:
-        min(
-            70vh,
-            520px
-        );
-
-    display: flex;
-
-    flex-direction: column;
-
-    padding: 18px;
-
-    border:
-        1px solid #292929;
-
-    border-radius: 18px;
-
-    background: #111;
-}
-
-.notes-list-title {
-
-    margin-bottom: 13px;
-
-    font-size: 20px;
-
-    font-weight: 700;
-}
-
-.notes-list {
-
-    overflow-y: auto;
-
-    scrollbar-width: none;
-
-    -webkit-overflow-scrolling: touch;
-}
-
-.notes-list::-webkit-scrollbar {
-    display: none;
-}
-
-.notes-list .note {
-
-    margin-bottom: 0;
-
-    padding-top: 11px;
-    padding-bottom: 11px;
-}
-
-.notes-list .note:first-child {
-
-    padding-top: 0;
-}
-
-.notes-list-close {
-
-    width: 100%;
-    height: 44px;
-
-    margin-top: 14px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    background: #fff;
-
-    color: #000;
-
-    font-size: 14px;
-
-    font-weight: 700;
-}
-
-/* =====================================================
    RAZZO
 ===================================================== */
 
@@ -974,7 +867,7 @@ body {
 
     flex-direction: column;
 
-    align-items: flex-start;
+    align-items: center;
 
     gap: 8px;
 
@@ -1456,10 +1349,18 @@ body {
 
     .notes-layer {
 
+        top:
+            calc(
+                12px +
+                env(safe-area-inset-top)
+            );
+
         right: 7px;
 
         width:
             calc(50% - 40px);
+
+        max-height: 42vh;
     }
 
     .goal-item,
@@ -1532,41 +1433,6 @@ body {
         id="notesLayer"
         class="notes-layer"
     ></div>
-
-    <!-- =================================================
-         PANNELLO NOTE
-    ================================================= -->
-
-    <div
-        id="notesModal"
-        class="notes-modal hidden"
-    >
-
-        <div
-            class="notes-box"
-        >
-
-            <div
-                class="notes-list-title"
-            >
-                Note
-            </div>
-
-            <div
-                id="notesList"
-                class="notes-list"
-            ></div>
-
-            <button
-                id="notesListClose"
-                class="notes-list-close"
-            >
-                Chiudi
-            </button>
-
-        </div>
-
-    </div>
 
     <div
         id="rocketLayer"
@@ -1719,10 +1585,6 @@ body {
         Reset
     </button>
 
-    <!-- =================================================
-         MODALE OBIETTIVO
-    ================================================= -->
-
     <div
         id="goalModal"
         class="goal-modal hidden"
@@ -1785,10 +1647,6 @@ body {
 
     </div>
 
-    <!-- =================================================
-         LISTA OBIETTIVI
-    ================================================= -->
-
     <div
         id="goalsModal"
         class="goals-modal hidden"
@@ -1819,10 +1677,6 @@ body {
         </div>
 
     </div>
-
-    <!-- =================================================
-         SCHERMATA INIZIALE
-    ================================================= -->
 
     <div
         id="startScreen"
@@ -1964,21 +1818,6 @@ const goalsLayer =
 const notesLayer =
     document.getElementById(
         "notesLayer"
-    );
-
-const notesModal =
-    document.getElementById(
-        "notesModal"
-    );
-
-const notesList =
-    document.getElementById(
-        "notesList"
-    );
-
-const notesListClose =
-    document.getElementById(
-        "notesListClose"
     );
 
 const rocketLayer =
@@ -2730,9 +2569,8 @@ function createNote(
     return note;
 }
 
-/* =====================================================
-   VISUALIZZAZIONE NOTE
-===================================================== */
+let notesExpanded =
+    false;
 
 function drawNotes() {
 
@@ -2759,10 +2597,12 @@ function drawNotes() {
             .reverse();
 
     const visibleNotes =
-        orderedNotes.slice(
-            0,
-            5
-        );
+        notesExpanded
+            ? orderedNotes
+            : orderedNotes.slice(
+                0,
+                10
+            );
 
     visibleNotes.forEach(
         item => {
@@ -2781,7 +2621,7 @@ function drawNotes() {
     );
 
     if (
-        orderedNotes.length > 5
+        orderedNotes.length > 10
     ) {
 
         const toggleButton =
@@ -2793,7 +2633,9 @@ function drawNotes() {
             "notes-toggle";
 
         toggleButton.textContent =
-            "Mostra altro";
+            notesExpanded
+                ? "Mostra meno"
+                : "Mostra tutte";
 
         toggleButton.addEventListener(
             "click",
@@ -2801,7 +2643,10 @@ function drawNotes() {
 
                 event.stopPropagation();
 
-                openNotesModal();
+                notesExpanded =
+                    !notesExpanded;
+
+                drawNotes();
 
             }
         );
@@ -2810,83 +2655,6 @@ function drawNotes() {
             toggleButton
         );
     }
-}
-
-function drawNotesList() {
-
-    notesList.innerHTML =
-        "";
-
-    const orderedNotes =
-        notes
-            .map(
-                (entry, index) => {
-
-                    return {
-
-                        entry:
-                            entry,
-
-                        originalIndex:
-                            index
-
-                    };
-
-                }
-            )
-            .reverse();
-
-    orderedNotes.forEach(
-        item => {
-
-            const note =
-                createNote(
-                    item.entry,
-                    item.originalIndex
-                );
-
-            notesList.appendChild(
-                note
-            );
-
-        }
-    );
-
-    if (
-        orderedNotes.length === 0
-    ) {
-
-        const empty =
-            document.createElement(
-                "div"
-            );
-
-        empty.className =
-            "goals-empty";
-
-        empty.textContent =
-            "Nessuna nota";
-
-        notesList.appendChild(
-            empty
-        );
-    }
-}
-
-function openNotesModal() {
-
-    drawNotesList();
-
-    notesModal.classList.remove(
-        "hidden"
-    );
-}
-
-function closeNotesModal() {
-
-    notesModal.classList.add(
-        "hidden"
-    );
 }
 
 function deleteNote(index) {
@@ -2905,17 +2673,16 @@ function deleteNote(index) {
 
     saveNotes();
 
-    drawNotes();
-
     if (
-        !notesModal.classList.contains(
-            "hidden"
-        )
+        notes.length <= 10
     ) {
 
-        drawNotesList();
+        notesExpanded =
+            false;
 
     }
+
+    drawNotes();
 }
 
 function saveNotes() {
@@ -3760,6 +3527,9 @@ function applyChange() {
     noteInput.value =
         "";
 
+    notesExpanded =
+        false;
+
     updateDisplay();
 
     if (
@@ -3817,6 +3587,9 @@ function resetApp() {
 
     goals = [];
 
+    notesExpanded =
+        false;
+
     startInput.value =
         "";
 
@@ -3834,17 +3607,10 @@ function resetApp() {
         "hidden"
     );
 
-    notesModal.classList.add(
-        "hidden"
-    );
-
     goalsLayer.innerHTML =
         "";
 
     notesLayer.innerHTML =
-        "";
-
-    notesList.innerHTML =
         "";
 
     goalsList.innerHTML =
@@ -3948,27 +3714,6 @@ goalsModal.addEventListener(
         ) {
 
             closeGoalsModal();
-
-        }
-
-    }
-);
-
-notesListClose.addEventListener(
-    "click",
-    closeNotesModal
-);
-
-notesModal.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target ===
-            notesModal
-        ) {
-
-            closeNotesModal();
 
         }
 
