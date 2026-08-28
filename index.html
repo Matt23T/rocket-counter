@@ -29,32 +29,42 @@ html,
 body {
     margin: 0;
     padding: 0;
+
     width: 100%;
     height: 100%;
+
     background: #000;
     color: #fff;
+
     font-family:
         -apple-system,
         BlinkMacSystemFont,
         "SF Pro Display",
         Arial,
         sans-serif;
+
     overflow: hidden;
+
     overscroll-behavior: none;
 }
 
 html {
     position: fixed;
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
 }
 
 body {
     position: fixed;
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
+
     touch-action: pan-y;
 }
 
@@ -63,13 +73,18 @@ body {
 ===================================================== */
 
 .app {
+
     position: absolute;
+
     left: 0;
     top: 0;
+
     width: 100%;
     height: 100vh;
     height: 100svh;
+
     background: #000;
+
     overflow: hidden;
 }
 
@@ -78,14 +93,22 @@ body {
 ===================================================== */
 
 .timeline {
+
     position: absolute;
+
     inset: 0;
+
     overflow-y: auto;
     overflow-x: hidden;
+
     -webkit-overflow-scrolling: touch;
+
     scrollbar-width: none;
+
     overscroll-behavior-y: contain;
+
     z-index: 10;
+
     touch-action: pan-y;
 }
 
@@ -94,8 +117,11 @@ body {
 }
 
 .timeline-content {
+
     position: relative;
+
     width: 100%;
+
     height: 2400px;
 }
 
@@ -104,13 +130,20 @@ body {
 ===================================================== */
 
 .center-line {
+
     position: absolute;
+
     top: 0;
     left: 50%;
+
     width: 1px;
     height: 100%;
+
     transform: translateX(-50%);
-    background: rgba(255,255,255,0.18);
+
+    background:
+        rgba(255,255,255,0.18);
+
     pointer-events: none;
 }
 
@@ -119,17 +152,27 @@ body {
 ===================================================== */
 
 .current-marker {
+
     position: absolute;
+
     left: 50%;
+
     width: 9px;
     height: 9px;
+
     border-radius: 50%;
-    transform: translate(-50%, -50%);
+
+    transform:
+        translate(-50%, -50%);
+
     z-index: 30;
+
     pointer-events: none;
+
     box-shadow:
         0 0 8px currentColor,
         0 0 14px currentColor;
+
     transition:
         background-color 0.2s ease,
         color 0.2s ease,
@@ -141,23 +184,37 @@ body {
 ===================================================== */
 
 .tick {
+
     position: absolute;
+
     left: 50%;
+
     width: 6px;
     height: 1px;
-    transform: translateX(-50%);
-    background: rgba(255,255,255,0.20);
+
+    transform:
+        translateX(-50%);
+
+    background:
+        rgba(255,255,255,0.20);
+
     pointer-events: none;
 }
 
 .tick.major {
+
     width: 11px;
-    background: rgba(255,255,255,0.35);
+
+    background:
+        rgba(255,255,255,0.35);
 }
 
 .tick.zero {
+
     width: 17px;
-    background: rgba(255,255,255,0.75);
+
+    background:
+        rgba(255,255,255,0.75);
 }
 
 /* =====================================================
@@ -165,13 +222,22 @@ body {
 ===================================================== */
 
 .scale-label {
+
     position: absolute;
+
     left: calc(50% - 25px);
-    transform: translate(-100%, -50%);
+
+    transform:
+        translate(-100%, -50%);
+
     white-space: nowrap;
+
     font-size: 10px;
+
     font-weight: 500;
+
     opacity: 0.65;
+
     pointer-events: none;
 }
 
@@ -180,61 +246,105 @@ body {
 ===================================================== */
 
 .goals-layer {
+
     position: absolute;
+
     inset: 0;
+
     z-index: 40;
+
     pointer-events: none;
 }
 
 .goal-item {
+
     position: absolute;
+
     left: 8px;
-    width: calc(50% - 42px);
-    transform: translateY(-50%);
+
+    width:
+        calc(50% - 42px);
+
+    transform:
+        translateY(-50%);
+
     display: flex;
+
     align-items: center;
+
     gap: 6px;
+
     padding: 5px 7px;
+
     border-radius: 9px;
-    background: rgba(18,18,18,0.88);
-    border: 1px solid rgba(255,255,255,0.08);
+
+    background:
+        rgba(18,18,18,0.88);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.08);
+
     font-size: 11px;
+
     line-height: 15px;
+
     word-break: break-word;
+
     pointer-events: none;
 }
 
 .goal-check {
-    flex: 0 0 auto;
+
+    flex:
+        0 0 auto;
+
     width: 17px;
     height: 17px;
+
     border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.45);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.45);
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     color: #000;
+
     font-size: 11px;
+
     font-weight: 800;
 }
 
 .goal-check.completed {
+
     background: #20DD65;
+
     border-color: #20DD65;
 }
 
 .goal-content {
+
     min-width: 0;
+
     flex: 1;
 }
 
 .goal-value {
+
     display: inline-block;
+
     margin-right: 4px;
+
     font-weight: 700;
 }
 
 .goal-text {
+
     opacity: 0.92;
 }
 
@@ -243,38 +353,74 @@ body {
 ===================================================== */
 
 .goals-modal {
+
     position: absolute;
+
     inset: 0;
+
     z-index: 210;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     padding: 25px;
-    background: rgba(0,0,0,0.72);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+
+    background:
+        rgba(0,0,0,0.72);
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-backdrop-filter:
+        blur(8px);
 }
 
 .goals-box {
-    width: min(340px, calc(100vw - 50px));
-    max-height: min(70vh, 520px);
+
+    width:
+        min(
+            340px,
+            calc(100vw - 50px)
+        );
+
+    max-height:
+        min(
+            70vh,
+            520px
+        );
+
     display: flex;
+
     flex-direction: column;
+
     padding: 18px;
-    border: 1px solid #292929;
+
+    border:
+        1px solid #292929;
+
     border-radius: 18px;
+
     background: #111;
 }
 
 .goals-list-title {
+
     margin-bottom: 13px;
+
     font-size: 20px;
+
     font-weight: 700;
 }
 
 .goals-list {
+
     overflow-y: auto;
+
     scrollbar-width: none;
+
     -webkit-overflow-scrolling: touch;
 }
 
@@ -283,100 +429,147 @@ body {
 }
 
 .goals-list-item {
+
     display: flex;
+
     align-items: center;
+
     gap: 8px;
+
     padding: 11px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.08);
 }
 
 .goals-list-check {
-    flex: 0 0 auto;
+
+    flex:
+        0 0 auto;
+
     width: 20px;
     height: 20px;
+
     border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.4);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.4);
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     font-size: 12px;
+
     font-weight: 800;
+
     color: #000;
 }
 
 .goals-list-check.completed {
+
     background: #20DD65;
+
     border-color: #20DD65;
 }
 
 .goals-list-content {
+
     min-width: 0;
+
     flex: 1;
+
     font-size: 12px;
+
     line-height: 16px;
 }
 
 .goals-list-value {
+
     font-weight: 700;
 }
 
 .goals-list-name {
+
     margin-left: 5px;
+
     color: #fff;
 }
 
 .goals-list-delete {
-    flex: 0 0 auto;
+
+    flex:
+        0 0 auto;
+
     width: 22px;
     height: 22px;
+
     padding: 0;
+
     border: none;
+
     border-radius: 50%;
+
     background: #1b1b1b;
+
     color: #777;
+
     font-size: 14px;
+
     line-height: 22px;
+
     text-align: center;
 }
 
 .goals-list-close {
+
     width: 100%;
     height: 44px;
+
     margin-top: 14px;
+
     border: none;
+
     border-radius: 12px;
+
     background: #fff;
+
     color: #000;
+
     font-size: 14px;
+
     font-weight: 700;
 }
 
 .goals-empty {
+
     padding: 25px 5px;
+
     color: #777;
+
     text-align: center;
+
     font-size: 13px;
 }
 
 /* =====================================================
    NOTE
-   POSIZIONATE IN ALTO A DESTRA
 ===================================================== */
 
 .notes-layer {
+
     position: absolute;
 
-    top:
-        calc(
-            12px +
-            env(safe-area-inset-top)
-        );
+    top: calc(50% + 55px);
 
     right: 7px;
 
     width: calc(50% - 40px);
 
-    max-height: 35vh;
+    max-height: 58vh;
 
     transform: none;
 
@@ -397,88 +590,136 @@ body {
 }
 
 .note {
+
     width: 100%;
+
     margin-bottom: 14px;
+
     padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.08);
+
     font-size: 12px;
+
     line-height: 16px;
+
     word-break: break-word;
+
     overflow-wrap: anywhere;
+
     user-select: none;
+
     -webkit-user-select: none;
 }
 
 .note-date {
+
     display: block;
+
     margin-bottom: 3px;
+
     color: #fff !important;
+
     font-size: 6px;
+
     line-height: 8px;
+
     font-weight: 400;
+
     opacity: 0.85;
+
     white-space: nowrap;
 }
 
 .note-main {
+
     display: block;
+
     width: 100%;
+
     line-height: 16px;
+
     word-break: break-word;
+
     overflow-wrap: anywhere;
 }
 
 .note-bracket {
+
     color: #fff !important;
+
     font-weight: 500;
+
     white-space: nowrap;
 }
 
 .note-change {
+
     font-weight: 700;
+
     white-space: nowrap;
 }
 
 .note-result {
+
     margin-left: 4px;
+
     font-weight: 700;
+
     white-space: nowrap;
 }
 
 .note-text {
+
     margin-left: 5px;
+
     color: #fff !important;
+
     font-weight: 400;
+
     white-space: normal;
+
     overflow-wrap: anywhere;
+
     word-break: break-word;
 }
 
 .note-delete {
+
     float: right;
+
     width: 19px;
     height: 19px;
+
     padding: 0;
+
     margin-left: 5px;
+
     border: none;
+
     border-radius: 50%;
+
     background: #1b1b1b;
+
     color: #777;
+
     font-size: 11px;
+
     line-height: 19px;
+
     text-align: center;
 }
 
 .note-delete:active {
-    transform: scale(0.9);
+
+    transform:
+        scale(0.9);
 }
 
-/* =====================================================
-   TASTO MOSTRA NOTE
-   CENTRATO COME LA STRISCIA CENTRALE
-===================================================== */
-
 .notes-toggle {
+
     display: block;
 
     width: 100%;
@@ -500,13 +741,12 @@ body {
     font-weight: 600;
 
     text-align: center;
-
-    margin-left: 0;
-    margin-right: 0;
 }
 
 .notes-toggle:active {
-    transform: scale(0.97);
+
+    transform:
+        scale(0.97);
 }
 
 /* =====================================================
@@ -514,34 +754,52 @@ body {
 ===================================================== */
 
 .rocket-layer {
+
     position: absolute;
+
     left: 50%;
     top: 50%;
+
     width: 0;
     height: 0;
+
     z-index: 70;
+
     pointer-events: none;
+
     will-change: transform;
 }
 
 .rocket {
+
     position: absolute;
+
     right: 8px;
     left: auto;
     top: 0;
+
     width: 58px;
     height: 29px;
-    transform: translateY(-50%);
+
+    transform:
+        translateY(-50%);
+
     overflow: visible;
-    transition: filter 0.2s ease;
+
+    transition:
+        filter 0.2s ease;
 }
 
 .rocket-part {
+
     fill: #fff;
-    transition: fill 0.2s ease;
+
+    transition:
+        fill 0.2s ease;
 }
 
 .rocket-window {
+
     fill: #000;
 }
 
@@ -550,21 +808,34 @@ body {
 ===================================================== */
 
 .current-info {
+
     position: absolute;
+
     left: 76px;
     top: 0;
-    transform: translateY(-50%);
+
+    transform:
+        translateY(-50%);
+
     display: flex;
+
     flex-direction: column;
+
     pointer-events: none;
 }
 
 .current-value {
+
     font-size: 20px;
+
     line-height: 25px;
+
     font-weight: 700;
+
     white-space: nowrap;
-    transition: color 0.2s ease;
+
+    transition:
+        color 0.2s ease;
 }
 
 /* =====================================================
@@ -572,76 +843,122 @@ body {
 ===================================================== */
 
 .controls {
+
     position: absolute;
+
     left: 50%;
+
     bottom:
         calc(
             16px +
             env(safe-area-inset-bottom)
         );
-    transform: translateX(-50%);
+
+    transform:
+        translateX(-50%);
+
     display: flex;
+
     flex-direction: column;
-    align-items: flex-start;
+
+    align-items: center;
+
     gap: 8px;
+
     z-index: 80;
 }
 
 .change-row {
+
     display: flex;
+
     align-items: center;
+
     gap: 8px;
 }
 
 .change-input {
+
     width: 175px;
     height: 49px;
+
     padding: 0 12px;
-    border: 1px solid #333;
+
+    border:
+        1px solid #333;
+
     border-radius: 13px;
+
     outline: none;
+
     background: #111;
+
     color: #fff;
+
     text-align: center;
+
     font-size: 17px;
+
     font-weight: 600;
 }
 
 .change-input::placeholder {
+
     color: #555;
 }
 
 .note-input {
+
     width: 175px;
     height: 49px;
+
     padding: 0 12px;
-    border: 1px solid #333;
+
+    border:
+        1px solid #333;
+
     border-radius: 13px;
+
     outline: none;
+
     background: #111;
+
     color: #fff;
+
     text-align: center;
+
     font-size: 15px;
+
     font-weight: 500;
 }
 
 .note-input::placeholder {
+
     color: #555;
 }
 
 .change-button {
+
     width: 55px;
     height: 49px;
+
     border: none;
+
     border-radius: 13px;
+
     background: #fff;
+
     color: #000;
+
     font-size: 15px;
+
     font-weight: 700;
 }
 
 .change-button:active {
-    transform: scale(0.96);
+
+    transform:
+        scale(0.96);
 }
 
 /* =====================================================
@@ -649,29 +966,45 @@ body {
 ===================================================== */
 
 .plus-button {
+
     position: absolute;
+
     top:
         calc(
             12px +
             env(safe-area-inset-top)
         );
+
     left: 12px;
+
     width: 42px;
     height: 42px;
+
     padding: 0;
+
     border: none;
+
     border-radius: 12px;
+
     background: #181818;
+
     color: #fff;
+
     font-size: 27px;
+
     font-weight: 300;
+
     line-height: 42px;
+
     text-align: center;
+
     z-index: 90;
 }
 
 .plus-button:active {
-    transform: scale(0.94);
+
+    transform:
+        scale(0.94);
 }
 
 /* =====================================================
@@ -679,29 +1012,45 @@ body {
 ===================================================== */
 
 .goals-button {
+
     position: absolute;
+
     top:
         calc(
             12px +
             env(safe-area-inset-top)
         );
+
     left: 62px;
+
     width: 42px;
     height: 42px;
+
     padding: 0;
+
     border: none;
+
     border-radius: 12px;
+
     background: #181818;
+
     color: #fff;
+
     font-size: 20px;
+
     font-weight: 400;
+
     line-height: 42px;
+
     text-align: center;
+
     z-index: 90;
 }
 
 .goals-button:active {
-    transform: scale(0.94);
+
+    transform:
+        scale(0.94);
 }
 
 /* =====================================================
@@ -709,95 +1058,156 @@ body {
 ===================================================== */
 
 .reset-button {
+
     position: absolute;
+
     top:
         calc(
             12px +
             env(safe-area-inset-top)
         );
+
     right: 12px;
+
     height: 37px;
+
     padding: 0 13px;
+
     border: none;
+
     border-radius: 11px;
+
     background: #181818;
+
     color: #999;
+
     font-size: 13px;
+
     z-index: 90;
 }
 
 /* =====================================================
-   MODALE OBIETTIVO
+   MODALE
 ===================================================== */
 
 .goal-modal {
+
     position: absolute;
+
     inset: 0;
+
     z-index: 200;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     padding: 25px;
-    background: rgba(0,0,0,0.72);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+
+    background:
+        rgba(0,0,0,0.72);
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-backdrop-filter:
+        blur(8px);
 }
 
 .goal-box {
-    width: min(330px, calc(100vw - 50px));
+
+    width: min(
+        330px,
+        calc(100vw - 50px)
+    );
+
     padding: 22px;
-    border: 1px solid #292929;
+
+    border:
+        1px solid #292929;
+
     border-radius: 18px;
+
     background: #111;
 }
 
 .goal-title {
+
     margin-bottom: 17px;
+
     font-size: 20px;
+
     font-weight: 700;
 }
 
 .goal-input {
+
     width: 100%;
     height: 49px;
+
     margin-bottom: 9px;
+
     padding: 0 13px;
-    border: 1px solid #333;
+
+    border:
+        1px solid #333;
+
     border-radius: 13px;
+
     outline: none;
+
     background: #080808;
+
     color: #fff;
+
     font-size: 16px;
+
     text-align: center;
 }
 
 .goal-input::placeholder {
+
     color: #555;
 }
 
 .goal-actions {
+
     display: flex;
+
     gap: 8px;
+
     margin-top: 6px;
 }
 
 .goal-cancel,
 .goal-save {
+
     flex: 1;
+
     height: 47px;
+
     border: none;
+
     border-radius: 13px;
+
     font-size: 15px;
+
     font-weight: 700;
 }
 
 .goal-cancel {
+
     background: #202020;
+
     color: #aaa;
 }
 
 .goal-save {
+
     background: #fff;
+
     color: #000;
 }
 
@@ -806,61 +1216,98 @@ body {
 ===================================================== */
 
 .start-screen {
+
     position: absolute;
+
     inset: 0;
+
     z-index: 100;
+
     display: flex;
+
     flex-direction: column;
+
     justify-content: center;
+
     align-items: center;
+
     padding: 30px;
+
     background: #000;
 }
 
 .start-title {
+
     margin-bottom: 8px;
+
     font-size: 30px;
+
     font-weight: 700;
 }
 
 .start-subtitle {
+
     margin-bottom: 23px;
+
     color: #777;
+
     font-size: 14px;
+
     text-align: center;
 }
 
 .start-input {
+
     width: 220px;
     height: 54px;
+
     padding: 0 10px;
-    border: 1px solid #444;
+
+    border:
+        1px solid #444;
+
     border-radius: 14px;
+
     outline: none;
+
     background: #111;
+
     color: #fff;
+
     text-align: center;
+
     font-size: 21px;
+
     font-weight: 600;
 }
 
 .start-input::placeholder {
+
     color: #555;
 }
 
 .start-button {
+
     width: 220px;
     height: 49px;
+
     margin-top: 15px;
+
     border: none;
+
     border-radius: 14px;
+
     background: #fff;
+
     color: #000;
+
     font-size: 16px;
+
     font-weight: 700;
 }
 
 .hidden {
+
     display: none !important;
 }
 
@@ -871,33 +1318,45 @@ body {
 @media (max-width: 480px) {
 
     .rocket {
+
         width: 56px;
         height: 28px;
     }
 
     .current-info {
+
         left: 73px;
     }
 
     .current-value {
+
         font-size: 19px;
     }
 
     .goal-item {
+
         left: 7px;
-        width: calc(50% - 40px);
+
+        width:
+            calc(50% - 40px);
     }
 
     .notes-layer {
+
         right: 7px;
-        width: calc(50% - 40px);
+
+        width:
+            calc(50% - 40px);
     }
 
     .goal-item,
     .note {
+
         font-size: 11px;
+
         line-height: 16px;
     }
+
 }
 
 /* =====================================================
@@ -920,28 +1379,51 @@ body {
 
 <div class="app">
 
-    <div id="timeline" class="timeline">
+    <div
+        id="timeline"
+        class="timeline"
+    >
 
-        <div id="timelineContent" class="timeline-content">
+        <div
+            id="timelineContent"
+            class="timeline-content"
+        >
 
-            <div class="center-line"></div>
+            <div
+                class="center-line"
+            ></div>
 
-            <div id="currentMarker" class="current-marker"></div>
+            <div
+                id="currentMarker"
+                class="current-marker"
+            ></div>
 
-            <div id="ticks"></div>
+            <div
+                id="ticks"
+            ></div>
 
-            <div id="labels"></div>
+            <div
+                id="labels"
+            ></div>
 
-            <div id="goalsLayer" class="goals-layer"></div>
+            <div
+                id="goalsLayer"
+                class="goals-layer"
+            ></div>
 
         </div>
 
     </div>
 
-    <!-- NOTE IN ALTO A DESTRA -->
-    <div id="notesLayer" class="notes-layer"></div>
+    <div
+        id="notesLayer"
+        class="notes-layer"
+    ></div>
 
-    <div id="rocketLayer" class="rocket-layer">
+    <div
+        id="rocketLayer"
+        class="rocket-layer"
+    >
 
         <svg
             id="rocket"
@@ -1009,9 +1491,14 @@ body {
 
         </svg>
 
-        <div class="current-info">
+        <div
+            class="current-info"
+        >
 
-            <div id="currentValue" class="current-value">
+            <div
+                id="currentValue"
+                class="current-value"
+            >
                 0 €
             </div>
 
@@ -1019,9 +1506,13 @@ body {
 
     </div>
 
-    <div class="controls">
+    <div
+        class="controls"
+    >
 
-        <div class="change-row">
+        <div
+            class="change-row"
+        >
 
             <input
                 id="changeInput"
@@ -1089,9 +1580,13 @@ body {
         class="goal-modal hidden"
     >
 
-        <div class="goal-box">
+        <div
+            class="goal-box"
+        >
 
-            <div class="goal-title">
+            <div
+                class="goal-title"
+            >
                 Nuovo obiettivo
             </div>
 
@@ -1118,7 +1613,9 @@ body {
                 placeholder="Nome obiettivo"
             >
 
-            <div class="goal-actions">
+            <div
+                class="goal-actions"
+            >
 
                 <button
                     id="goalCancel"
@@ -1149,9 +1646,13 @@ body {
         class="goals-modal hidden"
     >
 
-        <div class="goals-box">
+        <div
+            class="goals-box"
+        >
 
-            <div class="goals-list-title">
+            <div
+                class="goals-list-title"
+            >
                 Obiettivi
             </div>
 
@@ -1180,11 +1681,15 @@ body {
         class="start-screen"
     >
 
-        <div class="start-title">
+        <div
+            class="start-title"
+        >
             Rocket
         </div>
 
-        <div class="start-subtitle">
+        <div
+            class="start-subtitle"
+        >
             Inserisci il valore iniziale
         </div>
 
@@ -1219,31 +1724,43 @@ body {
 document.addEventListener(
     "gesturestart",
     event => event.preventDefault(),
-    { passive: false }
+    {
+        passive: false
+    }
 );
 
 document.addEventListener(
     "gesturechange",
     event => event.preventDefault(),
-    { passive: false }
+    {
+        passive: false
+    }
 );
 
 document.addEventListener(
     "gestureend",
     event => event.preventDefault(),
-    { passive: false }
+    {
+        passive: false
+    }
 );
 
 document.addEventListener(
     "touchmove",
     event => {
 
-        if (event.touches.length > 1) {
+        if (
+            event.touches.length > 1
+        ) {
+
             event.preventDefault();
+
         }
 
     },
-    { passive: false }
+    {
+        passive: false
+    }
 );
 
 /* =====================================================
@@ -1267,95 +1784,152 @@ const GOALS_KEY =
 ===================================================== */
 
 const timeline =
-    document.getElementById("timeline");
+    document.getElementById(
+        "timeline"
+    );
 
 const timelineContent =
-    document.getElementById("timelineContent");
+    document.getElementById(
+        "timelineContent"
+    );
 
 const ticks =
-    document.getElementById("ticks");
+    document.getElementById(
+        "ticks"
+    );
 
 const labels =
-    document.getElementById("labels");
+    document.getElementById(
+        "labels"
+    );
 
 const currentMarker =
-    document.getElementById("currentMarker");
+    document.getElementById(
+        "currentMarker"
+    );
 
 const goalsLayer =
-    document.getElementById("goalsLayer");
+    document.getElementById(
+        "goalsLayer"
+    );
 
 const notesLayer =
-    document.getElementById("notesLayer");
+    document.getElementById(
+        "notesLayer"
+    );
 
 const rocketLayer =
-    document.getElementById("rocketLayer");
+    document.getElementById(
+        "rocketLayer"
+    );
 
 const currentValueElement =
-    document.getElementById("currentValue");
+    document.getElementById(
+        "currentValue"
+    );
 
 const changeInput =
-    document.getElementById("changeInput");
+    document.getElementById(
+        "changeInput"
+    );
 
 const noteInput =
-    document.getElementById("noteInput");
+    document.getElementById(
+        "noteInput"
+    );
 
 const changeButton =
-    document.getElementById("changeButton");
+    document.getElementById(
+        "changeButton"
+    );
 
 const plusButton =
-    document.getElementById("plusButton");
+    document.getElementById(
+        "plusButton"
+    );
 
 const goalsButton =
-    document.getElementById("goalsButton");
+    document.getElementById(
+        "goalsButton"
+    );
 
 const resetButton =
-    document.getElementById("resetButton");
+    document.getElementById(
+        "resetButton"
+    );
 
 const goalModal =
-    document.getElementById("goalModal");
+    document.getElementById(
+        "goalModal"
+    );
 
 const goalValueInput =
-    document.getElementById("goalValueInput");
+    document.getElementById(
+        "goalValueInput"
+    );
 
 const goalNameInput =
-    document.getElementById("goalNameInput");
+    document.getElementById(
+        "goalNameInput"
+    );
 
 const goalCancel =
-    document.getElementById("goalCancel");
+    document.getElementById(
+        "goalCancel"
+    );
 
 const goalSave =
-    document.getElementById("goalSave");
+    document.getElementById(
+        "goalSave"
+    );
 
 const goalsModal =
-    document.getElementById("goalsModal");
+    document.getElementById(
+        "goalsModal"
+    );
 
 const goalsList =
-    document.getElementById("goalsList");
+    document.getElementById(
+        "goalsList"
+    );
 
 const goalsListClose =
-    document.getElementById("goalsListClose");
+    document.getElementById(
+        "goalsListClose"
+    );
 
 const startScreen =
-    document.getElementById("startScreen");
+    document.getElementById(
+        "startScreen"
+    );
 
 const startInput =
-    document.getElementById("startInput");
+    document.getElementById(
+        "startInput"
+    );
 
 const startButton =
-    document.getElementById("startButton");
+    document.getElementById(
+        "startButton"
+    );
 
 const rocketParts =
-    document.querySelectorAll(".rocket-part");
+    document.querySelectorAll(
+        ".rocket-part"
+    );
 
 /* =====================================================
    PARAMETRI SCALA
 ===================================================== */
 
-const DISPLAY_RANGE = 1100;
+const DISPLAY_RANGE =
+    1100;
 
-const STEP = 25;
+const STEP =
+    25;
 
-const PIXELS_PER_STEP = 27;
+const PIXELS_PER_STEP =
+    27;
 
 const PIXELS_PER_EURO =
     PIXELS_PER_STEP / STEP;
@@ -1376,20 +1950,33 @@ function parseNumber(value) {
     let text =
         String(value).trim();
 
-    if (text === "") {
+    if (
+        text === ""
+    ) {
         return NaN;
     }
 
     text =
-        text.replace(/\s/g, "");
+        text.replace(
+            /\s/g,
+            ""
+        );
 
-    if (text.includes(",")) {
+    if (
+        text.includes(",")
+    ) {
 
         text =
-            text.replace(/\./g, "");
+            text.replace(
+                /\./g,
+                ""
+            );
 
         text =
-            text.replace(",", ".");
+            text.replace(
+                ",",
+                "."
+            );
 
     } else {
 
@@ -1415,7 +2002,9 @@ function parseNumber(value) {
 function formatValue(value) {
 
     const rounded =
-        Math.round(value * 100) / 100;
+        Math.round(
+            value * 100
+        ) / 100;
 
     const absolute =
         Math.abs(rounded)
@@ -1427,12 +2016,22 @@ function formatValue(value) {
                 }
             );
 
-    if (rounded > 0) {
-        return "+" + absolute + " €";
+    if (
+        rounded > 0
+    ) {
+
+        return "+" +
+            absolute +
+            " €";
     }
 
-    if (rounded < 0) {
-        return "-" + absolute + " €";
+    if (
+        rounded < 0
+    ) {
+
+        return "-" +
+            absolute +
+            " €";
     }
 
     return "0 €";
@@ -1441,7 +2040,9 @@ function formatValue(value) {
 function formatResultValue(value) {
 
     const rounded =
-        Math.round(value * 100) / 100;
+        Math.round(
+            value * 100
+        ) / 100;
 
     const absolute =
         Math.abs(rounded)
@@ -1453,11 +2054,17 @@ function formatResultValue(value) {
                 }
             );
 
-    if (rounded < 0) {
-        return "-" + absolute + " €";
+    if (
+        rounded < 0
+    ) {
+
+        return "-" +
+            absolute +
+            " €";
     }
 
-    return absolute + " €";
+    return absolute +
+        " €";
 }
 
 /* =====================================================
@@ -1466,15 +2073,24 @@ function formatResultValue(value) {
 
 function getTodayDate() {
 
-    const now = new Date();
+    const now =
+        new Date();
 
     const day =
-        String(now.getDate())
-            .padStart(2, "0");
+        String(
+            now.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
 
     const month =
-        String(now.getMonth() + 1)
-            .padStart(2, "0");
+        String(
+            now.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
 
     const year =
         now.getFullYear();
@@ -1494,25 +2110,37 @@ function getTodayDate() {
 
 function getValueColor(value) {
 
-    if (value === 0) {
+    if (
+        value === 0
+    ) {
         return "#FFFFFF";
     }
 
-    if (value > 0) {
+    if (
+        value > 0
+    ) {
 
-        if (value <= 1000) {
+        if (
+            value <= 1000
+        ) {
             return "#B8FFD0";
         }
 
-        if (value <= 2000) {
+        if (
+            value <= 2000
+        ) {
             return "#62F28A";
         }
 
-        if (value <= 3000) {
+        if (
+            value <= 3000
+        ) {
             return "#20DD65";
         }
 
-        if (value <= 4000) {
+        if (
+            value <= 4000
+        ) {
             return "#08C951";
         }
 
@@ -1522,19 +2150,27 @@ function getValueColor(value) {
     const amount =
         Math.abs(value);
 
-    if (amount <= 1000) {
+    if (
+        amount <= 1000
+    ) {
         return "#FFB9C0";
     }
 
-    if (amount <= 2000) {
+    if (
+        amount <= 2000
+    ) {
         return "#FF6877";
     }
 
-    if (amount <= 3000) {
+    if (
+        amount <= 3000
+    ) {
         return "#F8374C";
     }
 
-    if (amount <= 4000) {
+    if (
+        amount <= 4000
+    ) {
         return "#E91E35";
     }
 
@@ -1548,11 +2184,16 @@ function getValueColor(value) {
 function updateColor() {
 
     const color =
-        getValueColor(currentValue);
+        getValueColor(
+            currentValue
+        );
 
     rocketParts.forEach(
         part => {
-            part.style.fill = color;
+
+            part.style.fill =
+                color;
+
         }
     );
 
@@ -1586,7 +2227,9 @@ function updateColor() {
 function updateCurrentMarker() {
 
     if (
-        !Number.isFinite(currentValue)
+        !Number.isFinite(
+            currentValue
+        )
     ) {
         return;
     }
@@ -1613,9 +2256,11 @@ function updateCurrentMarker() {
 
 function buildScale() {
 
-    ticks.innerHTML = "";
+    ticks.innerHTML =
+        "";
 
-    labels.innerHTML = "";
+    labels.innerHTML =
+        "";
 
     const totalValueRange =
         DISPLAY_RANGE * 2;
@@ -1649,9 +2294,14 @@ function buildScale() {
         ) * STEP;
 
     for (
-        let scaleValue = firstValue;
-        scaleValue <= lastValue;
-        scaleValue += STEP
+        let scaleValue =
+            firstValue;
+
+        scaleValue <=
+            lastValue;
+
+        scaleValue +=
+            STEP
     ) {
 
         const difference =
@@ -1666,33 +2316,46 @@ function buildScale() {
             );
 
         const tick =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
-        tick.className = "tick";
+        tick.className =
+            "tick";
 
         if (
             scaleValue % 250 === 0
         ) {
-            tick.classList.add("major");
+
+            tick.classList.add(
+                "major"
+            );
         }
 
         if (
             scaleValue === 0
         ) {
-            tick.classList.add("zero");
+
+            tick.classList.add(
+                "zero"
+            );
         }
 
         tick.style.top =
             `${y}px`;
 
-        ticks.appendChild(tick);
+        ticks.appendChild(
+            tick
+        );
 
         if (
             scaleValue % 250 === 0
         ) {
 
             const label =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             label.className =
                 "scale-label";
@@ -1701,12 +2364,18 @@ function buildScale() {
                 `${y}px`;
 
             label.textContent =
-                formatValue(scaleValue);
+                formatValue(
+                    scaleValue
+                );
 
             label.style.color =
-                getValueColor(scaleValue);
+                getValueColor(
+                    scaleValue
+                );
 
-            labels.appendChild(label);
+            labels.appendChild(
+                label
+            );
         }
     }
 
@@ -1719,15 +2388,23 @@ function buildScale() {
    NOTE
 ===================================================== */
 
-function createNote(entry, index) {
+function createNote(
+    entry,
+    index
+) {
 
     const note =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
-    note.className = "note";
+    note.className =
+        "note";
 
     const resultValue =
-        Number(entry.value);
+        Number(
+            entry.value
+        );
 
     const changeValue =
         Number.isFinite(
@@ -1737,7 +2414,9 @@ function createNote(entry, index) {
             : 0;
 
     const resultColor =
-        getValueColor(resultValue);
+        getValueColor(
+            resultValue
+        );
 
     const changeColor =
         changeValue >= 0
@@ -1745,62 +2424,83 @@ function createNote(entry, index) {
             : "#F8374C";
 
     const dateElement =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     dateElement.className =
         "note-date";
 
     dateElement.textContent =
-        entry.date || "";
+        entry.date ||
+        "";
 
     const main =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
     main.className =
         "note-main";
 
     const openBracket =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
     openBracket.className =
         "note-bracket";
 
-    openBracket.textContent = "(";
+    openBracket.textContent =
+        "(";
 
     const changeElement =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
     changeElement.className =
         "note-change";
 
     changeElement.textContent =
-        formatValue(changeValue);
+        formatValue(
+            changeValue
+        );
 
     changeElement.style.color =
         changeColor;
 
     const closeBracket =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
     closeBracket.className =
         "note-bracket";
 
-    closeBracket.textContent = ")";
+    closeBracket.textContent =
+        ")";
 
     const resultElement =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
     resultElement.className =
         "note-result";
 
     resultElement.textContent =
-        formatResultValue(resultValue);
+        formatResultValue(
+            resultValue
+        );
 
     resultElement.style.color =
         resultColor;
 
     const textElement =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
     textElement.className =
         "note-text";
@@ -1809,12 +2509,15 @@ function createNote(entry, index) {
         entry.text;
 
     const deleteButton =
-        document.createElement("button");
+        document.createElement(
+            "button"
+        );
 
     deleteButton.className =
         "note-delete";
 
-    deleteButton.textContent = "×";
+    deleteButton.textContent =
+        "×";
 
     deleteButton.addEventListener(
         "click",
@@ -1822,44 +2525,82 @@ function createNote(entry, index) {
 
             event.stopPropagation();
 
-            deleteNote(index);
+            deleteNote(
+                index
+            );
 
         }
     );
 
-    main.appendChild(openBracket);
-    main.appendChild(changeElement);
-    main.appendChild(closeBracket);
-    main.appendChild(resultElement);
-    main.appendChild(textElement);
-    main.appendChild(deleteButton);
+    main.appendChild(
+        openBracket
+    );
 
-    note.appendChild(dateElement);
-    note.appendChild(main);
+    main.appendChild(
+        changeElement
+    );
+
+    main.appendChild(
+        closeBracket
+    );
+
+    main.appendChild(
+        resultElement
+    );
+
+    main.appendChild(
+        textElement
+    );
+
+    main.appendChild(
+        deleteButton
+    );
+
+    note.appendChild(
+        dateElement
+    );
+
+    note.appendChild(
+        main
+    );
 
     return note;
 }
 
-let notesExpanded = false;
+let notesExpanded =
+    false;
 
 function drawNotes() {
 
-    notesLayer.innerHTML = "";
+    notesLayer.innerHTML =
+        "";
 
     const orderedNotes =
         notes
             .map(
-                (entry, index) => ({
-                    entry: entry,
-                    originalIndex: index
-                })
+                (entry, index) => {
+
+                    return {
+
+                        entry:
+                            entry,
+
+                        originalIndex:
+                            index
+
+                    };
+
+                }
             )
             .reverse();
 
     const visibleNotes =
         notesExpanded
             ? orderedNotes
-            : orderedNotes.slice(0, 5);
+            : orderedNotes.slice(
+                0,
+                10
+            );
 
     visibleNotes.forEach(
         item => {
@@ -1870,15 +2611,21 @@ function drawNotes() {
                     item.originalIndex
                 );
 
-            notesLayer.appendChild(note);
+            notesLayer.appendChild(
+                note
+            );
 
         }
     );
 
-    if (orderedNotes.length > 5) {
+    if (
+        orderedNotes.length > 10
+    ) {
 
         const toggleButton =
-            document.createElement("button");
+            document.createElement(
+                "button"
+            );
 
         toggleButton.className =
             "notes-toggle";
@@ -1886,7 +2633,7 @@ function drawNotes() {
         toggleButton.textContent =
             notesExpanded
                 ? "Mostra meno"
-                : "Mostra altro";
+                : "Mostra tutte";
 
         toggleButton.addEventListener(
             "click",
@@ -1902,7 +2649,9 @@ function drawNotes() {
             }
         );
 
-        notesLayer.appendChild(toggleButton);
+        notesLayer.appendChild(
+            toggleButton
+        );
     }
 }
 
@@ -1915,12 +2664,20 @@ function deleteNote(index) {
         return;
     }
 
-    notes.splice(index, 1);
+    notes.splice(
+        index,
+        1
+    );
 
     saveNotes();
 
-    if (notes.length <= 5) {
-        notesExpanded = false;
+    if (
+        notes.length <= 10
+    ) {
+
+        notesExpanded =
+            false;
+
     }
 
     drawNotes();
@@ -1930,25 +2687,35 @@ function saveNotes() {
 
     localStorage.setItem(
         NOTES_KEY,
-        JSON.stringify(notes)
+        JSON.stringify(
+            notes
+        )
     );
 }
 
 /* =====================================================
-   OBIETTIVI
+   OBIETTIVI FISSATI ALLA SCALA
 ===================================================== */
 
-function isGoalCompleted(goalValue) {
+function isGoalCompleted(
+    goalValue
+) {
 
-    return currentValue >= goalValue;
+    return (
+        currentValue >=
+        goalValue
+    );
 }
 
 function drawGoalsOnScale() {
 
-    goalsLayer.innerHTML = "";
+    goalsLayer.innerHTML =
+        "";
 
     if (
-        !Number.isFinite(currentValue)
+        !Number.isFinite(
+            currentValue
+        )
     ) {
         return;
     }
@@ -1973,21 +2740,41 @@ function drawGoalsOnScale() {
 
     goals
         .map(
-            (goal, index) => ({
-                value: Number(goal.value),
-                name: String(goal.name),
-                index: index
-            })
+            (goal, index) => {
+
+                return {
+
+                    value:
+                        Number(
+                            goal.value
+                        ),
+
+                    name:
+                        String(
+                            goal.name
+                        ),
+
+                    index:
+                        index
+
+                };
+
+            }
         )
         .filter(
             goal =>
-                Number.isFinite(goal.value) &&
-                goal.value >= minimumValue &&
-                goal.value <= maximumValue
+                Number.isFinite(
+                    goal.value
+                ) &&
+                goal.value >=
+                    minimumValue &&
+                goal.value <=
+                    maximumValue
         )
         .sort(
             (a, b) =>
-                a.value - b.value
+                a.value -
+                b.value
         )
         .forEach(
             goal => {
@@ -2004,7 +2791,9 @@ function drawGoalsOnScale() {
                     );
 
                 const item =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
 
                 item.className =
                     "goal-item";
@@ -2018,40 +2807,56 @@ function drawGoalsOnScale() {
                     );
 
                 const check =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
 
                 check.className =
                     "goal-check";
 
-                if (completed) {
+                if (
+                    completed
+                ) {
 
                     check.classList.add(
                         "completed"
                     );
 
-                    check.textContent = "✓";
+                    check.textContent =
+                        "✓";
+
                 }
 
                 const content =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
 
                 content.className =
                     "goal-content";
 
                 const valueElement =
-                    document.createElement("span");
+                    document.createElement(
+                        "span"
+                    );
 
                 valueElement.className =
                     "goal-value";
 
                 valueElement.textContent =
-                    formatValue(goal.value);
+                    formatValue(
+                        goal.value
+                    );
 
                 valueElement.style.color =
-                    getValueColor(goal.value);
+                    getValueColor(
+                        goal.value
+                    );
 
                 const nameElement =
-                    document.createElement("span");
+                    document.createElement(
+                        "span"
+                    );
 
                 nameElement.className =
                     "goal-text";
@@ -2059,13 +2864,25 @@ function drawGoalsOnScale() {
                 nameElement.textContent =
                     goal.name;
 
-                content.appendChild(valueElement);
-                content.appendChild(nameElement);
+                content.appendChild(
+                    valueElement
+                );
 
-                item.appendChild(check);
-                item.appendChild(content);
+                content.appendChild(
+                    nameElement
+                );
 
-                goalsLayer.appendChild(item);
+                item.appendChild(
+                    check
+                );
+
+                item.appendChild(
+                    content
+                );
+
+                goalsLayer.appendChild(
+                    item
+                );
 
             }
         );
@@ -2075,7 +2892,9 @@ function saveGoals() {
 
     localStorage.setItem(
         GOALS_KEY,
-        JSON.stringify(goals)
+        JSON.stringify(
+            goals
+        )
     );
 }
 
@@ -2088,7 +2907,10 @@ function deleteGoal(index) {
         return;
     }
 
-    goals.splice(index, 1);
+    goals.splice(
+        index,
+        1
+    );
 
     saveGoals();
 
@@ -2099,30 +2921,53 @@ function deleteGoal(index) {
 
 function drawGoalsList() {
 
-    goalsList.innerHTML = "";
+    goalsList.innerHTML =
+        "";
 
     const sortedGoals =
         goals
             .map(
-                (goal, index) => ({
-                    value: Number(goal.value),
-                    name: String(goal.name),
-                    originalIndex: index
-                })
+                (goal, index) => {
+
+                    return {
+
+                        value:
+                            Number(
+                                goal.value
+                            ),
+
+                        name:
+                            String(
+                                goal.name
+                            ),
+
+                        originalIndex:
+                            index
+
+                    };
+
+                }
             )
             .filter(
                 goal =>
-                    Number.isFinite(goal.value)
+                    Number.isFinite(
+                        goal.value
+                    )
             )
             .sort(
                 (a, b) =>
-                    a.value - b.value
+                    a.value -
+                    b.value
             );
 
-    if (sortedGoals.length === 0) {
+    if (
+        sortedGoals.length === 0
+    ) {
 
         const empty =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         empty.className =
             "goals-empty";
@@ -2130,7 +2975,9 @@ function drawGoalsList() {
         empty.textContent =
             "Nessun obiettivo";
 
-        goalsList.appendChild(empty);
+        goalsList.appendChild(
+            empty
+        );
 
         return;
     }
@@ -2139,49 +2986,69 @@ function drawGoalsList() {
         goal => {
 
             const item =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             item.className =
                 "goals-list-item";
 
             const completed =
-                isGoalCompleted(goal.value);
+                isGoalCompleted(
+                    goal.value
+                );
 
             const check =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             check.className =
                 "goals-list-check";
 
-            if (completed) {
+            if (
+                completed
+            ) {
 
                 check.classList.add(
                     "completed"
                 );
 
-                check.textContent = "✓";
+                check.textContent =
+                    "✓";
+
             }
 
             const content =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             content.className =
                 "goals-list-content";
 
             const value =
-                document.createElement("span");
+                document.createElement(
+                    "span"
+                );
 
             value.className =
                 "goals-list-value";
 
             value.textContent =
-                formatValue(goal.value);
+                formatValue(
+                    goal.value
+                );
 
             value.style.color =
-                getValueColor(goal.value);
+                getValueColor(
+                    goal.value
+                );
 
             const name =
-                document.createElement("span");
+                document.createElement(
+                    "span"
+                );
 
             name.className =
                 "goals-list-name";
@@ -2190,12 +3057,15 @@ function drawGoalsList() {
                 goal.name;
 
             const deleteButton =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
 
             deleteButton.className =
                 "goals-list-delete";
 
-            deleteButton.textContent = "×";
+            deleteButton.textContent =
+                "×";
 
             deleteButton.addEventListener(
                 "click",
@@ -2208,14 +3078,29 @@ function drawGoalsList() {
                 }
             );
 
-            content.appendChild(value);
-            content.appendChild(name);
+            content.appendChild(
+                value
+            );
 
-            item.appendChild(check);
-            item.appendChild(content);
-            item.appendChild(deleteButton);
+            content.appendChild(
+                name
+            );
 
-            goalsList.appendChild(item);
+            item.appendChild(
+                check
+            );
+
+            item.appendChild(
+                content
+            );
+
+            item.appendChild(
+                deleteButton
+            );
+
+            goalsList.appendChild(
+                item
+            );
 
         }
     );
@@ -2243,9 +3128,11 @@ function closeGoalsModal() {
 
 function openGoalModal() {
 
-    goalValueInput.value = "";
+    goalValueInput.value =
+        "";
 
-    goalNameInput.value = "";
+    goalNameInput.value =
+        "";
 
     goalModal.classList.remove(
         "hidden"
@@ -2253,7 +3140,9 @@ function openGoalModal() {
 
     setTimeout(
         () => {
+
             goalValueInput.focus();
+
         },
         100
     );
@@ -2265,9 +3154,11 @@ function closeGoalModal() {
         "hidden"
     );
 
-    goalValueInput.value = "";
+    goalValueInput.value =
+        "";
 
-    goalNameInput.value = "";
+    goalNameInput.value =
+        "";
 }
 
 function saveGoal() {
@@ -2281,7 +3172,9 @@ function saveGoal() {
         goalNameInput.value.trim();
 
     if (
-        !Number.isFinite(value)
+        !Number.isFinite(
+            value
+        )
     ) {
 
         goalValueInput.focus();
@@ -2289,7 +3182,9 @@ function saveGoal() {
         return;
     }
 
-    if (name === "") {
+    if (
+        name === ""
+    ) {
 
         goalNameInput.focus();
 
@@ -2297,8 +3192,13 @@ function saveGoal() {
     }
 
     goals.push({
-        value: value,
-        name: name
+
+        value:
+            value,
+
+        name:
+            name
+
     });
 
     saveGoals();
@@ -2318,9 +3218,12 @@ function centerTimeline() {
         timeline.scrollHeight -
         timeline.clientHeight;
 
-    if (maxScroll <= 0) {
+    if (
+        maxScroll <= 0
+    ) {
 
-        timeline.scrollTop = 0;
+        timeline.scrollTop =
+            0;
 
         return;
     }
@@ -2336,7 +3239,9 @@ function centerTimeline() {
 function updateDisplay() {
 
     currentValueElement.textContent =
-        formatValue(currentValue);
+        formatValue(
+            currentValue
+        );
 
     updateColor();
 
@@ -2359,22 +3264,28 @@ function updateDisplay() {
    BLOCCO FISICO RAZZO
 ===================================================== */
 
-let rocketInitialBodyTop = null;
+let rocketInitialBodyTop =
+    null;
 
-let rocketInitialBodyLeft = null;
+let rocketInitialBodyLeft =
+    null;
 
 function stabilizeRocket() {
 
     const bodyRect =
         document.body.getBoundingClientRect();
 
-    if (rocketInitialBodyTop === null) {
+    if (
+        rocketInitialBodyTop === null
+    ) {
 
         rocketInitialBodyTop =
             bodyRect.top;
     }
 
-    if (rocketInitialBodyLeft === null) {
+    if (
+        rocketInitialBodyLeft === null
+    ) {
 
         rocketInitialBodyLeft =
             bodyRect.left;
@@ -2419,18 +3330,24 @@ function requestRocketStabilization() {
     );
 }
 
-if (window.visualViewport) {
+if (
+    window.visualViewport
+) {
 
     window.visualViewport.addEventListener(
         "scroll",
         requestRocketStabilization,
-        { passive: true }
+        {
+            passive: true
+        }
     );
 
     window.visualViewport.addEventListener(
         "resize",
         requestRocketStabilization,
-        { passive: true }
+        {
+            passive: true
+        }
     );
 }
 
@@ -2444,15 +3361,21 @@ function monitorKeyboardMovement() {
 
         frames++;
 
-        if (frames < 60) {
+        if (
+            frames < 60
+        ) {
 
-            requestAnimationFrame(check);
+            requestAnimationFrame(
+                check
+            );
 
         }
 
     }
 
-    requestAnimationFrame(check);
+    requestAnimationFrame(
+        check
+    );
 }
 
 document.addEventListener(
@@ -2484,16 +3407,22 @@ function setInitialValue() {
             startInput.value
         );
 
-    if (!Number.isFinite(value)) {
+    if (
+        !Number.isFinite(
+            value
+        )
+    ) {
 
         startInput.focus();
 
         return;
     }
 
-    startValue = value;
+    startValue =
+        value;
 
-    currentValue = value;
+    currentValue =
+        value;
 
     notes = [];
 
@@ -2501,12 +3430,16 @@ function setInitialValue() {
 
     localStorage.setItem(
         START_KEY,
-        String(startValue)
+        String(
+            startValue
+        )
     );
 
     localStorage.setItem(
         CURRENT_KEY,
-        String(currentValue)
+        String(
+            currentValue
+        )
     );
 
     saveNotes();
@@ -2531,7 +3464,11 @@ function applyChange() {
             changeInput.value
         );
 
-    if (!Number.isFinite(change)) {
+    if (
+        !Number.isFinite(
+            change
+        )
+    ) {
 
         changeInput.focus();
 
@@ -2541,7 +3478,9 @@ function applyChange() {
     const comment =
         noteInput.value.trim();
 
-    if (comment === "") {
+    if (
+        comment === ""
+    ) {
 
         noteInput.focus();
 
@@ -2549,34 +3488,45 @@ function applyChange() {
     }
 
     const newValue =
-        currentValue + change;
+        currentValue +
+        change;
 
     notes.push({
 
-        value: newValue,
+        value:
+            newValue,
 
-        change: change,
+        change:
+            change,
 
-        text: comment,
+        text:
+            comment,
 
-        date: getTodayDate()
+        date:
+            getTodayDate()
 
     });
 
-    currentValue = newValue;
+    currentValue =
+        newValue;
 
     localStorage.setItem(
         CURRENT_KEY,
-        String(currentValue)
+        String(
+            currentValue
+        )
     );
 
     saveNotes();
 
-    changeInput.value = "";
+    changeInput.value =
+        "";
 
-    noteInput.value = "";
+    noteInput.value =
+        "";
 
-    notesExpanded = false;
+    notesExpanded =
+        false;
 
     updateDisplay();
 
@@ -2602,7 +3552,10 @@ function resetApp() {
             "Vuoi cancellare il valore iniziale, tutte le note e tutti gli obiettivi?"
         );
 
-    if (!confirmed) {
+    if (
+        !confirmed
+    ) {
+
         return;
     }
 
@@ -2622,21 +3575,27 @@ function resetApp() {
         GOALS_KEY
     );
 
-    startValue = NaN;
+    startValue =
+        NaN;
 
-    currentValue = NaN;
+    currentValue =
+        NaN;
 
     notes = [];
 
     goals = [];
 
-    notesExpanded = false;
+    notesExpanded =
+        false;
 
-    startInput.value = "";
+    startInput.value =
+        "";
 
-    changeInput.value = "";
+    changeInput.value =
+        "";
 
-    noteInput.value = "";
+    noteInput.value =
+        "";
 
     goalModal.classList.add(
         "hidden"
@@ -2646,11 +3605,14 @@ function resetApp() {
         "hidden"
     );
 
-    goalsLayer.innerHTML = "";
+    goalsLayer.innerHTML =
+        "";
 
-    notesLayer.innerHTML = "";
+    notesLayer.innerHTML =
+        "";
 
-    goalsList.innerHTML = "";
+    goalsList.innerHTML =
+        "";
 
     startScreen.classList.remove(
         "hidden"
@@ -2659,9 +3621,11 @@ function resetApp() {
     rocketLayer.style.transform =
         "translate3d(0,0,0)";
 
-    rocketInitialBodyTop = null;
+    rocketInitialBodyTop =
+        null;
 
-    rocketInitialBodyLeft = null;
+    rocketInitialBodyLeft =
+        null;
 }
 
 /* =====================================================
@@ -2677,8 +3641,12 @@ startInput.addEventListener(
     "keydown",
     event => {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
+
             setInitialValue();
+
         }
 
     }
@@ -2693,8 +3661,12 @@ changeInput.addEventListener(
     "keydown",
     event => {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
+
             applyChange();
+
         }
 
     }
@@ -2704,8 +3676,12 @@ noteInput.addEventListener(
     "keydown",
     event => {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
+
             applyChange();
+
         }
 
     }
@@ -2730,8 +3706,13 @@ goalsModal.addEventListener(
     "click",
     event => {
 
-        if (event.target === goalsModal) {
+        if (
+            event.target ===
+            goalsModal
+        ) {
+
             closeGoalsModal();
+
         }
 
     }
@@ -2751,8 +3732,12 @@ goalValueInput.addEventListener(
     "keydown",
     event => {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
+
             goalNameInput.focus();
+
         }
 
     }
@@ -2762,8 +3747,12 @@ goalNameInput.addEventListener(
     "keydown",
     event => {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
+
             saveGoal();
+
         }
 
     }
@@ -2773,8 +3762,13 @@ goalModal.addEventListener(
     "click",
     event => {
 
-        if (event.target === goalModal) {
+        if (
+            event.target ===
+            goalModal
+        ) {
+
             closeGoalModal();
+
         }
 
     }
@@ -2820,30 +3814,49 @@ try {
             )
         );
 
-    if (Array.isArray(savedNotes)) {
+    if (
+        Array.isArray(
+            savedNotes
+        )
+    ) {
 
         notes =
             savedNotes
                 .map(
-                    entry => ({
-                        value:
-                            Number(entry.value),
+                    entry => {
 
-                        change:
-                            Number.isFinite(
-                                Number(entry.change)
-                            )
-                                ? Number(entry.change)
-                                : 0,
+                        return {
 
-                        text:
-                            String(entry.text),
+                            value:
+                                Number(
+                                    entry.value
+                                ),
 
-                        date:
-                            String(
-                                entry.date || ""
-                            )
-                    })
+                            change:
+                                Number.isFinite(
+                                    Number(
+                                        entry.change
+                                    )
+                                )
+                                    ? Number(
+                                        entry.change
+                                    )
+                                    : 0,
+
+                            text:
+                                String(
+                                    entry.text
+                                ),
+
+                            date:
+                                String(
+                                    entry.date ||
+                                    ""
+                                )
+
+                        };
+
+                    }
                 )
                 .filter(
                     entry =>
@@ -2873,18 +3886,32 @@ try {
             )
         );
 
-    if (Array.isArray(savedGoals)) {
+    if (
+        Array.isArray(
+            savedGoals
+        )
+    ) {
 
         goals =
             savedGoals
                 .map(
-                    goal => ({
-                        value:
-                            Number(goal.value),
+                    goal => {
 
-                        name:
-                            String(goal.name)
-                    })
+                        return {
+
+                            value:
+                                Number(
+                                    goal.value
+                                ),
+
+                            name:
+                                String(
+                                    goal.name
+                                )
+
+                        };
+
+                    }
                 )
                 .filter(
                     goal =>
@@ -2906,11 +3933,15 @@ try {
 ===================================================== */
 
 if (
-    Number.isFinite(startValue)
+    Number.isFinite(
+        startValue
+    )
 ) {
 
     if (
-        !Number.isFinite(currentValue)
+        !Number.isFinite(
+            currentValue
+        )
     ) {
 
         currentValue =
@@ -2954,14 +3985,17 @@ requestAnimationFrame(
    CONTROLLO MOVIMENTO BODY
 ===================================================== */
 
-let lastBodyTop = null;
+let lastBodyTop =
+    null;
 
 function detectBodyMovement() {
 
     const rect =
         document.body.getBoundingClientRect();
 
-    if (lastBodyTop === null) {
+    if (
+        lastBodyTop === null
+    ) {
 
         lastBodyTop =
             rect.top;
@@ -2983,14 +4017,20 @@ function detectBodyMovement() {
             rect.top;
 
     }
+
 }
 
-let keyboardMonitor = null;
+let keyboardMonitor =
+    null;
 
 function startKeyboardMonitor() {
 
-    if (keyboardMonitor !== null) {
+    if (
+        keyboardMonitor !== null
+    ) {
+
         return;
+
     }
 
     keyboardMonitor =
@@ -3002,19 +4042,24 @@ function startKeyboardMonitor() {
             },
             16
         );
+
 }
 
 function stopKeyboardMonitor() {
 
-    if (keyboardMonitor !== null) {
+    if (
+        keyboardMonitor !== null
+    ) {
 
         clearInterval(
             keyboardMonitor
         );
 
-        keyboardMonitor = null;
+        keyboardMonitor =
+            null;
 
     }
+
 }
 
 document.addEventListener(
