@@ -347,11 +347,20 @@ body {
    NOTE
 ===================================================== */
 
+/*
+   LE NOTE RESTANO NELLA STESSA ZONA A DESTRA.
+
+   L'unica modifica è che ora partono sotto
+   il valore attuale del razzo.
+
+   La nota più recente viene mostrata per prima.
+*/
+
 .notes-layer {
 
     position: absolute;
 
-    top: 50%;
+    top: calc(50% + 25px);
 
     right: 7px;
 
@@ -359,8 +368,7 @@ body {
 
     max-height: 58vh;
 
-    transform:
-        translateY(-50%);
+    transform: none;
 
     overflow-y: auto;
     overflow-x: hidden;
@@ -377,6 +385,10 @@ body {
 .notes-layer::-webkit-scrollbar {
     display: none;
 }
+
+/*
+   Singola nota.
+*/
 
 .note {
 
@@ -396,57 +408,120 @@ body {
 
     word-break: break-word;
 
+    overflow-wrap: anywhere;
+
     user-select: none;
 
     -webkit-user-select: none;
 }
 
 /*
-   PRIMA PARTE:
+   DATA
 
-   ( + / - variazione )
-
-   Le parentesi sono sempre bianche.
+   Piccolissima, bianca.
 */
 
-.note-parenthesis {
+.note-date {
 
-    color: #fff;
+    display: block;
 
-    font-weight: 700;
+    margin-bottom: 3px;
+
+    color: #fff !important;
+
+    font-size: 6px;
+
+    line-height: 8px;
+
+    font-weight: 400;
+
+    opacity: 0.85;
+
+    white-space: nowrap;
 }
+
+/*
+   Riga principale della nota.
+
+   I tre elementi vengono mantenuti separati
+   per evitare sovrapposizioni.
+*/
+
+.note-main {
+
+    display: block;
+
+    width: 100%;
+
+    line-height: 16px;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+}
+
+/*
+   Parentesi sempre bianche.
+*/
+
+.note-bracket {
+
+    color: #fff !important;
+
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+/*
+   Plusvalenza.
+
+   Verde se positiva,
+   rosso se negativa.
+*/
 
 .note-change {
 
     font-weight: 700;
+
+    white-space: nowrap;
 }
 
 /*
-   SECONDA PARTE:
+   Valore raggiunto.
 
-   valore raggiunto dopo la variazione
+   Verde sopra zero,
+   rosso sotto zero.
 */
 
 .note-result {
 
-    margin-left: 5px;
+    margin-left: 4px;
 
     font-weight: 700;
+
+    white-space: nowrap;
 }
 
 /*
-   TERZA PARTE:
+   Testo inserito dall'utente.
 
-   testo scritto dall'utente
+   Sempre bianco.
 */
 
 .note-text {
 
     margin-left: 5px;
 
-    color: #fff;
+    color: #fff !important;
 
-    opacity: 0.95;
+    font-weight: 400;
+
+    white-space: normal;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
 }
 
 .note-delete {
@@ -457,6 +532,8 @@ body {
     height: 19px;
 
     padding: 0;
+
+    margin-left: 5px;
 
     border: none;
 
@@ -477,6 +554,41 @@ body {
 
     transform:
         scale(0.9);
+}
+
+/*
+   Pulsante MOSTRA TUTTE / MOSTRA MENO
+*/
+
+.notes-toggle {
+
+    display: block;
+
+    width: 100%;
+
+    margin-top: 2px;
+
+    padding: 7px 0;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #181818;
+
+    color: #aaa;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    text-align: center;
+}
+
+.notes-toggle:active {
+
+    transform:
+        scale(0.97);
 }
 
 /* =====================================================
@@ -1104,6 +1216,10 @@ body {
         class="notes-layer"
     ></div>
 
+    <!-- =================================================
+         RAZZO
+    ================================================= -->
+
     <div
         id="rocketLayer"
         class="rocket-layer"
@@ -1247,6 +1363,10 @@ body {
         Reset
     </button>
 
+    <!-- =================================================
+         MODALE OBIETTIVO
+    ================================================= -->
+
     <div
         id="goalModal"
         class="goal-modal hidden"
@@ -1308,6 +1428,10 @@ body {
         </div>
 
     </div>
+
+    <!-- =================================================
+         SCHERMATA INIZIALE
+    ================================================= -->
 
     <div
         id="startScreen"
@@ -1650,6 +1774,78 @@ function formatValue(value) {
     return "0 €";
 }
 
+/*
+   Formattazione del valore raggiunto
+   senza il segno "+" quando è positivo.
+*/
+
+function formatResultValue(value) {
+
+    const rounded =
+        Math.round(
+            value * 100
+        ) / 100;
+
+    const absolute =
+        Math.abs(rounded)
+            .toLocaleString(
+                "it-IT",
+                {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                }
+            );
+
+    if (
+        rounded < 0
+    ) {
+
+        return "-" +
+            absolute +
+            " €";
+    }
+
+    return absolute +
+        " €";
+}
+
+/* =====================================================
+   DATA
+===================================================== */
+
+function getTodayDate() {
+
+    const now =
+        new Date();
+
+    const day =
+        String(
+            now.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+    const year =
+        now.getFullYear();
+
+    return (
+        day +
+        "/" +
+        month +
+        "/" +
+        year
+    );
+}
+
 /* =====================================================
    COLORI
 ===================================================== */
@@ -1933,9 +2129,7 @@ function buildScale() {
 ===================================================== */
 
 function createNote(
-    change,
-    value,
-    text,
+    entry,
     index
 ) {
 
@@ -1947,16 +2141,74 @@ function createNote(
     note.className =
         "note";
 
-    const openParenthesis =
+    const resultValue =
+        Number(
+            entry.value
+        );
+
+    const changeValue =
+        Number.isFinite(
+            Number(entry.change)
+        )
+            ? Number(entry.change)
+            : 0;
+
+    const resultColor =
+        getValueColor(
+            resultValue
+        );
+
+    const changeColor =
+        changeValue >= 0
+            ? "#20DD65"
+            : "#F8374C";
+
+    /*
+       DATA
+    */
+
+    const dateElement =
+        document.createElement(
+            "div"
+        );
+
+    dateElement.className =
+        "note-date";
+
+    dateElement.textContent =
+        entry.date ||
+        "";
+
+    /*
+       RIGA PRINCIPALE
+    */
+
+    const main =
+        document.createElement(
+            "div"
+        );
+
+    main.className =
+        "note-main";
+
+    /*
+       PARENTESI APERTA
+    */
+
+    const openBracket =
         document.createElement(
             "span"
         );
 
-    openParenthesis.className =
-        "note-parenthesis";
+    openBracket.className =
+        "note-bracket";
 
-    openParenthesis.textContent =
+    openBracket.textContent =
         "(";
+
+    /*
+       PLUSVALENZA
+    */
 
     const changeElement =
         document.createElement(
@@ -1968,24 +2220,30 @@ function createNote(
 
     changeElement.textContent =
         formatValue(
-            change
+            changeValue
         );
 
     changeElement.style.color =
-        getValueColor(
-            change
-        );
+        changeColor;
 
-    const closeParenthesis =
+    /*
+       PARENTESI CHIUSA
+    */
+
+    const closeBracket =
         document.createElement(
             "span"
         );
 
-    closeParenthesis.className =
-        "note-parenthesis";
+    closeBracket.className =
+        "note-bracket";
 
-    closeParenthesis.textContent =
+    closeBracket.textContent =
         ")";
+
+    /*
+       VALORE RAGGIUNTO
+    */
 
     const resultElement =
         document.createElement(
@@ -1996,14 +2254,16 @@ function createNote(
         "note-result";
 
     resultElement.textContent =
-        formatValue(
-            value
+        formatResultValue(
+            resultValue
         );
 
     resultElement.style.color =
-        getValueColor(
-            value
-        );
+        resultColor;
+
+    /*
+       TESTO NOTA
+    */
 
     const textElement =
         document.createElement(
@@ -2014,7 +2274,11 @@ function createNote(
         "note-text";
 
     textElement.textContent =
-        text;
+        entry.text;
+
+    /*
+       CANCELLA
+    */
 
     const deleteButton =
         document.createElement(
@@ -2040,54 +2304,143 @@ function createNote(
         }
     );
 
-    note.appendChild(
-        openParenthesis
+    main.appendChild(
+        openBracket
     );
 
-    note.appendChild(
+    main.appendChild(
         changeElement
     );
 
-    note.appendChild(
-        closeParenthesis
+    main.appendChild(
+        closeBracket
     );
 
-    note.appendChild(
+    main.appendChild(
         resultElement
     );
 
-    note.appendChild(
+    main.appendChild(
         textElement
     );
 
-    note.appendChild(
+    main.appendChild(
         deleteButton
+    );
+
+    note.appendChild(
+        dateElement
+    );
+
+    note.appendChild(
+        main
     );
 
     return note;
 }
+
+/* =====================================================
+   DISEGNA NOTE
+===================================================== */
+
+let notesExpanded =
+    false;
 
 function drawNotes() {
 
     notesLayer.innerHTML =
         "";
 
-    notes.forEach(
-        (entry, index) => {
+    /*
+       L'array originale viene mantenuto intatto.
+
+       Per la visualizzazione viene invertito:
+       l'ultima nota inserita appare per prima.
+    */
+
+    const orderedNotes =
+        notes
+            .map(
+                (entry, index) => {
+
+                    return {
+
+                        entry:
+                            entry,
+
+                        originalIndex:
+                            index
+
+                    };
+
+                }
+            )
+            .reverse();
+
+    const visibleNotes =
+        notesExpanded
+            ? orderedNotes
+            : orderedNotes.slice(
+                0,
+                10
+            );
+
+    visibleNotes.forEach(
+        item => {
 
             const note =
                 createNote(
-                    entry.change,
-                    entry.value,
-                    entry.text,
-                    index
+                    item.entry,
+                    item.originalIndex
                 );
 
             notesLayer.appendChild(
                 note
             );
+
         }
     );
+
+    /*
+       Se ci sono più di 10 note,
+       compare il pulsante.
+    */
+
+    if (
+        orderedNotes.length > 10
+    ) {
+
+        const toggleButton =
+            document.createElement(
+                "button"
+            );
+
+        toggleButton.className =
+            "notes-toggle";
+
+        toggleButton.textContent =
+            notesExpanded
+                ? "Mostra meno"
+                : "Mostra tutte";
+
+        toggleButton.addEventListener(
+            "click",
+            function(event) {
+
+                event.stopPropagation();
+
+                notesExpanded =
+                    !notesExpanded;
+
+                drawNotes();
+
+            }
+        );
+
+        notesLayer.appendChild(
+            toggleButton
+        );
+    }
 }
 
 function deleteNote(index) {
@@ -2105,6 +2458,21 @@ function deleteNote(index) {
     );
 
     saveNotes();
+
+    /*
+       Se dopo una cancellazione rimangono
+       al massimo 10 note, richiudiamo
+       automaticamente l'elenco.
+    */
+
+    if (
+        notes.length <= 10
+    ) {
+
+        notesExpanded =
+            false;
+
+    }
 
     drawNotes();
 }
@@ -2672,16 +3040,28 @@ function applyChange() {
         currentValue +
         change;
 
-    notes.push({
+    /*
+       La nota salva:
 
-        change:
-            change,
+       - variazione effettuata
+       - valore raggiunto
+       - testo
+       - data del giorno
+    */
+
+    notes.push({
 
         value:
             newValue,
 
+        change:
+            change,
+
         text:
-            comment
+            comment,
+
+        date:
+            getTodayDate()
 
     });
 
@@ -2702,6 +3082,14 @@ function applyChange() {
 
     noteInput.value =
         "";
+
+    /*
+       Una nuova nota deve essere
+       sempre visibile in cima.
+    */
+
+    notesExpanded =
+        false;
 
     updateDisplay();
 }
@@ -2749,6 +3137,9 @@ function resetApp() {
     notes = [];
 
     goals = [];
+
+    notesExpanded =
+        false;
 
     startInput.value =
         "";
@@ -2956,19 +3347,37 @@ try {
 
                         return {
 
-                            change:
-                                Number(
-                                    entry.change
-                                ),
-
                             value:
                                 Number(
                                     entry.value
                                 ),
 
+                            /*
+                               Compatibilità con le note
+                               precedenti che non avevano
+                               ancora la variazione salvata.
+                            */
+
+                            change:
+                                Number.isFinite(
+                                    Number(
+                                        entry.change
+                                    )
+                                )
+                                    ? Number(
+                                        entry.change
+                                    )
+                                    : 0,
+
                             text:
                                 String(
                                     entry.text
+                                ),
+
+                            date:
+                                String(
+                                    entry.date ||
+                                    ""
                                 )
 
                         };
@@ -2977,9 +3386,6 @@ try {
                 )
                 .filter(
                     entry =>
-                        Number.isFinite(
-                            entry.change
-                        ) &&
                         Number.isFinite(
                             entry.value
                         ) &&
