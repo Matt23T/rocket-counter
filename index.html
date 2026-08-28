@@ -242,83 +242,270 @@ body {
 }
 
 /* =====================================================
-   OBIETTIVI
+   OBIETTIVI FISSATI ALLA CIFRA
 ===================================================== */
 
 .goals-layer {
 
     position: absolute;
 
-    top: 50%;
+    inset: 0;
 
-    left: 7px;
+    z-index: 40;
 
-    width: calc(50% - 45px);
-
-    max-height: 58vh;
-
-    transform:
-        translateY(-50%);
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    scrollbar-width: none;
-
-    z-index: 50;
-
-    pointer-events: auto;
-
-    -webkit-overflow-scrolling: touch;
-}
-
-.goals-layer::-webkit-scrollbar {
-    display: none;
+    pointer-events: none;
 }
 
 .goal-item {
 
-    width: 100%;
+    position: absolute;
 
-    margin-bottom: 14px;
+    left: 8px;
 
-    padding-bottom: 10px;
+    width:
+        calc(50% - 42px);
 
-    border-bottom:
+    transform:
+        translateY(-50%);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 5px 7px;
+
+    border-radius: 9px;
+
+    background:
+        rgba(18,18,18,0.88);
+
+    border:
         1px solid
         rgba(255,255,255,0.08);
 
-    font-size: 12px;
+    font-size: 11px;
 
-    line-height: 17px;
+    line-height: 15px;
 
     word-break: break-word;
 
-    user-select: none;
+    pointer-events: none;
+}
 
-    -webkit-user-select: none;
+.goal-check {
+
+    flex:
+        0 0 auto;
+
+    width: 17px;
+    height: 17px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.45);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #000;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+.goal-check.completed {
+
+    background: #20DD65;
+
+    border-color: #20DD65;
+}
+
+.goal-content {
+
+    min-width: 0;
+
+    flex: 1;
 }
 
 .goal-value {
 
     display: inline-block;
 
-    margin-right: 5px;
+    margin-right: 4px;
 
     font-weight: 700;
 }
 
 .goal-text {
 
-    opacity: 0.90;
+    opacity: 0.92;
 }
 
-.goal-delete {
+/* =====================================================
+   LISTA OBIETTIVI
+===================================================== */
 
-    float: right;
+.goals-modal {
 
-    width: 19px;
-    height: 19px;
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 210;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    background:
+        rgba(0,0,0,0.72);
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+}
+
+.goals-box {
+
+    width:
+        min(
+            340px,
+            calc(100vw - 50px)
+        );
+
+    max-height:
+        min(
+            70vh,
+            520px
+        );
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 18px;
+
+    border:
+        1px solid #292929;
+
+    border-radius: 18px;
+
+    background: #111;
+}
+
+.goals-list-title {
+
+    margin-bottom: 13px;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+.goals-list {
+
+    overflow-y: auto;
+
+    scrollbar-width: none;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+.goals-list::-webkit-scrollbar {
+    display: none;
+}
+
+.goals-list-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 11px 0;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.08);
+}
+
+.goals-list-check {
+
+    flex:
+        0 0 auto;
+
+    width: 20px;
+    height: 20px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.4);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    color: #000;
+}
+
+.goals-list-check.completed {
+
+    background: #20DD65;
+
+    border-color: #20DD65;
+}
+
+.goals-list-content {
+
+    min-width: 0;
+
+    flex: 1;
+
+    font-size: 12px;
+
+    line-height: 16px;
+}
+
+.goals-list-value {
+
+    font-weight: 700;
+}
+
+.goals-list-name {
+
+    margin-left: 5px;
+
+    color: #fff;
+}
+
+.goals-list-delete {
+
+    flex:
+        0 0 auto;
+
+    width: 22px;
+    height: 22px;
 
     padding: 0;
 
@@ -330,31 +517,47 @@ body {
 
     color: #777;
 
-    font-size: 11px;
+    font-size: 14px;
 
-    line-height: 19px;
+    line-height: 22px;
 
     text-align: center;
 }
 
-.goal-delete:active {
+.goals-list-close {
 
-    transform:
-        scale(0.9);
+    width: 100%;
+    height: 44px;
+
+    margin-top: 14px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #fff;
+
+    color: #000;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+.goals-empty {
+
+    padding: 25px 5px;
+
+    color: #777;
+
+    text-align: center;
+
+    font-size: 13px;
 }
 
 /* =====================================================
    NOTE
 ===================================================== */
-
-/*
-   LE NOTE RESTANO NELLA STESSA ZONA A DESTRA.
-
-   L'unica modifica è che ora partono sotto
-   il valore attuale del razzo.
-
-   La nota più recente viene mostrata per prima.
-*/
 
 .notes-layer {
 
@@ -386,10 +589,6 @@ body {
     display: none;
 }
 
-/*
-   Singola nota.
-*/
-
 .note {
 
     width: 100%;
@@ -415,12 +614,6 @@ body {
     -webkit-user-select: none;
 }
 
-/*
-   DATA
-
-   Piccolissima, bianca.
-*/
-
 .note-date {
 
     display: block;
@@ -440,13 +633,6 @@ body {
     white-space: nowrap;
 }
 
-/*
-   Riga principale della nota.
-
-   I tre elementi vengono mantenuti separati
-   per evitare sovrapposizioni.
-*/
-
 .note-main {
 
     display: block;
@@ -460,10 +646,6 @@ body {
     overflow-wrap: anywhere;
 }
 
-/*
-   Parentesi sempre bianche.
-*/
-
 .note-bracket {
 
     color: #fff !important;
@@ -473,26 +655,12 @@ body {
     white-space: nowrap;
 }
 
-/*
-   Plusvalenza.
-
-   Verde se positiva,
-   rosso se negativa.
-*/
-
 .note-change {
 
     font-weight: 700;
 
     white-space: nowrap;
 }
-
-/*
-   Valore raggiunto.
-
-   Verde sopra zero,
-   rosso sotto zero.
-*/
 
 .note-result {
 
@@ -502,12 +670,6 @@ body {
 
     white-space: nowrap;
 }
-
-/*
-   Testo inserito dall'utente.
-
-   Sempre bianco.
-*/
 
 .note-text {
 
@@ -555,10 +717,6 @@ body {
     transform:
         scale(0.9);
 }
-
-/*
-   Pulsante MOSTRA TUTTE / MOSTRA MENO
-*/
 
 .notes-toggle {
 
@@ -703,13 +861,7 @@ body {
 
     flex-direction: column;
 
-    /*
-       MODIFICA:
-       i controlli inferiori sono allineati
-       sulla stessa posizione a sinistra.
-    */
-
-    align-items: flex-start;
+    align-items: center;
 
     gap: 8px;
 
@@ -850,6 +1002,52 @@ body {
 }
 
 .plus-button:active {
+
+    transform:
+        scale(0.94);
+}
+
+/* =====================================================
+   LISTA OBIETTIVI BUTTON
+===================================================== */
+
+.goals-button {
+
+    position: absolute;
+
+    top:
+        calc(
+            12px +
+            env(safe-area-inset-top)
+        );
+
+    left: 62px;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #181818;
+
+    color: #fff;
+
+    font-size: 20px;
+
+    font-weight: 400;
+
+    line-height: 42px;
+
+    text-align: center;
+
+    z-index: 90;
+}
+
+.goals-button:active {
 
     transform:
         scale(0.94);
@@ -1135,7 +1333,7 @@ body {
         font-size: 19px;
     }
 
-    .goals-layer {
+    .goal-item {
 
         left: 7px;
 
@@ -1208,23 +1406,19 @@ body {
                 id="labels"
             ></div>
 
+            <div
+                id="goalsLayer"
+                class="goals-layer"
+            ></div>
+
         </div>
 
     </div>
 
     <div
-        id="goalsLayer"
-        class="goals-layer"
-    ></div>
-
-    <div
         id="notesLayer"
         class="notes-layer"
     ></div>
-
-    <!-- =================================================
-         RAZZO
-    ================================================= -->
 
     <div
         id="rocketLayer"
@@ -1363,6 +1557,14 @@ body {
     </button>
 
     <button
+        id="goalsButton"
+        class="goals-button"
+        aria-label="Mostra obiettivi"
+    >
+        ☰
+    </button>
+
+    <button
         id="resetButton"
         class="reset-button"
     >
@@ -1430,6 +1632,41 @@ body {
                 </button>
 
             </div>
+
+        </div>
+
+    </div>
+
+    <!-- =================================================
+         LISTA OBIETTIVI
+    ================================================= -->
+
+    <div
+        id="goalsModal"
+        class="goals-modal hidden"
+    >
+
+        <div
+            class="goals-box"
+        >
+
+            <div
+                class="goals-list-title"
+            >
+                Obiettivi
+            </div>
+
+            <div
+                id="goalsList"
+                class="goals-list"
+            ></div>
+
+            <button
+                id="goalsListClose"
+                class="goals-list-close"
+            >
+                Chiudi
+            </button>
 
         </div>
 
@@ -1611,6 +1848,11 @@ const plusButton =
         "plusButton"
     );
 
+const goalsButton =
+    document.getElementById(
+        "goalsButton"
+    );
+
 const resetButton =
     document.getElementById(
         "resetButton"
@@ -1639,6 +1881,21 @@ const goalCancel =
 const goalSave =
     document.getElementById(
         "goalSave"
+    );
+
+const goalsModal =
+    document.getElementById(
+        "goalsModal"
+    );
+
+const goalsList =
+    document.getElementById(
+        "goalsList"
+    );
+
+const goalsListClose =
+    document.getElementById(
+        "goalsListClose"
     );
 
 const startScreen =
@@ -1779,11 +2036,6 @@ function formatValue(value) {
 
     return "0 €";
 }
-
-/*
-   Formattazione del valore raggiunto
-   senza il segno "+" quando è positivo.
-*/
 
 function formatResultValue(value) {
 
@@ -2128,6 +2380,8 @@ function buildScale() {
     }
 
     updateCurrentMarker();
+
+    drawGoalsOnScale();
 }
 
 /* =====================================================
@@ -2169,10 +2423,6 @@ function createNote(
             ? "#20DD65"
             : "#F8374C";
 
-    /*
-       DATA
-    */
-
     const dateElement =
         document.createElement(
             "div"
@@ -2185,10 +2435,6 @@ function createNote(
         entry.date ||
         "";
 
-    /*
-       RIGA PRINCIPALE
-    */
-
     const main =
         document.createElement(
             "div"
@@ -2196,10 +2442,6 @@ function createNote(
 
     main.className =
         "note-main";
-
-    /*
-       PARENTESI APERTA
-    */
 
     const openBracket =
         document.createElement(
@@ -2211,10 +2453,6 @@ function createNote(
 
     openBracket.textContent =
         "(";
-
-    /*
-       PLUSVALENZA
-    */
 
     const changeElement =
         document.createElement(
@@ -2232,10 +2470,6 @@ function createNote(
     changeElement.style.color =
         changeColor;
 
-    /*
-       PARENTESI CHIUSA
-    */
-
     const closeBracket =
         document.createElement(
             "span"
@@ -2246,10 +2480,6 @@ function createNote(
 
     closeBracket.textContent =
         ")";
-
-    /*
-       VALORE RAGGIUNTO
-    */
 
     const resultElement =
         document.createElement(
@@ -2267,10 +2497,6 @@ function createNote(
     resultElement.style.color =
         resultColor;
 
-    /*
-       TESTO NOTA
-    */
-
     const textElement =
         document.createElement(
             "span"
@@ -2281,10 +2507,6 @@ function createNote(
 
     textElement.textContent =
         entry.text;
-
-    /*
-       CANCELLA
-    */
 
     const deleteButton =
         document.createElement(
@@ -2345,10 +2567,6 @@ function createNote(
     return note;
 }
 
-/* =====================================================
-   DISEGNA NOTE
-===================================================== */
-
 let notesExpanded =
     false;
 
@@ -2356,13 +2574,6 @@ function drawNotes() {
 
     notesLayer.innerHTML =
         "";
-
-    /*
-       L'array originale viene mantenuto intatto.
-
-       Per la visualizzazione viene invertito:
-       l'ultima nota inserita appare per prima.
-    */
 
     const orderedNotes =
         notes
@@ -2406,11 +2617,6 @@ function drawNotes() {
 
         }
     );
-
-    /*
-       Se ci sono più di 10 note,
-       compare il pulsante.
-    */
 
     if (
         orderedNotes.length > 10
@@ -2465,12 +2671,6 @@ function deleteNote(index) {
 
     saveNotes();
 
-    /*
-       Se dopo una cancellazione rimangono
-       al massimo 10 note, richiudiamo
-       automaticamente l'elenco.
-    */
-
     if (
         notes.length <= 10
     ) {
@@ -2494,156 +2694,198 @@ function saveNotes() {
 }
 
 /* =====================================================
-   OBIETTIVI
+   OBIETTIVI FISSATI ALLA SCALA
 ===================================================== */
 
-function createGoal(
-    value,
-    name,
-    index
+function isGoalCompleted(
+    goalValue
 ) {
 
-    const item =
-        document.createElement(
-            "div"
-        );
-
-    item.className =
-        "goal-item";
-
-    const color =
-        getValueColor(
-            value
-        );
-
-    item.style.color =
-        color;
-
-    const valueElement =
-        document.createElement(
-            "span"
-        );
-
-    valueElement.className =
-        "goal-value";
-
-    valueElement.textContent =
-        formatValue(
-            value
-        );
-
-    valueElement.style.color =
-        color;
-
-    const nameElement =
-        document.createElement(
-            "span"
-        );
-
-    nameElement.className =
-        "goal-text";
-
-    nameElement.textContent =
-        name;
-
-    nameElement.style.color =
-        color;
-
-    const deleteButton =
-        document.createElement(
-            "button"
-        );
-
-    deleteButton.className =
-        "goal-delete";
-
-    deleteButton.textContent =
-        "×";
-
-    deleteButton.addEventListener(
-        "click",
-        function(event) {
-
-            event.stopPropagation();
-
-            deleteGoal(
-                index
-            );
-
-        }
+    return (
+        currentValue >=
+        goalValue
     );
-
-    item.appendChild(
-        valueElement
-    );
-
-    item.appendChild(
-        nameElement
-    );
-
-    item.appendChild(
-        deleteButton
-    );
-
-    return item;
 }
 
-function drawGoals() {
+function drawGoalsOnScale() {
 
     goalsLayer.innerHTML =
         "";
 
-    const sortedGoals =
-        goals
-            .map(
-                (goal, index) => {
+    if (
+        !Number.isFinite(
+            currentValue
+        )
+    ) {
+        return;
+    }
 
-                    return {
+    const totalValueRange =
+        DISPLAY_RANGE * 2;
 
-                        value:
-                            Number(
-                                goal.value
-                            ),
+    const totalHeight =
+        totalValueRange *
+        PIXELS_PER_EURO;
 
-                        name:
-                            String(
-                                goal.name
-                            ),
+    const centerY =
+        totalHeight / 2;
 
-                        originalIndex:
-                            index
-                    };
+    const minimumValue =
+        currentValue -
+        DISPLAY_RANGE;
+
+    const maximumValue =
+        currentValue +
+        DISPLAY_RANGE;
+
+    goals
+        .map(
+            (goal, index) => {
+
+                return {
+
+                    value:
+                        Number(
+                            goal.value
+                        ),
+
+                    name:
+                        String(
+                            goal.name
+                        ),
+
+                    index:
+                        index
+
+                };
+
+            }
+        )
+        .filter(
+            goal =>
+                Number.isFinite(
+                    goal.value
+                ) &&
+                goal.value >=
+                    minimumValue &&
+                goal.value <=
+                    maximumValue
+        )
+        .sort(
+            (a, b) =>
+                a.value -
+                b.value
+        )
+        .forEach(
+            goal => {
+
+                const difference =
+                    goal.value -
+                    currentValue;
+
+                const y =
+                    centerY -
+                    (
+                        difference *
+                        PIXELS_PER_EURO
+                    );
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+                item.className =
+                    "goal-item";
+
+                item.style.top =
+                    `${y}px`;
+
+                const completed =
+                    isGoalCompleted(
+                        goal.value
+                    );
+
+                const check =
+                    document.createElement(
+                        "div"
+                    );
+
+                check.className =
+                    "goal-check";
+
+                if (
+                    completed
+                ) {
+
+                    check.classList.add(
+                        "completed"
+                    );
+
+                    check.textContent =
+                        "✓";
 
                 }
-            )
-            .filter(
-                goal =>
-                    Number.isFinite(
+
+                const content =
+                    document.createElement(
+                        "div"
+                    );
+
+                content.className =
+                    "goal-content";
+
+                const valueElement =
+                    document.createElement(
+                        "span"
+                    );
+
+                valueElement.className =
+                    "goal-value";
+
+                valueElement.textContent =
+                    formatValue(
                         goal.value
-                    )
-            )
-            .sort(
-                (a, b) =>
-                    a.value -
-                    b.value
-            );
+                    );
 
-    sortedGoals.forEach(
-        goal => {
+                valueElement.style.color =
+                    getValueColor(
+                        goal.value
+                    );
 
-            const item =
-                createGoal(
-                    goal.value,
-                    goal.name,
-                    goal.originalIndex
+                const nameElement =
+                    document.createElement(
+                        "span"
+                    );
+
+                nameElement.className =
+                    "goal-text";
+
+                nameElement.textContent =
+                    goal.name;
+
+                content.appendChild(
+                    valueElement
                 );
 
-            goalsLayer.appendChild(
-                item
-            );
+                content.appendChild(
+                    nameElement
+                );
 
-        }
-    );
+                item.appendChild(
+                    check
+                );
+
+                item.appendChild(
+                    content
+                );
+
+                goalsLayer.appendChild(
+                    item
+                );
+
+            }
+        );
 }
 
 function saveGoals() {
@@ -2672,11 +2914,216 @@ function deleteGoal(index) {
 
     saveGoals();
 
-    drawGoals();
+    drawGoalsOnScale();
+
+    drawGoalsList();
+}
+
+function drawGoalsList() {
+
+    goalsList.innerHTML =
+        "";
+
+    const sortedGoals =
+        goals
+            .map(
+                (goal, index) => {
+
+                    return {
+
+                        value:
+                            Number(
+                                goal.value
+                            ),
+
+                        name:
+                            String(
+                                goal.name
+                            ),
+
+                        originalIndex:
+                            index
+
+                    };
+
+                }
+            )
+            .filter(
+                goal =>
+                    Number.isFinite(
+                        goal.value
+                    )
+            )
+            .sort(
+                (a, b) =>
+                    a.value -
+                    b.value
+            );
+
+    if (
+        sortedGoals.length === 0
+    ) {
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+        empty.className =
+            "goals-empty";
+
+        empty.textContent =
+            "Nessun obiettivo";
+
+        goalsList.appendChild(
+            empty
+        );
+
+        return;
+    }
+
+    sortedGoals.forEach(
+        goal => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "goals-list-item";
+
+            const completed =
+                isGoalCompleted(
+                    goal.value
+                );
+
+            const check =
+                document.createElement(
+                    "div"
+                );
+
+            check.className =
+                "goals-list-check";
+
+            if (
+                completed
+            ) {
+
+                check.classList.add(
+                    "completed"
+                );
+
+                check.textContent =
+                    "✓";
+
+            }
+
+            const content =
+                document.createElement(
+                    "div"
+                );
+
+            content.className =
+                "goals-list-content";
+
+            const value =
+                document.createElement(
+                    "span"
+                );
+
+            value.className =
+                "goals-list-value";
+
+            value.textContent =
+                formatValue(
+                    goal.value
+                );
+
+            value.style.color =
+                getValueColor(
+                    goal.value
+                );
+
+            const name =
+                document.createElement(
+                    "span"
+                );
+
+            name.className =
+                "goals-list-name";
+
+            name.textContent =
+                goal.name;
+
+            const deleteButton =
+                document.createElement(
+                    "button"
+                );
+
+            deleteButton.className =
+                "goals-list-delete";
+
+            deleteButton.textContent =
+                "×";
+
+            deleteButton.addEventListener(
+                "click",
+                function() {
+
+                    deleteGoal(
+                        goal.originalIndex
+                    );
+
+                }
+            );
+
+            content.appendChild(
+                value
+            );
+
+            content.appendChild(
+                name
+            );
+
+            item.appendChild(
+                check
+            );
+
+            item.appendChild(
+                content
+            );
+
+            item.appendChild(
+                deleteButton
+            );
+
+            goalsList.appendChild(
+                item
+            );
+
+        }
+    );
+}
+
+function openGoalsModal() {
+
+    drawGoalsList();
+
+    goalsModal.classList.remove(
+        "hidden"
+    );
+}
+
+function closeGoalsModal() {
+
+    goalsModal.classList.add(
+        "hidden"
+    );
 }
 
 /* =====================================================
-   MODALE
+   MODALE NUOVO OBIETTIVO
 ===================================================== */
 
 function openGoalModal() {
@@ -2756,7 +3203,7 @@ function saveGoal() {
 
     saveGoals();
 
-    drawGoals();
+    drawGoalsOnScale();
 
     closeGoalModal();
 }
@@ -2799,8 +3246,6 @@ function updateDisplay() {
     updateColor();
 
     buildScale();
-
-    drawGoals();
 
     drawNotes();
 
@@ -3046,15 +3491,6 @@ function applyChange() {
         currentValue +
         change;
 
-    /*
-       La nota salva:
-
-       - variazione effettuata
-       - valore raggiunto
-       - testo
-       - data del giorno
-    */
-
     notes.push({
 
         value:
@@ -3089,15 +3525,20 @@ function applyChange() {
     noteInput.value =
         "";
 
-    /*
-       Una nuova nota deve essere
-       sempre visibile in cima.
-    */
-
     notesExpanded =
         false;
 
     updateDisplay();
+
+    if (
+        !goalsModal.classList.contains(
+            "hidden"
+        )
+    ) {
+
+        drawGoalsList();
+
+    }
 }
 
 /* =====================================================
@@ -3160,10 +3601,17 @@ function resetApp() {
         "hidden"
     );
 
+    goalsModal.classList.add(
+        "hidden"
+    );
+
     goalsLayer.innerHTML =
         "";
 
     notesLayer.innerHTML =
+        "";
+
+    goalsList.innerHTML =
         "";
 
     startScreen.classList.remove(
@@ -3242,6 +3690,32 @@ noteInput.addEventListener(
 plusButton.addEventListener(
     "click",
     openGoalModal
+);
+
+goalsButton.addEventListener(
+    "click",
+    openGoalsModal
+);
+
+goalsListClose.addEventListener(
+    "click",
+    closeGoalsModal
+);
+
+goalsModal.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target ===
+            goalsModal
+        ) {
+
+            closeGoalsModal();
+
+        }
+
+    }
 );
 
 goalCancel.addEventListener(
@@ -3357,12 +3831,6 @@ try {
                                 Number(
                                     entry.value
                                 ),
-
-                            /*
-                               Compatibilità con le note
-                               precedenti che non avevano
-                               ancora la variazione salvata.
-                            */
 
                             change:
                                 Number.isFinite(
