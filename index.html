@@ -557,19 +557,25 @@ body {
 
 /* =====================================================
    NOTE
+   MODIFICA: NOTE IN ALTO A DESTRA
 ===================================================== */
 
 .notes-layer {
 
     position: absolute;
 
-    top: calc(50% + 55px);
+    top:
+        calc(
+            50px +
+            env(safe-area-inset-top)
+        );
 
     right: 7px;
 
-    width: calc(50% - 40px);
+    width:
+        calc(50% - 40px);
 
-    max-height: 58vh;
+    max-height: 42vh;
 
     transform: none;
 
@@ -1343,10 +1349,18 @@ body {
 
     .notes-layer {
 
+        top:
+            calc(
+                50px +
+                env(safe-area-inset-top)
+            );
+
         right: 7px;
 
         width:
             calc(50% - 40px);
+
+        max-height: 42vh;
     }
 
     .goal-item,
@@ -1571,10 +1585,6 @@ body {
         Reset
     </button>
 
-    <!-- =================================================
-         MODALE OBIETTIVO
-    ================================================= -->
-
     <div
         id="goalModal"
         class="goal-modal hidden"
@@ -1637,10 +1647,6 @@ body {
 
     </div>
 
-    <!-- =================================================
-         LISTA OBIETTIVI
-    ================================================= -->
-
     <div
         id="goalsModal"
         class="goals-modal hidden"
@@ -1671,10 +1677,6 @@ body {
         </div>
 
     </div>
-
-    <!-- =================================================
-         SCHERMATA INIZIALE
-    ================================================= -->
 
     <div
         id="startScreen"
