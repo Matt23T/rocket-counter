@@ -566,7 +566,7 @@ body {
 
     top:
         calc(
-            12px +
+            50px +
             env(safe-area-inset-top)
         );
 
@@ -575,7 +575,7 @@ body {
     width:
         calc(50% - 40px);
 
-    max-height: 42vh;
+    max-height: 30vh;
 
     transform: none;
 
@@ -1351,7 +1351,7 @@ body {
 
         top:
             calc(
-                12px +
+                50px +
                 env(safe-area-inset-top)
             );
 
@@ -1360,7 +1360,7 @@ body {
         width:
             calc(50% - 40px);
 
-        max-height: 42vh;
+        max-height: 30vh;
     }
 
     .goal-item,
@@ -2601,7 +2601,7 @@ function drawNotes() {
             ? orderedNotes
             : orderedNotes.slice(
                 0,
-                5
+                10
             );
 
     visibleNotes.forEach(
@@ -2621,7 +2621,7 @@ function drawNotes() {
     );
 
     if (
-        orderedNotes.length > 5
+        orderedNotes.length > 10
     ) {
 
         const toggleButton =
@@ -2674,7 +2674,7 @@ function deleteNote(index) {
     saveNotes();
 
     if (
-        notes.length <= 5
+        notes.length <= 10
     ) {
 
         notesExpanded =
