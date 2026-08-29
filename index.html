@@ -566,7 +566,7 @@ body {
 
     top:
         calc(
-            50px +
+            12px +
             env(safe-area-inset-top)
         );
 
@@ -1351,7 +1351,7 @@ body {
 
         top:
             calc(
-                50px +
+                12px +
                 env(safe-area-inset-top)
             );
 
@@ -2601,7 +2601,7 @@ function drawNotes() {
             ? orderedNotes
             : orderedNotes.slice(
                 0,
-                10
+                5
             );
 
     visibleNotes.forEach(
@@ -2621,7 +2621,7 @@ function drawNotes() {
     );
 
     if (
-        orderedNotes.length > 10
+        orderedNotes.length > 5
     ) {
 
         const toggleButton =
@@ -2674,7 +2674,7 @@ function deleteNote(index) {
     saveNotes();
 
     if (
-        notes.length <= 10
+        notes.length <= 5
     ) {
 
         notesExpanded =
