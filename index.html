@@ -29,42 +29,32 @@ html,
 body {
     margin: 0;
     padding: 0;
-
     width: 100%;
     height: 100%;
-
     background: #000;
     color: #fff;
-
     font-family:
         -apple-system,
         BlinkMacSystemFont,
         "SF Pro Display",
         Arial,
         sans-serif;
-
     overflow: hidden;
-
     overscroll-behavior: none;
 }
 
 html {
     position: fixed;
-
     width: 100%;
     height: 100%;
-
     overflow: hidden;
 }
 
 body {
     position: fixed;
-
     width: 100%;
     height: 100%;
-
     overflow: hidden;
-
     touch-action: pan-y;
 }
 
@@ -73,18 +63,13 @@ body {
 ===================================================== */
 
 .app {
-
     position: absolute;
-
     left: 0;
     top: 0;
-
     width: 100%;
     height: 100vh;
     height: 100svh;
-
     background: #000;
-
     overflow: hidden;
 }
 
@@ -93,22 +78,14 @@ body {
 ===================================================== */
 
 .timeline {
-
     position: absolute;
-
     inset: 0;
-
     overflow-y: auto;
     overflow-x: hidden;
-
     -webkit-overflow-scrolling: touch;
-
     scrollbar-width: none;
-
     overscroll-behavior-y: contain;
-
     z-index: 10;
-
     touch-action: pan-y;
 }
 
@@ -117,11 +94,8 @@ body {
 }
 
 .timeline-content {
-
     position: relative;
-
     width: 100%;
-
     height: 2400px;
 }
 
@@ -130,20 +104,14 @@ body {
 ===================================================== */
 
 .center-line {
-
     position: absolute;
-
     top: 0;
     left: 50%;
-
     width: 1px;
     height: 100%;
-
     transform: translateX(-50%);
-
     background:
         rgba(255,255,255,0.18);
-
     pointer-events: none;
 }
 
@@ -152,27 +120,18 @@ body {
 ===================================================== */
 
 .current-marker {
-
     position: absolute;
-
     left: 50%;
-
     width: 9px;
     height: 9px;
-
     border-radius: 50%;
-
     transform:
         translate(-50%, -50%);
-
     z-index: 30;
-
     pointer-events: none;
-
     box-shadow:
         0 0 8px currentColor,
         0 0 14px currentColor;
-
     transition:
         background-color 0.2s ease,
         color 0.2s ease,
@@ -184,35 +143,25 @@ body {
 ===================================================== */
 
 .tick {
-
     position: absolute;
-
     left: 50%;
-
     width: 6px;
     height: 1px;
-
     transform:
         translateX(-50%);
-
     background:
         rgba(255,255,255,0.20);
-
     pointer-events: none;
 }
 
 .tick.major {
-
     width: 11px;
-
     background:
         rgba(255,255,255,0.35);
 }
 
 .tick.zero {
-
     width: 17px;
-
     background:
         rgba(255,255,255,0.75);
 }
@@ -222,22 +171,14 @@ body {
 ===================================================== */
 
 .scale-label {
-
     position: absolute;
-
     left: calc(50% - 25px);
-
     transform:
         translate(-100%, -50%);
-
     white-space: nowrap;
-
     font-size: 10px;
-
     font-weight: 500;
-
     opacity: 0.65;
-
     pointer-events: none;
 }
 
@@ -246,105 +187,69 @@ body {
 ===================================================== */
 
 .goals-layer {
-
     position: absolute;
-
     inset: 0;
-
     z-index: 40;
-
     pointer-events: none;
 }
 
 .goal-item {
-
     position: absolute;
-
     left: 8px;
-
     width:
         calc(50% - 42px);
-
     transform:
         translateY(-50%);
-
     display: flex;
-
     align-items: center;
-
     gap: 6px;
-
     padding: 5px 7px;
-
     border-radius: 9px;
-
     background:
         rgba(18,18,18,0.88);
-
     border:
         1px solid
         rgba(255,255,255,0.08);
-
     font-size: 11px;
-
     line-height: 15px;
-
     word-break: break-word;
-
     pointer-events: none;
 }
 
 .goal-check {
-
     flex:
         0 0 auto;
-
     width: 17px;
     height: 17px;
-
     border-radius: 50%;
-
     border:
         1px solid
         rgba(255,255,255,0.45);
-
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     color: #000;
-
     font-size: 11px;
-
     font-weight: 800;
 }
 
 .goal-check.completed {
-
     background: #20DD65;
-
     border-color: #20DD65;
 }
 
 .goal-content {
-
     min-width: 0;
-
     flex: 1;
 }
 
 .goal-value {
-
     display: inline-block;
-
     margin-right: 4px;
-
     font-weight: 700;
 }
 
 .goal-text {
-
     opacity: 0.92;
 }
 
@@ -353,74 +258,50 @@ body {
 ===================================================== */
 
 .goals-modal {
-
     position: absolute;
-
     inset: 0;
-
     z-index: 210;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     padding: 25px;
-
     background:
         rgba(0,0,0,0.72);
-
     backdrop-filter:
         blur(8px);
-
     -webkit-backdrop-filter:
         blur(8px);
 }
 
 .goals-box {
-
     width:
         min(
             340px,
             calc(100vw - 50px)
         );
-
     max-height:
         min(
             70vh,
             520px
         );
-
     display: flex;
-
     flex-direction: column;
-
     padding: 18px;
-
     border:
         1px solid #292929;
-
     border-radius: 18px;
-
     background: #111;
 }
 
 .goals-list-title {
-
     margin-bottom: 13px;
-
     font-size: 20px;
-
     font-weight: 700;
 }
 
 .goals-list {
-
     overflow-y: auto;
-
     scrollbar-width: none;
-
     -webkit-overflow-scrolling: touch;
 }
 
@@ -429,129 +310,84 @@ body {
 }
 
 .goals-list-item {
-
     display: flex;
-
     align-items: center;
-
     gap: 8px;
-
     padding: 11px 0;
-
     border-bottom:
         1px solid
         rgba(255,255,255,0.08);
 }
 
 .goals-list-check {
-
     flex:
         0 0 auto;
-
     width: 20px;
     height: 20px;
-
     border-radius: 50%;
-
     border:
         1px solid
         rgba(255,255,255,0.4);
-
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     font-size: 12px;
-
     font-weight: 800;
-
     color: #000;
 }
 
 .goals-list-check.completed {
-
     background: #20DD65;
-
     border-color: #20DD65;
 }
 
 .goals-list-content {
-
     min-width: 0;
-
     flex: 1;
-
     font-size: 12px;
-
     line-height: 16px;
 }
 
 .goals-list-value {
-
     font-weight: 700;
 }
 
 .goals-list-name {
-
     margin-left: 5px;
-
     color: #fff;
 }
 
 .goals-list-delete {
-
     flex:
         0 0 auto;
-
     width: 22px;
     height: 22px;
-
     padding: 0;
-
     border: none;
-
     border-radius: 50%;
-
     background: #1b1b1b;
-
     color: #777;
-
     font-size: 14px;
-
     line-height: 22px;
-
     text-align: center;
 }
 
 .goals-list-close {
-
     width: 100%;
     height: 44px;
-
     margin-top: 14px;
-
     border: none;
-
     border-radius: 12px;
-
     background: #fff;
-
     color: #000;
-
     font-size: 14px;
-
     font-weight: 700;
 }
 
 .goals-empty {
-
     padding: 25px 5px;
-
     color: #777;
-
     text-align: center;
-
     font-size: 13px;
 }
 
@@ -560,7 +396,6 @@ body {
 ===================================================== */
 
 .notes-layer {
-
     position: absolute;
 
     top:
@@ -576,7 +411,7 @@ body {
 
     max-height:
         calc(
-            37vh - 2px
+            37vh - 3px
         );
 
     transform: none;
@@ -598,163 +433,101 @@ body {
 }
 
 .note {
-
     width: 100%;
-
     margin-bottom: 14px;
-
     padding-bottom: 8px;
-
     border-bottom:
         1px solid
         rgba(255,255,255,0.08);
-
     font-size: 12px;
-
     line-height: 16px;
-
     word-break: break-word;
-
     overflow-wrap: anywhere;
-
     user-select: none;
-
     -webkit-user-select: none;
 }
 
 .note-date {
-
     display: block;
-
     margin-bottom: 3px;
-
     color: #fff !important;
-
     font-size: 7px;
-
     line-height: 9px;
-
     font-weight: 700;
-
     opacity: 0.85;
-
     white-space: nowrap;
 }
 
 .note-main {
-
     display: block;
-
     width: 100%;
-
     line-height: 16px;
-
     word-break: break-word;
-
     overflow-wrap: anywhere;
 }
 
 .note-bracket {
-
     color: #fff !important;
-
     font-weight: 500;
-
     white-space: nowrap;
 }
 
 .note-change {
-
     font-weight: 700;
-
     white-space: nowrap;
 }
 
 .note-result {
-
     margin-left: 4px;
-
     font-weight: 700;
-
     white-space: nowrap;
 }
 
 .note-text {
-
     display: block;
-
     margin-left: 0;
-
     color: #fff !important;
-
     font-weight: 700;
-
     white-space: normal;
-
     overflow-wrap: anywhere;
-
     word-break: break-word;
 }
 
 .note-delete {
-
     float: right;
-
     width: 19px;
     height: 19px;
-
     padding: 0;
-
     margin-left: 5px;
-
     border: none;
-
     border-radius: 50%;
-
     background: #1b1b1b;
-
     color: #777;
-
     font-size: 11px;
-
     line-height: 19px;
-
     text-align: center;
 }
 
 .note-delete:active {
-
     transform:
         scale(0.9);
 }
 
 .notes-toggle {
-
     display: block;
-
     width: 100%;
-
     margin-top: 2px;
-
     padding: 7px 0;
-
     border: none;
-
     border-radius: 9px;
-
     background: #181818;
-
     color: #aaa;
-
     font-size: 11px;
-
     font-weight: 600;
-
     text-align: center;
 }
 
 .notes-toggle:active {
-
     transform:
         scale(0.97);
 }
@@ -764,52 +537,37 @@ body {
 ===================================================== */
 
 .rocket-layer {
-
     position: absolute;
-
     left: 50%;
     top: 50%;
-
     width: 0;
     height: 0;
-
     z-index: 70;
-
     pointer-events: none;
-
     will-change: transform;
 }
 
 .rocket {
-
     position: absolute;
-
     right: 8px;
     left: auto;
     top: 0;
-
     width: 58px;
     height: 29px;
-
     transform:
         translateY(-50%);
-
     overflow: visible;
-
     transition:
         filter 0.2s ease;
 }
 
 .rocket-part {
-
     fill: #fff;
-
     transition:
         fill 0.2s ease;
 }
 
 .rocket-window {
-
     fill: #000;
 }
 
@@ -818,32 +576,21 @@ body {
 ===================================================== */
 
 .current-info {
-
     position: absolute;
-
     left: 76px;
     top: 0;
-
     transform:
         translateY(-50%);
-
     display: flex;
-
     flex-direction: column;
-
     pointer-events: none;
 }
 
 .current-value {
-
     font-size: 20px;
-
     line-height: 25px;
-
     font-weight: 700;
-
     white-space: nowrap;
-
     transition:
         color 0.2s ease;
 }
@@ -853,7 +600,6 @@ body {
 ===================================================== */
 
 .controls {
-
     position: absolute;
 
     left: 50%;
@@ -879,97 +625,78 @@ body {
 }
 
 .change-row {
-
     display: flex;
-
     align-items: center;
-
     gap: 8px;
-
     transform:
         translateX(31.5px);
 }
 
 .change-input {
-
     width: 175px;
     height: 49px;
-
     padding: 0 12px;
-
     border:
         1px solid #333;
-
     border-radius: 13px;
-
     outline: none;
-
     background: #111;
-
     color: #fff;
-
     text-align: center;
-
     font-size: 17px;
-
     font-weight: 600;
 }
 
 .change-input::placeholder {
-
     color: #555;
 }
 
 .note-input {
-
     width: 175px;
     height: 49px;
-
     padding: 0 12px;
-
     border:
         1px solid #333;
-
     border-radius: 13px;
-
     outline: none;
-
     background: #111;
-
     color: #fff;
-
     text-align: center;
-
     font-size: 15px;
-
     font-weight: 500;
 }
 
 .note-input::placeholder {
-
     color: #555;
 }
 
-.change-button {
+.note-date-input {
+    width: 175px;
+    height: 38px;
+    padding: 0 12px;
+    border:
+        1px solid #333;
+    border-radius: 13px;
+    outline: none;
+    background: #111;
+    color: #fff;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+}
 
+.change-button {
     width: 55px;
     height: 49px;
-
     border: none;
-
     border-radius: 13px;
-
     background: #fff;
-
     color: #000;
-
     font-size: 15px;
-
     font-weight: 700;
 }
 
 .change-button:active {
-
     transform:
         scale(0.96);
 }
@@ -979,7 +706,6 @@ body {
 ===================================================== */
 
 .plus-button {
-
     position: absolute;
 
     top:
@@ -1015,7 +741,6 @@ body {
 }
 
 .plus-button:active {
-
     transform:
         scale(0.94);
 }
@@ -1025,7 +750,6 @@ body {
 ===================================================== */
 
 .goals-button {
-
     position: absolute;
 
     top:
@@ -1061,7 +785,6 @@ body {
 }
 
 .goals-button:active {
-
     transform:
         scale(0.94);
 }
@@ -1071,7 +794,6 @@ body {
 ===================================================== */
 
 .reset-button {
-
     position: absolute;
 
     top:
@@ -1104,7 +826,6 @@ body {
 ===================================================== */
 
 .goal-modal {
-
     position: absolute;
 
     inset: 0;
@@ -1130,7 +851,6 @@ body {
 }
 
 .goal-box {
-
     width: min(
         330px,
         calc(100vw - 50px)
@@ -1147,80 +867,53 @@ body {
 }
 
 .goal-title {
-
     margin-bottom: 17px;
-
     font-size: 20px;
-
     font-weight: 700;
 }
 
 .goal-input {
-
     width: 100%;
     height: 49px;
-
     margin-bottom: 9px;
-
     padding: 0 13px;
-
     border:
         1px solid #333;
-
     border-radius: 13px;
-
     outline: none;
-
     background: #080808;
-
     color: #fff;
-
     font-size: 16px;
-
     text-align: center;
 }
 
 .goal-input::placeholder {
-
     color: #555;
 }
 
 .goal-actions {
-
     display: flex;
-
     gap: 8px;
-
     margin-top: 6px;
 }
 
 .goal-cancel,
 .goal-save {
-
     flex: 1;
-
     height: 47px;
-
     border: none;
-
     border-radius: 13px;
-
     font-size: 15px;
-
     font-weight: 700;
 }
 
 .goal-cancel {
-
     background: #202020;
-
     color: #aaa;
 }
 
 .goal-save {
-
     background: #fff;
-
     color: #000;
 }
 
@@ -1229,98 +922,62 @@ body {
 ===================================================== */
 
 .start-screen {
-
     position: absolute;
-
     inset: 0;
-
     z-index: 100;
-
     display: flex;
-
     flex-direction: column;
-
     justify-content: center;
-
     align-items: center;
-
     padding: 30px;
-
     background: #000;
 }
 
 .start-title {
-
     margin-bottom: 8px;
-
     font-size: 30px;
-
     font-weight: 700;
 }
 
 .start-subtitle {
-
     margin-bottom: 23px;
-
     color: #777;
-
     font-size: 14px;
-
     text-align: center;
 }
 
 .start-input {
-
     width: 220px;
     height: 54px;
-
     padding: 0 10px;
-
     border:
         1px solid #444;
-
     border-radius: 14px;
-
     outline: none;
-
     background: #111;
-
     color: #fff;
-
     text-align: center;
-
     font-size: 21px;
-
     font-weight: 600;
 }
 
 .start-input::placeholder {
-
     color: #555;
 }
 
 .start-button {
-
     width: 220px;
     height: 49px;
-
     margin-top: 15px;
-
     border: none;
-
     border-radius: 14px;
-
     background: #fff;
-
     color: #000;
-
     font-size: 16px;
-
     font-weight: 700;
 }
 
 .hidden {
-
     display: none !important;
 }
 
@@ -1331,23 +988,19 @@ body {
 @media (max-width: 480px) {
 
     .rocket {
-
         width: 56px;
         height: 28px;
     }
 
     .current-info {
-
         left: 73px;
     }
 
     .current-value {
-
         font-size: 19px;
     }
 
     .goal-item {
-
         left: 7px;
 
         width:
@@ -1369,15 +1022,13 @@ body {
 
         max-height:
             calc(
-                37vh - 2px
+                37vh - 3px
             );
     }
 
     .goal-item,
     .note {
-
         font-size: 11px;
-
         line-height: 16px;
     }
 
@@ -1568,6 +1219,12 @@ body {
             autocapitalize="off"
             spellcheck="false"
             placeholder="Nota"
+        >
+
+        <input
+            id="noteDateInput"
+            class="note-date-input"
+            type="date"
         >
 
     </div>
@@ -1850,6 +1507,11 @@ const noteInput =
         "noteInput"
     );
 
+const noteDateInput =
+    document.getElementById(
+        "noteDateInput"
+    );
+
 const changeButton =
     document.getElementById(
         "changeButton"
@@ -2113,6 +1775,67 @@ function getTodayDate() {
         month +
         "/" +
         year
+    );
+}
+
+function getTodayDateInput() {
+
+    const now =
+        new Date();
+
+    const year =
+        now.getFullYear();
+
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+    const day =
+        String(
+            now.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+    );
+}
+
+function formatSelectedDate(value) {
+
+    if (
+        !value
+    ) {
+        return getTodayDate();
+    }
+
+    const parts =
+        value.split(
+            "-"
+        );
+
+    if (
+        parts.length !== 3
+    ) {
+        return getTodayDate();
+    }
+
+    return (
+        parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0]
     );
 }
 
@@ -2667,6 +2390,39 @@ function drawNotes() {
     }
 }
 
+function recalculateNotesAndCurrentValue() {
+
+    let runningValue =
+        startValue;
+
+    notes.forEach(
+        entry => {
+
+            runningValue =
+                runningValue +
+                Number(
+                    entry.change
+                );
+
+            entry.value =
+                runningValue;
+
+        }
+    );
+
+    currentValue =
+        runningValue;
+
+    localStorage.setItem(
+        CURRENT_KEY,
+        String(
+            currentValue
+        )
+    );
+
+    saveNotes();
+}
+
 function deleteNote(index) {
 
     if (
@@ -2676,39 +2432,12 @@ function deleteNote(index) {
         return;
     }
 
-    const deletedNote =
-        notes[index];
-
-    const deletedChange =
-        Number(
-            deletedNote.change
-        );
-
-    if (
-        Number.isFinite(
-            deletedChange
-        )
-    ) {
-
-        currentValue =
-            currentValue -
-            deletedChange;
-
-        localStorage.setItem(
-            CURRENT_KEY,
-            String(
-                currentValue
-            )
-        );
-
-    }
-
     notes.splice(
         index,
         1
     );
 
-    saveNotes();
+    recalculateNotesAndCurrentValue();
 
     if (
         notes.length <= 10
@@ -3499,6 +3228,9 @@ function setInitialValue() {
         "hidden"
     );
 
+    noteDateInput.value =
+        getTodayDateInput();
+
     updateDisplay();
 }
 
@@ -3536,6 +3268,9 @@ function applyChange() {
         return;
     }
 
+    const selectedDate =
+        noteDateInput.value;
+
     const newValue =
         currentValue +
         change;
@@ -3552,7 +3287,9 @@ function applyChange() {
             comment,
 
         date:
-            getTodayDate()
+            formatSelectedDate(
+                selectedDate
+            )
 
     });
 
@@ -3573,6 +3310,9 @@ function applyChange() {
 
     noteInput.value =
         "";
+
+    noteDateInput.value =
+        getTodayDateInput();
 
     notesExpanded =
         false;
@@ -3645,6 +3385,9 @@ function resetApp() {
 
     noteInput.value =
         "";
+
+    noteDateInput.value =
+        getTodayDateInput();
 
     goalModal.classList.add(
         "hidden"
@@ -3976,6 +3719,13 @@ try {
     goals = [];
 
 }
+
+/* =====================================================
+   DATA INIZIALE NOTA
+===================================================== */
+
+noteDateInput.value =
+    getTodayDateInput();
 
 /* =====================================================
    AVVIO
