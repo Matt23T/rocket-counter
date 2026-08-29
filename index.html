@@ -567,7 +567,8 @@ body {
     top:
         calc(
             50px +
-            env(safe-area-inset-top)
+            env(safe-area-inset-top) +
+            1px
         );
 
     right: 7px;
@@ -575,7 +576,8 @@ body {
     width:
         calc(50% - 40px);
 
-    max-height: 37vh;
+    max-height:
+        calc(37vh - 1px);
 
     transform: none;
 
@@ -628,11 +630,11 @@ body {
 
     color: #fff !important;
 
-    font-size: 6px;
+    font-size: 7px;
 
-    line-height: 8px;
+    line-height: 9px;
 
-    font-weight: 400;
+    font-weight: 700;
 
     opacity: 0.85;
 
@@ -679,7 +681,11 @@ body {
 
 .note-text {
 
-    margin-left: 5px;
+    display: block;
+
+    margin-left: 0;
+
+    margin-top: 1px;
 
     color: #fff !important;
 
@@ -881,9 +887,6 @@ body {
     align-items: center;
 
     gap: 8px;
-
-    transform:
-        translateX(31.5px);
 }
 
 .change-input {
@@ -1355,7 +1358,8 @@ body {
         top:
             calc(
                 50px +
-                env(safe-area-inset-top)
+                env(safe-area-inset-top) +
+                1px
             );
 
         right: 7px;
@@ -1363,7 +1367,8 @@ body {
         width:
             calc(50% - 40px);
 
-        max-height: 37vh;
+        max-height:
+            calc(37vh - 1px);
     }
 
     .goal-item,
