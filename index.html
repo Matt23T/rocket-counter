@@ -624,16 +624,23 @@ body {
     z-index: 80;
 }
 
-.change-row {
+/* Le due righe hanno esattamente la stessa larghezza
+   e quindi lo stesso punto iniziale e finale */
+
+.change-row,
+.note-row {
     display: flex;
     align-items: center;
     gap: 8px;
-    transform:
-        translateX(31.5px);
+    width: 248px;
+}
+
+.change-row {
+    transform: none;
 }
 
 .change-input {
-    width: 175px;
+    width: 185px;
     height: 49px;
     padding: 0 12px;
     border:
@@ -651,15 +658,8 @@ body {
     color: #555;
 }
 
-.note-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 250px;
-}
-
 .note-input {
-    width: 177px;
+    width: 155px;
     height: 49px;
     padding: 0 12px;
     border:
@@ -678,18 +678,19 @@ body {
 }
 
 .date-button {
-    width: 65px;
+    width: 85px;
     height: 49px;
-    padding: 0;
+    padding: 0 5px;
     border: none;
     border-radius: 13px;
     background: #181818;
     color: #fff;
     font-size: 11px;
+    font-weight: 700;
     line-height: 49px;
     text-align: center;
-    font-weight: 600;
     white-space: nowrap;
+    overflow: hidden;
 }
 
 .date-button:active {
@@ -697,13 +698,36 @@ body {
         scale(0.96);
 }
 
+/* Il vero campo data resta sopra il pulsante.
+   È trasparente ma cliccabile, così su iPhone il calendario
+   viene aperto direttamente dal campo nativo. */
+
+.date-picker-wrap {
+    position: relative;
+    width: 85px;
+    height: 49px;
+    flex: 0 0 85px;
+}
+
 .note-date-input {
     position: absolute;
-    width: 1px;
-    height: 1px;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
     opacity: 0;
-    left: 0;
-    top: 0;
+    z-index: 2;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+.date-picker-wrap .date-button {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
 }
 
 .change-button {
@@ -1246,23 +1270,29 @@ body {
                 placeholder="Nota"
             >
 
-            <button
-                id="dateButton"
-                class="date-button"
-                type="button"
-                aria-label="Scegli data"
+            <div
+                class="date-picker-wrap"
             >
-                29/08/2026
-            </button>
+
+                <button
+                    id="dateButton"
+                    class="date-button"
+                    type="button"
+                    aria-label="Scegli data"
+                >
+                    00/00/0000
+                </button>
+
+                <input
+                    id="noteDateInput"
+                    class="note-date-input"
+                    type="date"
+                    aria-label="Scegli data"
+                >
+
+            </div>
 
         </div>
-
-        <input
-            id="noteDateInput"
-            class="note-date-input"
-            type="date"
-            tabindex="-1"
-        >
 
     </div>
 
@@ -1887,7 +1917,6 @@ function updateDateButton() {
         formatSelectedDate(
             noteDateInput.value
         );
-
 }
 
 /* =====================================================
@@ -3232,18 +3261,22 @@ document.addEventListener(
 
 dateButton.addEventListener(
     "click",
-    function(event) {
+    function() {
 
-        event.preventDefault();
-        event.stopPropagation();
+        noteDateInput.focus();
 
-        try {
+        if (
+            typeof noteDateInput.showPicker ===
+            "function"
+        ) {
 
-            noteDateInput.showPicker();
+            try {
 
-        } catch {
+                noteDateInput.showPicker();
 
-            noteDateInput.click();
+            } catch {
+
+            }
 
         }
 
@@ -3252,6 +3285,15 @@ dateButton.addEventListener(
 
 noteDateInput.addEventListener(
     "change",
+    function() {
+
+        updateDateButton();
+
+    }
+);
+
+noteDateInput.addEventListener(
+    "input",
     function() {
 
         updateDateButton();
