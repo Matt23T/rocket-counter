@@ -651,13 +651,6 @@ body {
     color: #555;
 }
 
-.note-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 238px;
-}
-
 .note-input {
     width: 175px;
     height: 49px;
@@ -671,36 +664,27 @@ body {
     text-align: center;
     font-size: 15px;
     font-weight: 500;
+    transform:
+        translateX(-31.5px);
 }
 
 .note-input::placeholder {
     color: #555;
 }
 
-.date-button {
-    width: 55px;
-    height: 49px;
-    padding: 0;
-    border: none;
-    border-radius: 13px;
-    background: #181818;
-    color: #fff;
-    font-size: 22px;
-    line-height: 49px;
-    text-align: center;
-}
-
-.date-button:active {
-    transform:
-        scale(0.96);
-}
-
 .note-date-input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    pointer-events: none;
+    width: 175px;
+    height: 38px;
+    padding: 0 12px;
+    border:
+        1px solid #333;
+    border-radius: 13px;
+    outline: none;
+    background: #111;
+    color: #fff;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
 }
 
 .change-button {
@@ -1227,38 +1211,22 @@ body {
 
         </div>
 
-        <div
-            class="note-row"
+        <input
+            id="noteInput"
+            class="note-input"
+            type="text"
+            maxlength="100"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            placeholder="Nota"
         >
-
-            <input
-                id="noteInput"
-                class="note-input"
-                type="text"
-                maxlength="100"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="off"
-                spellcheck="false"
-                placeholder="Nota"
-            >
-
-            <button
-                id="dateButton"
-                class="date-button"
-                type="button"
-                aria-label="Scegli data"
-            >
-                📅
-            </button>
-
-        </div>
 
         <input
             id="noteDateInput"
             class="note-date-input"
             type="date"
-            tabindex="-1"
         >
 
     </div>
@@ -1544,11 +1512,6 @@ const noteInput =
 const noteDateInput =
     document.getElementById(
         "noteDateInput"
-    );
-
-const dateButton =
-    document.getElementById(
-        "dateButton"
     );
 
 const changeButton =
@@ -3210,37 +3173,6 @@ document.addEventListener(
     function() {
 
         monitorKeyboardMovement();
-
-    }
-);
-
-/* =====================================================
-   CALENDARIO
-===================================================== */
-
-dateButton.addEventListener(
-    "click",
-    function(event) {
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        noteDateInput.focus();
-
-        if (
-            typeof noteDateInput.showPicker ===
-            "function"
-        ) {
-
-            try {
-
-                noteDateInput.showPicker();
-
-            } catch {
-
-            }
-
-        }
 
     }
 );
