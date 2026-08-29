@@ -655,13 +655,11 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 238px;
-    transform:
-        translateX(31.5px);
+    width: 250px;
 }
 
 .note-input {
-    width: 175px;
+    width: 177px;
     height: 49px;
     padding: 0 12px;
     border:
@@ -680,16 +678,18 @@ body {
 }
 
 .date-button {
-    width: 55px;
+    width: 65px;
     height: 49px;
     padding: 0;
     border: none;
     border-radius: 13px;
     background: #181818;
     color: #fff;
-    font-size: 22px;
+    font-size: 11px;
     line-height: 49px;
     text-align: center;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .date-button:active {
@@ -702,7 +702,8 @@ body {
     width: 1px;
     height: 1px;
     opacity: 0;
-    pointer-events: none;
+    left: 0;
+    top: 0;
 }
 
 .change-button {
@@ -1251,7 +1252,7 @@ body {
                 type="button"
                 aria-label="Scegli data"
             >
-                📅
+                29/08/2026
             </button>
 
         </div>
@@ -1878,6 +1879,15 @@ function formatSelectedDate(value) {
         "/" +
         parts[0]
     );
+}
+
+function updateDateButton() {
+
+    dateButton.textContent =
+        formatSelectedDate(
+            noteDateInput.value
+        );
+
 }
 
 /* =====================================================
@@ -3227,22 +3237,24 @@ dateButton.addEventListener(
         event.preventDefault();
         event.stopPropagation();
 
-        noteDateInput.focus();
+        try {
 
-        if (
-            typeof noteDateInput.showPicker ===
-            "function"
-        ) {
+            noteDateInput.showPicker();
 
-            try {
+        } catch {
 
-                noteDateInput.showPicker();
-
-            } catch {
-
-            }
+            noteDateInput.click();
 
         }
+
+    }
+);
+
+noteDateInput.addEventListener(
+    "change",
+    function() {
+
+        updateDateButton();
 
     }
 );
@@ -3303,6 +3315,8 @@ function setInitialValue() {
 
     noteDateInput.value =
         getTodayDateInput();
+
+    updateDateButton();
 
     updateDisplay();
 }
@@ -3387,6 +3401,8 @@ function applyChange() {
     noteDateInput.value =
         getTodayDateInput();
 
+    updateDateButton();
+
     notesExpanded =
         false;
 
@@ -3461,6 +3477,8 @@ function resetApp() {
 
     noteDateInput.value =
         getTodayDateInput();
+
+    updateDateButton();
 
     goalModal.classList.add(
         "hidden"
@@ -3799,6 +3817,8 @@ try {
 
 noteDateInput.value =
     getTodayDateInput();
+
+updateDateButton();
 
 /* =====================================================
    AVVIO
