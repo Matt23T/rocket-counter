@@ -2676,6 +2676,33 @@ function deleteNote(index) {
         return;
     }
 
+    const deletedNote =
+        notes[index];
+
+    const deletedChange =
+        Number(
+            deletedNote.change
+        );
+
+    if (
+        Number.isFinite(
+            deletedChange
+        )
+    ) {
+
+        currentValue =
+            currentValue -
+            deletedChange;
+
+        localStorage.setItem(
+            CURRENT_KEY,
+            String(
+                currentValue
+            )
+        );
+
+    }
+
     notes.splice(
         index,
         1
@@ -2692,7 +2719,17 @@ function deleteNote(index) {
 
     }
 
-    drawNotes();
+    updateDisplay();
+
+    if (
+        !goalsModal.classList.contains(
+            "hidden"
+        )
+    ) {
+
+        drawGoalsList();
+
+    }
 }
 
 function saveNotes() {
