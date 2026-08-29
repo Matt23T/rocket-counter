@@ -557,7 +557,6 @@ body {
 
 /* =====================================================
    NOTE
-   MODIFICA: NOTE IN ALTO A DESTRA
 ===================================================== */
 
 .notes-layer {
@@ -566,9 +565,8 @@ body {
 
     top:
         calc(
-            50px +
-            env(safe-area-inset-top) +
-            1px
+            51px +
+            env(safe-area-inset-top)
         );
 
     right: 7px;
@@ -577,7 +575,9 @@ body {
         calc(50% - 40px);
 
     max-height:
-        calc(37vh - 1px);
+        calc(
+            37vh - 2px
+        );
 
     transform: none;
 
@@ -684,8 +684,6 @@ body {
     display: block;
 
     margin-left: 0;
-
-    margin-top: 1px;
 
     color: #fff !important;
 
@@ -887,6 +885,9 @@ body {
     align-items: center;
 
     gap: 8px;
+
+    transform:
+        translateX(31.5px);
 }
 
 .change-input {
@@ -1357,9 +1358,8 @@ body {
 
         top:
             calc(
-                50px +
-                env(safe-area-inset-top) +
-                1px
+                51px +
+                env(safe-area-inset-top)
             );
 
         right: 7px;
@@ -1368,7 +1368,9 @@ body {
             calc(50% - 40px);
 
         max-height:
-            calc(37vh - 1px);
+            calc(
+                37vh - 2px
+            );
     }
 
     .goal-item,
