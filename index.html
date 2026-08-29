@@ -659,8 +659,7 @@ body {
 }
 
 .note-input {
-    flex: 1;
-    width: auto;
+    width: 175px;
     height: 49px;
     padding: 0 12px;
     border:
@@ -678,18 +677,8 @@ body {
     color: #555;
 }
 
-.note-date-input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    pointer-events: none;
-}
-
 .date-button {
-    flex:
-        0 0 auto;
-    width: 49px;
+    width: 55px;
     height: 49px;
     padding: 0;
     border: none;
@@ -704,6 +693,14 @@ body {
 .date-button:active {
     transform:
         scale(0.96);
+}
+
+.note-date-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .change-button {
@@ -1261,6 +1258,7 @@ body {
             id="noteDateInput"
             class="note-date-input"
             type="date"
+            tabindex="-1"
         >
 
     </div>
@@ -3195,6 +3193,7 @@ function monitorKeyboardMovement() {
     requestAnimationFrame(
         check
     );
+
 }
 
 document.addEventListener(
@@ -3211,6 +3210,37 @@ document.addEventListener(
     function() {
 
         monitorKeyboardMovement();
+
+    }
+);
+
+/* =====================================================
+   CALENDARIO
+===================================================== */
+
+dateButton.addEventListener(
+    "click",
+    function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        noteDateInput.focus();
+
+        if (
+            typeof noteDateInput.showPicker ===
+            "function"
+        ) {
+
+            try {
+
+                noteDateInput.showPicker();
+
+            } catch {
+
+            }
+
+        }
 
     }
 );
@@ -3514,26 +3544,6 @@ noteInput.addEventListener(
         ) {
 
             applyChange();
-
-        }
-
-    }
-);
-
-dateButton.addEventListener(
-    "click",
-    function() {
-
-        if (
-            typeof noteDateInput.showPicker ===
-            "function"
-        ) {
-
-            noteDateInput.showPicker();
-
-        } else {
-
-            noteDateInput.click();
 
         }
 
